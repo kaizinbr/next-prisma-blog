@@ -1,5 +1,5 @@
-// import { getToken } from "next-auth/jwt";
-// import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 // export default async function middleware(req: NextRequest) {
 //   // Get the pathname of the request (e.g. /, /protected)
@@ -23,8 +23,20 @@
 //   return NextResponse.next();
 // }
 
-export { default } from 'next-auth/middleware'
+export function middleware(request: NextRequest) {
+    return NextResponse.redirect(new URL('/signin', request.url))
+  }
+
+export { default } from "next-auth/middleware";
 
 export const config = {
-  matcher: ['/dashboard', '/app/:path*', '/other/:path*', '/help/:path*']
-}
+    matcher: [/*
+    * Match all request paths except for the ones starting with:
+    * - api (API routes)
+    * - _next/static (static files)
+    * - _next/image (image optimization files)
+    * - favicon.ico (favicon file)
+    */
+//    '/((?!signin|_next/static|_next/image|favicon.ico).*)',
+    '/api/auth/signin',],
+};

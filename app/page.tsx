@@ -56,7 +56,6 @@ export default async function Home() {
                     ))}
                 </ul>
                 <TodoCreate></TodoCreate>
-                lL
             </div>
             <div className="right col-span-6">
                 <h1 className="font-bold">Users</h1>

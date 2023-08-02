@@ -15,7 +15,6 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                console.log("Credentials", credentials);
                 const { username, password } = credentials ?? {};
                 if (!username || !password) {
                     throw new Error("Missing username or password");
@@ -25,28 +24,10 @@ export const authOptions: NextAuthOptions = {
                         username,
                     },
                 });
-                // console.log("user password", user?.password);
-                // console.log("password", password);
-                // if user doesn't exist or password doesn't match
+                
                 if (!user || !(await compare(password, user.password))) {
                     throw new Error("Invalid username or password");
                 }
-
-                // if (!user) {
-                //     return null;
-                // }
-
-                // const isPasswordValid = await compare(
-                //     password,
-                //     user.password
-                // );
-                // console.log("isPasswordValid", isPasswordValid);
-
-                // if (!isPasswordValid) {
-                //     throw new Error("Invalid username or password");
-                // }
-
-                console.log("user", user);
                 return {
                     id: user.id,
                     username: user.username,
@@ -57,9 +38,9 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     pages: {    
-        signIn: "/auth/signin",
-        signOut: "/auth/signout",
-        error: "/auth/error", // Error code passed in query string as ?error=
+        signIn: "/signin",
+        signOut: "/signout",
+        error: "/error", // Error code passed in query string as ?error=
         verifyRequest: "/auth/verify-request", // (used for check email message)
         // newUser: null, // If set, new users will be directed here on first sign in
     },

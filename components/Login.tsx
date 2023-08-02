@@ -33,12 +33,12 @@ export default function LoginForm ()  {
 
             setLoading(false);
 
-            console.log(res);
             if (!res?.error) {
                 router.push(callbackUrl);
             } else {
                 setError("invalid email or password");
             }
+
         } catch (error: any) {
             setLoading(false);
             setError(error);
@@ -91,7 +91,7 @@ export default function LoginForm ()  {
                 {loading ? "loading..." : "Sign In"}
             </button>
 
-            <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
+            {/* <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
                 <p className="text-center font-semibold mx-4 mb-0">OR</p>
             </div>
 
@@ -122,7 +122,7 @@ export default function LoginForm ()  {
                     style={{ height: "2.2rem" }}
                 />
                 Continue with GitHub
-            </a>
+            </a> */}
         </form>
     );
 };

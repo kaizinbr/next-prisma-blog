@@ -12,8 +12,8 @@ export async function POST(req: Request) {
     });
     if (exists) {
         return NextResponse.json(
-            { error: "User already exists" },
-            { status: 400 }
+            { error: "O nome de usuário não está disponível" },
+            { status: 403 }
         );
     } else {
         const user = await prisma.user.create({
