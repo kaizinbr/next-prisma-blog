@@ -21,7 +21,7 @@ export default function User(user: any) {
             <button 
                 className="bg-red-300 cursor-pointer hover:text-neutral-200 hover:bg-red-500 transition-all"
                 onClick={async () => {
-                    await fetch(`/api/user`, {
+                    await fetch(`/api/users`, {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",

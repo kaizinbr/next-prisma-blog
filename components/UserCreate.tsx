@@ -11,8 +11,10 @@ export default function UserCreate() {
     return (
         <form action="" className="flex flex-col gap-4">
             {/* <label htmlFor="title">Titulo</label> */}
-            <input type="text" name="name" id="name" placeholder="username" />
-            <input type="text" name="mail" id="mail" placeholder="email" />
+            <input type="text" name="name" id="name" placeholder="seu nome" />
+            <input type="text" name="username" id="username" placeholder="seu username" />
+            <input type="text" name="mail" id="mail" placeholder="seu email" />
+            <input type="password" name="password" id="password" />
             <button
                 type="button"
                 className="py-1 px-4 rounded-md bg-slate-600 text-gray-200"
@@ -20,21 +22,32 @@ export default function UserCreate() {
                     const name = document.getElementById(
                         "name"
                     ) as HTMLInputElement;
+                    const username = document.getElementById(
+                        "username"
+                    ) as HTMLInputElement;
                     const mail = document.getElementById(
                         "mail"
                     ) as HTMLInputElement;
-                    await fetch(`/api/user`, {
+                    const password = document.getElementById(
+                        "password"
+                    ) as HTMLInputElement;
+
+                    await fetch(`/api/users`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
                             name: name.value,
+                            username: username.value,
                             email: mail.value,
+                            password: password.value,
                         }),
                     });
                     name.value = "";
+                    username.value = "";
                     mail.value = "";
+                    password.value = "";
                     router.refresh();
                 }}
             >

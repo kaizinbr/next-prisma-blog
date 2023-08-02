@@ -1,6 +1,6 @@
 import Link from "next/link";
 import "./globals.css";
-
+import Provider from "@/components/Provider";
 import { Inter } from "next/font/google";
 
 // If loading a variable font, you don't need to specify the font weight
@@ -9,6 +9,7 @@ const inter = Inter({
     display: "swap",
 });
 import localFont from "next/font/local";
+import Navbar from "@/components/Navbar";
 
 // Font files can be colocated inside of `app`
 const pretendard = localFont({
@@ -37,10 +38,16 @@ export default function RootLayout({
                     pretendard.className +
                     ` 
                         bg-gray-200 h-screen text-neutral-800
+                        mt-16
                     `
                 }
             >
-                <main>{children}</main>
+                <Provider>
+                    <header className="relative">
+                        <Navbar />
+                    </header>
+                    <main>{children}</main>
+                </Provider>
             </body>
         </html>
     );

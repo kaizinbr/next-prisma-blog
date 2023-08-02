@@ -1,10 +1,18 @@
 import { PrismaClient, Prisma } from "@prisma/client";
+import { hash } from 'bcrypt'
+
+async function encryptPass(pass: string) {
+    const salt = await hash(pass, 12)
+    return salt
+}
 
 const prisma = new PrismaClient();
 
 const userData: Prisma.UserCreateInput[] = [
     {
         name: "Alice",
+        username: "alice",
+        password: "alice",
         email: "alice@prisma.io",
         posts: {
             create: [
@@ -18,6 +26,8 @@ const userData: Prisma.UserCreateInput[] = [
     },
     {
         name: "Nilu",
+        username: "nilu",
+        password: "nilu",
         email: "nilu@prisma.io",
         posts: {
             create: [
@@ -31,6 +41,8 @@ const userData: Prisma.UserCreateInput[] = [
     },
     {
         name: "Mahmoud",
+        username: "mahmoud",
+        password: "mahmoud",
         email: "mahmoud@prisma.io",
         posts: {
             create: [
@@ -52,25 +64,33 @@ async function main() {
     console.log(`Start seeding ...`);
     for (const u of userData) {
         const user = await prisma.user.create({
-            data: u,
+            data: {
+                username: u.username,
+                name: u.name,
+                email: u.email,
+                password: await encryptPass(u.password),
+                posts: {
+                    create: u.posts?.create,
+                },
+            },
         });
         console.log(`Created user with id: ${user.id}`);
     }
     await prisma.todo.create({
         data: {
-          title: "Learn Next.js",
+            title: "Learn Next.js",
         },
-      });
-      await prisma.todo.create({
+    });
+    await prisma.todo.create({
         data: {
-          title: "Learn Prisma",
+            title: "Learn Prisma",
         },
-      });
-      await prisma.todo.create({
+    });
+    await prisma.todo.create({
         data: {
-          title: "Learn GraphQL",
+            title: "Learn GraphQL",
         },
-      });
+    });
     console.log(`Seeding finished.`);
 }
 
