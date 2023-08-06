@@ -23,6 +23,13 @@ export async function POST(req: Request) {
                 password: await hash(password, 12),
             },
         });
+
+        const profile = await prisma.profile.create({
+            data: {
+                userId: user.id,
+            },
+        });
+
         return NextResponse.json(user);
     }
 }

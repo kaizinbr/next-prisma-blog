@@ -60,6 +60,22 @@ const userData: Prisma.UserCreateInput[] = [
     },
 ];
 
+const categoryData: Prisma.CategoryCreateInput[] = [
+    {
+        name: "Category 1",
+    },
+    {   
+        name: "Category 2",
+    },
+    {
+        name: "Category 3",
+    },
+    {
+        name: "Category 4",
+    }
+]
+
+
 async function main() {
     console.log(`Start seeding ...`);
     for (const u of userData) {
@@ -74,8 +90,30 @@ async function main() {
                 },
             },
         });
+        const profile = await prisma.profile.create({
+            data: {
+                bio: "I like turtles.",
+                name: user.name,
+                user: {
+                    connect: {
+                        id: user.id,
+                    },
+                },
+            },
+
+        })
         console.log(`Created user with id: ${user.id}`);
     }
+
+    for (const c of categoryData) {
+        const category = await prisma.category.create({
+            data: {
+                name: c.name,
+            },
+        });
+        console.log(`Created category with id: ${category.id}`);
+    }
+
     await prisma.todo.create({
         data: {
             title: "Learn Next.js",
@@ -93,6 +131,8 @@ async function main() {
     });
     console.log(`Seeding finished.`);
 }
+
+
 
 main()
     .catch((e) => {

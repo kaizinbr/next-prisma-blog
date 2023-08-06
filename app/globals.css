@@ -2,17 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url(../fonts/Fonts.module.css);
+
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+    }
 }
 
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+    -webkit-border-radius: 1ex;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ddd6fe;
+    -webkit-border-radius: 1ex;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c4b5fd;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgb(85, 85, 85);
+}
+
+/* .spinner {
+    box-sizing: border-box;
+    width: 60px;
+    height: 60px;
+    padding: 3px;
+    overflow: visible;
+} */
+
+.spinner > circle {
+    fill: none;
+    /* stroke: currentColor; */
+    cx: 50%;
+    cy: 50%;
+    r: 50%;
+    stroke-width: 6px;
+    stroke-linecap: round;
+    transform-origin: center;
+}
+/* 
+@font-face {
+    font-family: "Medium"; 
+    src: local("AirbnbCerealMedium"),
+        url("./font/AirbnbCerealMedium.woff") format("woff");
+} */
+
+ul {
+    font-family: "Helvetica Now Display";
+    font-weight: 500;
+}

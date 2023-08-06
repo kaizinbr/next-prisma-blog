@@ -28,11 +28,23 @@ export const authOptions: NextAuthOptions = {
                 if (!user || !(await compare(password, user.password))) {
                     throw new Error("Invalid username or password");
                 }
+
+                const profile = await prisma.profile.findUnique({
+                    where: {
+                        userId: user.id,
+                    },
+                });
+
+                console.log("User", user);
+                console.log("Profile", profile);
+
+
                 return {
                     id: user.id,
                     username: user.username,
                     name: user.name,
-                    randomKey: "Hey cool",
+                    image: profile?.image,
+                    randomKey: "hey why so serious",
                 };
             },
         }),
@@ -52,6 +64,9 @@ export const authOptions: NextAuthOptions = {
                 user: {
                     ...session.user,
                     id: token.id,
+                    username: token.username,
+                    name: token.name,
+                    image: session.user?.image,
                     randomKey: token.randomKey,
                 },
             };
@@ -63,9 +78,12 @@ export const authOptions: NextAuthOptions = {
                 return {
                     ...token,
                     id: u.id,
+                    username: u.username,
+                    image: u.image,
                     randomKey: u.randomKey,
                 };
             }
+            // console.log(token)
             return token;
         },
     },

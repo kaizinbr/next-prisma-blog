@@ -1,29 +1,26 @@
-"use client";
-import { Metadata } from "next";
-import { useRouter, usePathname } from "next/navigation";
-import React, { useRef, useEffect } from "react";
+import { decode } from "next-auth/jwt";
+import { cookies } from "next/headers";
+const secret = process.env.NEXTAUTH_SECRET;
 
-export const metadata: Metadata = {
-    title: "Next.js - Coding Beauty",
-    description: "Next.js Tutorials by Coding Beauty",
-};
-export default function Page() {
-    const urlRef = useRef<string>("");
-    //   const { pathname } = useRouter();
-    const pathname = usePathname()
+export async function getServerSideProps(cookie: any) {
+    const sessionToken = cookie;
 
-    useEffect(() => {        
-        urlRef.current = window.location.href;
-        console.log(urlRef.current);
-    }, []);
-    return (
-        <main>
-            Welcome to Coding Beauty 😄
-            <br />
-            <br />
-            URL: <b>{urlRef.current}</b>
-            <br />
-            route: <b>{pathname}</b>
-        </main>
-    );
+    const decoded = await decode({
+        token: sessionToken,
+        secret: secret?.toString() || "",
+    });
+
+    return decoded;
+}
+
+export default async function Dashboard() {
+
+    const cookieStore = cookies();
+    const cook = cookieStore.get("next-auth.session-token");
+    console.log(cook);
+
+    const decoded = await getServerSideProps(cook?.value);
+    console.log('decoded',decoded);
+
+    return <>Super Secret Page</>;
 }
