@@ -45,8 +45,9 @@ model Profile {
 
 model Post {
     id         String     @id @default(cuid())
+    slug       String     @unique
     title      String?
-    content    String?
+    content    Json?
     images     String[]
     tags       String[]
     published  Boolean    @default(false)
@@ -58,6 +59,8 @@ model Post {
     createdAt  DateTime   @default(now()) @map(name: "created_at")
     updatedAt  DateTime   @updatedAt @map(name: "updated_at")
     deletedAt  DateTime?  @map(name: "deleted_at")
+    deleted    Boolean    @default(false)
+    blocked    Boolean    @default(false)
 }
 
 model Account {

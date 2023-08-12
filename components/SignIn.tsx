@@ -6,8 +6,9 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { LoadingSm } from "./Loading";
+import { BiShow, BiHide } from "react-icons/bi";
 
-export default function LoginForm ()  {
+export default function LoginForm() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({
@@ -15,6 +16,11 @@ export default function LoginForm ()  {
         password: "",
     });
     const [error, setError] = useState("");
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+    function togglePasswordVisibility() {
+        setIsPasswordVisible((prevState) => !prevState);
+    }
 
     const searchParams = useSearchParams();
     let callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -40,7 +46,6 @@ export default function LoginForm ()  {
                 setError("invalid email or password");
                 setLoading(false);
             }
-
         } catch (error: any) {
             setLoading(false);
             setError(error);
@@ -52,11 +57,12 @@ export default function LoginForm ()  {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    return (<div
+    return (
+        <div
             className={`
             flex flex-col
             w-full max-w-lg
-            h-[624px] rounded-lg
+            h-[624px] rounded-2xl
             bg-gray-100
             hover:shadow-2xl hover:shadow-gray-400/20
             transition duration-300 ease-in-out
@@ -81,53 +87,85 @@ export default function LoginForm ()  {
                 <legend className="displayBold text-3xl mb-12">
                     Entre na sua conta
                 </legend>
-                
 
-                <label
-                    htmlFor="username"
-                    className="text-sm text-gray-500 displayBold mb-2"
-                >
-                    Nome de usuário
-                </label>
-                <input
-                    required
-                    type="text"
-                    name="username"
-                    value={formValues.username}
-                    onChange={handleChange}
+                <div
                     className={`
-                        mb-6 py-3 px-4 rounded-lg
-                        outline-none
-                        bg-gray-200
-                        focus:bg-gray-50
-                        transition duration-200 ease-in-out
-                    `}
-                />
-                <label
-                    htmlFor="password"
-                    className="text-sm text-gray-500 displayBold mb-2"
+                    flex flex-col
+                `}
                 >
-                    Senha
-                </label>
-                <input
-                    required
-                    type="password"
-                    name="password"
-                    value={formValues.password}
-                    onChange={handleChange}
+                    <label
+                        htmlFor="username"
+                        className="text-sm text-gray-500 displayBold mb-2"
+                    >
+                        Nome de usuário
+                    </label>
+                    <input
+                        required
+                        type="text"
+                        name="username"
+                        value={formValues.username}
+                        onChange={handleChange}
+                        className={`
+                            mb-6 py-3 px-4 rounded-lg
+                            outline-none
+                            bg-gray-200
+                            focus:bg-gray-300
+                            transition duration-200 ease-in-out
+                        `}
+                    />
+                </div>
+                <div
                     className={`
+                    flex flex-col
+                `}
+                >
+                    <label
+                        htmlFor="password"
+                        className="text-sm text-gray-500 displayBold mb-2"
+                    >
+                        Senha
+                    </label>
+                    <div
+                        className={`
+                        flex flex-row
                         mb-9 py-3 px-4 rounded-lg
                         outline-none
                         bg-gray-200
-                        focus:bg-gray-50
-                        transition duration-200 ease-in-out 
-                        
+                        focus-within:bg-gray-300
+                        transition duration-200 ease-in-out
                     `}
-                />
+                    >
+                        <input
+                            required
+                            type={isPasswordVisible ? "text" : "password"}
+                            name="password"
+                            value={formValues.password}
+                            onChange={handleChange}
+                            className={`
+                                outline-none
+                                bg-transparent
+                                transition duration-200 ease-in-out
+                                w-11/12
+                            `}
+                        />
+                        <button
+                            className=" text-gray-600 w-1/12"
+                            onClick={togglePasswordVisibility}
+                            type="button"
+                        >
+                            {isPasswordVisible ? (
+                                <BiHide className="w-5 h-5" />
+                            ) : (
+                                <BiShow className="w-5 h-5" />
+                            )}
+                        </button>
+                    </div>
+                </div>
 
                 <button
                     disabled={loading}
                     className="h-14 bg-violet-400 hover:bg-violet-600 hover:text-gray-100 transition duration-200 rounded-xl displayBold text-xl mb-6"
+                    type="submit"
                 >
                     {loading ? <LoadingSm /> : "Entrar"}
                 </button>
@@ -149,4 +187,4 @@ export default function LoginForm ()  {
             </form>
         </div>
     );
-};
+}

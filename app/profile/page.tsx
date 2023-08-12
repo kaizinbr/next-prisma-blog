@@ -1,7 +1,11 @@
+import Profile from "@/components/profile/me/Profile";
+
+
+
 export default function UserProfile() {
     return (
         <div>
-            <h1>User Profile</h1>
+            <Profile />
         </div>
     )
 }

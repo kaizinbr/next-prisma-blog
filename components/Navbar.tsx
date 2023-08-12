@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React from "react";
@@ -6,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { LoginButton, LogoutButton, SignupButton } from "@/components/auth";
 import Loading from "./Loading";
 import {
@@ -19,6 +19,7 @@ import {
     BiLogOut,
     BiUser,
 } from "react-icons/bi";
+import CreatePostBtn from "@/components/buttons/CreatePostBtn";
 
 const Navbar: React.FC = () => {
     const router = usePathname();
@@ -117,15 +118,15 @@ const AsideNavbar: React.FC = () => {
         router === pathname;
 
     const { data: session, status } = useSession();
-    console.log(session);
+    // console.log(session);
 
 
     let options = (
         <div className={``}>
             <ul className={`space-y-2 transition duration-300`}>
                 <li>
-                    <a
-                        href="#"
+                    <Link
+                        href="/"
                         className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -139,11 +140,11 @@ const AsideNavbar: React.FC = () => {
                             `}
                         />
                         <span className={`ml-3`}>Home</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a
-                        href="#"
+                    <Link
+                        href="/blogs"
                         className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -157,11 +158,11 @@ const AsideNavbar: React.FC = () => {
                             `}
                         />
                         <span className={`ml-3`}>Blogs</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a
-                        href="#"
+                    <Link
+                        href="/search"
                         className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -175,10 +176,10 @@ const AsideNavbar: React.FC = () => {
                             `}
                         />
                         <span className={`ml-3`}>Pesquisar</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a
+                    <Link
                         href="#"
                         className={`
                                 flex items-center p-2  rounded-lg 
@@ -193,7 +194,7 @@ const AsideNavbar: React.FC = () => {
                             `}
                         />
                         <span className={`ml-3`}>Publicações</span>
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </div>
@@ -232,8 +233,8 @@ const AsideNavbar: React.FC = () => {
                     className={`space-y-2 transition duration-300 displayMedium `}
                 >
                     <li>
-                        <a
-                            href="#"
+                        <Link
+                            href="/"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -246,11 +247,11 @@ const AsideNavbar: React.FC = () => {
                                 `}
                             />
                             <span className={`ml-3`}>Home</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
-                            href="#"
+                        <Link
+                            href="/profile"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -264,11 +265,11 @@ const AsideNavbar: React.FC = () => {
                             `}
                             />
                             <span className={`ml-3`}>Perfil</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
-                            href="#"
+                        <Link
+                            href="/blogs"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -282,11 +283,11 @@ const AsideNavbar: React.FC = () => {
                             `}
                             />
                             <span className={`ml-3`}>Blogs</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
-                            href="#"
+                        <Link
+                            href="/search"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -300,11 +301,11 @@ const AsideNavbar: React.FC = () => {
                             `}
                             />
                             <span className={`ml-3`}>Pesquisar</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
-                            href="#"
+                        <Link
+                            href="/notifications"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -318,11 +319,11 @@ const AsideNavbar: React.FC = () => {
                             `}
                             />
                             <span className={`ml-3`}>Notificações</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
-                            href="#"
+                        <Link
+                            href="/posts"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -336,11 +337,11 @@ const AsideNavbar: React.FC = () => {
                             `}
                             />
                             <span className={`ml-3`}>Publicações</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
-                            href="#"
+                        <Link
+                            href="/settings"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -354,11 +355,14 @@ const AsideNavbar: React.FC = () => {
                             `}
                             />
                             <span className={`ml-3`}>Conta</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
                         <button
-                            onClick={() => signOut()}
+                            onClick={() => {
+                                signOut();
+                                
+                            }}
                             className={`
                                 flex items-center p-2 w-full rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -389,7 +393,7 @@ const AsideNavbar: React.FC = () => {
                         className={`
                                  rounded-full
                             `}
-                        src="/static/images/default-profile.webp"
+                        src={session?.user?.image!}
                         height={144}
                         width={144}
                         alt="avatar"
@@ -399,30 +403,19 @@ const AsideNavbar: React.FC = () => {
                     <h1
                         className={`text-xl displayExtBold leading-7 text-gray-900 sm:text-2xl sm:truncate`}
                     >
-                        Choi Beomgyu
+                        {session?.user?.name}
                     </h1>
                     <h3
                         className={`text-lg displayMedium leading-7 text-gray-500 sm:text-sm sm:truncate`}
                     >
-                        {/* @{session?.user?.username} */}
+                        @{session?.user?.username}
                     </h3>
                     
                 </div>
             </div>
         );
 
-        writeButton = (
-            <button
-                className={`
-                    flex items-center justify-center flex-shrink-0 h-11 w-full bg-violet-300 rounded-xl
-                    gap-2 font-semibold
-                    hover:bg-violet-400 hover:text-gray-100 transition duration-300
-                `}
-            >
-                <BiPlus className={`w-6 h-6 `} />
-                <span>Crie um post</span>
-            </button>
-        );
+        writeButton = (<CreatePostBtn />)
     }
 
     return (
@@ -458,7 +451,7 @@ const AsideNavbar: React.FC = () => {
                         z-20
                     `}
                         >
-                            <a
+                            <Link
                                 href="#"
                                 className={`
                         `}
@@ -482,7 +475,7 @@ const AsideNavbar: React.FC = () => {
                                         d="M4.293 4.293a1 1 0 000 1.414L16.586 17.707a1 1 0 001.414-1.414L5.707 4.293a1 1 0 00-1.414 0z"
                                     ></path>
                                 </svg>
-                            </a>
+                            </Link>
                         </button>
 
                         {mainDiv}

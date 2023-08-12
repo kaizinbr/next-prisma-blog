@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChangeEvent, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { LoadingSm } from "./Loading";
+import { BiShow, BiHide } from "react-icons/bi";
 
 const useLoginAfterRegister = async (username: string, password: string) => {
     const res = await signIn("credentials", {
@@ -26,6 +27,11 @@ export const RegisterForm = () => {
         password: "",
     });
     const [userExists, setUserExists] = useState(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  function togglePasswordVisibility() {
+    setIsPasswordVisible((prevState) => !prevState);
+  }
 
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -111,68 +117,98 @@ export const RegisterForm = () => {
                 <legend className="displayBold text-3xl mb-12">
                     Faça seu cadastro
                 </legend>
-                <label
-                    htmlFor="name"
-                    className="text-sm text-gray-500 displayBold mb-2"
-                >
-                    Nome
-                </label>
-                <input
-                    required
-                    type="text"
-                    name="name"
-                    value={formValues.name}
-                    onChange={handleChange}
-                    className={`
-                        mb-6 py-3 px-4 rounded-lg
-                        outline-none
-                        bg-gray-200
-                        focus:bg-gray-50
-                        transition duration-200 ease-in-out
-                    `}
-                />
+                <div className="flex flex-col">
+                    <label
+                        htmlFor="name"
+                        className="text-sm text-gray-500 displayBold mb-2"
+                    >
+                        Nome
+                    </label>
+                    <input
+                        required
+                        type="text"
+                        name="name"
+                        value={formValues.name}
+                        onChange={handleChange}
+                        className={`
+                            mb-6 py-3 px-4 rounded-lg
+                            outline-none
+                            bg-gray-200
+                            focus:bg-gray-300
+                            transition duration-200 ease-in-out
+                        `}
+                    />
+                </div>
 
-                <label
-                    htmlFor="username"
-                    className="text-sm text-gray-500 displayBold mb-2"
-                >
-                    Nome de usuário
-                </label>
-                <input
-                    required
-                    type="text"
-                    name="username"
-                    value={formValues.username}
-                    onChange={handleChange}
+                <div className="flex flex-col">
+                    <label
+                        htmlFor="username"
+                        className="text-sm text-gray-500 displayBold mb-2"
+                    >
+                        Nome de usuário
+                    </label>
+                    <input
+                        required
+                        type="text"
+                        name="username"
+                        value={formValues.username}
+                        onChange={handleChange}
+                        className={`
+                            mb-6 py-3 px-4 rounded-lg
+                            outline-none
+                            bg-gray-200
+                            focus:bg-gray-300
+                            transition duration-200 ease-in-out
+                        `}
+                    />
+                </div>
+                <div
                     className={`
-                        mb-6 py-3 px-4 rounded-lg
+                    flex flex-col
+                `}
+                >
+                    <label
+                        htmlFor="password"
+                        className="text-sm text-gray-500 displayBold mb-2"
+                    >
+                        Senha
+                    </label>
+                    <div
+                        className={`
+                        flex flex-row
+                        mb-9 py-3 px-4 rounded-lg
                         outline-none
                         bg-gray-200
-                        focus:bg-gray-50
+                        focus-within:bg-gray-300
                         transition duration-200 ease-in-out
                     `}
-                />
-                <label
-                    htmlFor="password"
-                    className="text-sm text-gray-500 displayBold mb-2"
-                >
-                    Senha
-                </label>
-                <input
-                    required
-                    type="password"
-                    name="password"
-                    value={formValues.password}
-                    onChange={handleChange}
-                    className={`
-                        mb-6 py-3 px-4 rounded-lg
-                        outline-none
-                        bg-gray-200
-                        focus:bg-gray-50
-                        transition duration-200 ease-in-out 
-                        
-                    `}
-                />
+                    >
+                        <input
+                            required
+                            type={isPasswordVisible ? "text" : "password"}
+                            name="password"
+                            value={formValues.password}
+                            onChange={handleChange}
+                            className={`
+                                outline-none
+                                bg-transparent
+                                transition duration-200 ease-in-out
+                                w-11/12
+                            `}
+                        />
+                        <button
+                            className=" text-gray-600 w-1/12"
+                            onClick={togglePasswordVisibility}
+                            type="button"
+                        >
+                            {isPasswordVisible ? (
+                                <BiHide className="w-5 h-5" />
+                            ) : (
+                                <BiShow className="w-5 h-5" />
+                            )}
+                        </button>
+                    </div>
+                </div>
 
                 <div className="flex flex-row gap-2 items-center text-gray-700 text-sm mb-4">
                     <input type="checkbox" name="terms" id="terms" />

@@ -26,7 +26,16 @@ export async function POST(req: Request) {
 
         const profile = await prisma.profile.create({
             data: {
-                userId: user.id,
+                name,
+                image: '/static/images/icon.jpg',
+                // userId: user?.id,
+                pronouns: "he/him",
+                bio: "I like dick",
+                user: {
+                    connect: {
+                        id: user.id,
+                    },
+                },
             },
         });
 

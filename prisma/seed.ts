@@ -18,7 +18,39 @@ const userData: Prisma.UserCreateInput[] = [
             create: [
                 {
                     title: "Join the Prisma Slack",
-                    content: "https://slack.prisma.io",
+                    slug: "join-the-prisma-slack",
+                    content: {
+                        "blocks": [
+                            {
+                                "key": "a050g",
+                                "text": "teste de texto um",
+                                "type": "header-one",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            },
+                            {
+                                "key": "asfrn",
+                                "text": "aaaaa",
+                                "type": "unstyled",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            },
+                            {
+                                "key": "451r6",
+                                "text": "taxi hey yeah",
+                                "type": "unstyled",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            }
+                        ],
+                        "entityMap": {}
+                    },
                     published: true,
                 },
             ],
@@ -32,8 +64,40 @@ const userData: Prisma.UserCreateInput[] = [
         posts: {
             create: [
                 {
-                    title: "Follow Prisma on Twitter",
-                    content: "https://www.twitter.com/prisma",
+                    title: "Join the Prisma Slack",
+                    slug: "draft-1",
+                    content: {
+                        "blocks": [
+                            {
+                                "key": "a050g",
+                                "text": "teste de texto um",
+                                "type": "header-one",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            },
+                            {
+                                "key": "asfrn",
+                                "text": "aaaaa",
+                                "type": "unstyled",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            },
+                            {
+                                "key": "451r6",
+                                "text": "taxi hey yeah",
+                                "type": "unstyled",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            }
+                        ],
+                        "entityMap": {}
+                    },
                     published: true,
                 },
             ],
@@ -47,13 +111,41 @@ const userData: Prisma.UserCreateInput[] = [
         posts: {
             create: [
                 {
-                    title: "Ask a question about Prisma on GitHub",
-                    content: "https://www.github.com/prisma/prisma/discussions",
+                    title: "Join the Prisma Slack",
+                    slug: "draft-2",
+                    content: {
+                        "blocks": [
+                            {
+                                "key": "a050g",
+                                "text": "teste de texto um",
+                                "type": "header-one",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            },
+                            {
+                                "key": "asfrn",
+                                "text": "aaaaa",
+                                "type": "unstyled",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            },
+                            {
+                                "key": "451r6",
+                                "text": "taxi hey yeah",
+                                "type": "unstyled",
+                                "depth": 0,
+                                "inlineStyleRanges": [],
+                                "entityRanges": [],
+                                "data": {}
+                            }
+                        ],
+                        "entityMap": {}
+                    },
                     published: true,
-                },
-                {
-                    title: "Prisma on YouTube",
-                    content: "https://pris.ly/youtube",
                 },
             ],
         },
@@ -92,17 +184,18 @@ async function main() {
         });
         const profile = await prisma.profile.create({
             data: {
-                bio: "I like turtles.",
+                bio: '',
                 name: user.name,
                 user: {
                     connect: {
                         id: user.id,
                     },
                 },
+                pronouns: "he/him",
             },
 
         })
-        console.log(`Created user with id: ${user.id}`);
+        console.log(`Created user with id: ${user.id}, prfile with id: ${profile.id}`);
     }
 
     for (const c of categoryData) {

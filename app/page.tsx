@@ -32,6 +32,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { ClientUser } from "./clientUser";
 import Link from "next/link";
+import { PageWrapper } from "@/components/config/pageWrapper";
 
 import styles from "../fonts/Fonts.module.css"
 

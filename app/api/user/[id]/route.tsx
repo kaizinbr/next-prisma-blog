@@ -10,13 +10,22 @@ export async function GET(
         where: {
             id,
         },
+        include: {
+            posts: true,
+        },
     });
 
     if (!user) {
         return new NextResponse("No user with ID found", { status: 404 });
     }
 
-    return NextResponse.json(user);
+    const userProfile = await prisma.profile.findUnique({
+        where: {
+            userId: id,
+        },
+    });
+
+    return NextResponse.json({ user, userProfile });
 }
 
 export async function PATCH(
