@@ -97,20 +97,15 @@ function EditPostForm(postInfo: any) {
     //     content: postInfo.json,
     // })
 
-    const [exists, setExists] = useState(false);
-    const [postId, setPostId] = useState("");
-    const [authorId, setAuthorId] = useState("");
+    const [published, setPublished] = useState(postInfo.post.published);
     const [loading, setLoading] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [message, setMessage] = useState("");
-
-    const handleMessage = (msg: string) => {
-        setMessage(msg);
-        setShowMessage(true);
-        setTimeout(() => {
-            setShowMessage(false);
-        }, 3000);
-    };
+    const [confirm, setConfirm] = useState(false);
+    const [title, setTitle] = useState(
+        postInfo.post.title ? postInfo.post.title : ""
+    );
+    const titleRef = useRef<HTMLTextAreaElement>(null);
 
     const savePost = async (json: any, html: any, title: string) => {
         console.log("Salvando post no banco de dados...");
@@ -125,9 +120,7 @@ function EditPostForm(postInfo: any) {
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.success) {
-                        setExists(true);
-                        setPostId(data.post.id);
-                        setAuthorId(data.post.authorId);
+                        setPublished(true);
                         handleMessage(data.message);
                     } else {
                         handleMessage(data.message);
@@ -156,13 +149,39 @@ function EditPostForm(postInfo: any) {
         authorId: string,
         json: any,
         html: any,
-        title: string
+        title: string,
+        published: boolean,
     ) => {
         console.log("Atualizando post no banco de dados...");
         try {
             const res = await fetch("/api/posts/new", {
                 method: "PUT",
-                body: JSON.stringify({ postId, authorId, json, html, title }),
+                body: JSON.stringify({ postId, authorId, json, html, title, published }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    setLoading(false);
+                });
+        } catch (error: any) {
+            // setLoading(false);
+            console.error(error);
+            // alert(error.message);
+        }
+    };
+    const publishPost = async (
+        postId: string,
+        authorId: string,
+        published: boolean,
+    ) => {
+        console.log("Atualizando post no banco de dados...");
+        try {
+            const res = await fetch("/api/posts/publish", {
+                method: "PUT",
+                body: JSON.stringify({ postId, authorId, published }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -173,25 +192,11 @@ function EditPostForm(postInfo: any) {
                     setLoading(false);
                 });
 
-            // if (!res.ok) {
-            //     if (res.status === 403) {
-            //         // setLoading(false);
-            //     }
-            //     return;
-            // }
-            // console.log(res.status);
-
-            // setLoading(false);
         } catch (error: any) {
-            // setLoading(false);
             console.error(error);
             alert(error.message);
         }
     };
-    const [title, setTitle] = useState(
-        postInfo.post.title ? postInfo.post.title : ""
-    );
-    const titleRef = useRef<HTMLTextAreaElement>(null);
 
     const resizeTextArea = () => {
         // https://codesandbox.io/s/textarea-auto-resize-react-hngvd?file=/src/index.js:135-225
@@ -203,12 +208,33 @@ function EditPostForm(postInfo: any) {
     };
     useEffect(resizeTextArea, [title]);
 
+    const json = editor?.getJSON();
+    const html = editor?.getHTML();
+
     const onChange = (e: any) => {
         setTitle(e.target.value);
     };
+    const handleMessage = (msg: string) => {
+        setMessage(msg);
+        setShowMessage(true);
+        setTimeout(() => {
+            setShowMessage(false);
+        }, 3000);
+    };
 
-    const json = editor?.getJSON();
-    const html = editor?.getHTML();
+    const handleSave = () => {
+        updatePost(postInfo.post.id, postInfo.post.authorId, json, html, title, published);
+    };
+
+    const handlePublish = (publish: boolean) => {
+        setLoading(true);
+        setPublished(publish);
+        console.log("mudando published para", publish)
+        updatePost(postInfo.post.id, postInfo.post.authorId, json, html, title, publish);
+        setConfirm(false);
+    };
+
+
     return (
         <div>
             <div>
@@ -244,19 +270,11 @@ function EditPostForm(postInfo: any) {
                         mr-4
                     `}
                         onClick={() => {
-                            console.log(json);
-                            console.log(html);
-                            console.log("Existe:", exists);
-                            setLoading(true);
-                            exists
-                                ? updatePost(
-                                      postId,
-                                      authorId,
-                                      json,
-                                      html,
-                                      title
-                                  )
-                                : savePost(json, html, title);
+                            // console.log(json);
+                            // console.log(html);
+                            // console.log("Existe:", published);
+                            setLoading(true);                            
+                            handleSave();
                         }}
                     >
                         Salvar alterações
@@ -270,9 +288,9 @@ function EditPostForm(postInfo: any) {
                         font-bold
                         mr-4
                     `}
-                        onClick={() => {}}
+                        onClick={() => {setConfirm(true)}}
                     >
-                        {postInfo.post.published ? "Remover publicação" : "Publicar"}
+                        {published ? "Remover publicação" : "Publicar"}
                     </button>
                 </div>
                 <div
@@ -302,6 +320,45 @@ function EditPostForm(postInfo: any) {
                     <EditorContent className="" editor={editor} />
                 </div>
             </div>
+            {confirm && (
+                <div
+                    className={`fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50`}
+                >
+                    <div
+                        className={`bg-white rounded-lg py-4 px-9`}
+                    >
+                        <h1
+                            className={`text-2xl font-bold mb-2`}
+                        >
+                            Publicar
+                        </h1>
+                        <p
+                            className={`text-sm text-gray-600`}
+                        >
+                            Tem certeza que deseja publicar este post?
+                        </p>
+                        <div
+                            className={`flex flex-row justify-end mt-4`}
+                        >
+                            <button
+                                className={`bg-gray-400 hover:bg-gray-500 transition px-4 py-2 rounded-lg text-gray-900 font-bold mr-4`}
+                                onClick={() => {setConfirm(false)}}
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                className={`bg-violet-400 hover:bg-violet-500 transition px-4 py-2 rounded-lg text-gray-800 font-bold mr-4`}
+                                onClick={() => {
+                                    handlePublish(!published)
+                                }}
+                            >
+                                Publicar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {loading && (
                 <div
                     className={`

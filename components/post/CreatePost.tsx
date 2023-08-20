@@ -29,7 +29,7 @@ const Message = (msg: string, success: boolean) => {
         <div
             className={`${
                 success ? "bg-green-500" : "bg-red-500"
-            } p-2 rounded-lg text-white
+            } py-2 px-4 rounded-lg text-white
                 fixed bottom-4 right-4
             `}
         >
@@ -117,20 +117,18 @@ function PostForm() {
         `,
     });
 
+    const [published, setPublished] = useState(false);
     const [exists, setExists] = useState(false);
     const [postId, setPostId] = useState("");
     const [authorId, setAuthorId] = useState("");
     const [loading, setLoading] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [message, setMessage] = useState("");
-
-    const handleMessage = (msg: string) => {
-        setMessage(msg);
-        setShowMessage(true);
-        setTimeout(() => {
-            setShowMessage(false);
-        }, 3000);
-    };
+    const [confirm, setConfirm] = useState(false);
+    const [title, setTitle] = useState(
+        "A Genialidade da Discografia do TXT e sua Liderança na 4ª Geração do K-pop"
+    );
+    const titleRef = useRef<HTMLTextAreaElement>(null);
 
     const savePost = async (json: any, html: any, title: string) => {
         console.log("Salvando post no banco de dados...");
@@ -145,6 +143,7 @@ function PostForm() {
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.success) {
+                        console.log('salvou')
                         setExists(true);
                         setPostId(data.post.id);
                         setAuthorId(data.post.authorId);
@@ -168,7 +167,7 @@ function PostForm() {
         } catch (error: any) {
             // setLoading(false);
             console.error(error);
-            alert(error.message);
+            // alert(error.message);
         }
     };
     const updatePost = async (
@@ -176,20 +175,21 @@ function PostForm() {
         authorId: string,
         json: any,
         html: any,
-        title: string
+        title: string,
+        published: boolean,
     ) => {
         console.log("Atualizando post no banco de dados...");
         try {
             const res = await fetch("/api/posts/new", {
                 method: "PUT",
-                body: JSON.stringify({ postId, authorId, json, html, title }),
+                body: JSON.stringify({ postId, authorId, json, html, title, published }),
                 headers: {
                     "Content-Type": "application/json",
                 },
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
+                    // console.log(data);
                     setLoading(false);
                 });
 
@@ -208,10 +208,42 @@ function PostForm() {
             alert(error.message);
         }
     };
-    const [title, setTitle] = useState(
-        "A Genialidade da Discografia do TXT e sua Liderança na 4ª Geração do K-pop"
-    );
-    const titleRef = useRef<HTMLTextAreaElement>(null);
+    const publishPost = async (
+        postId: string,
+        authorId: string,
+        published: boolean,
+    ) => {
+        console.log("Atualizando post no banco de dados...");
+        try {
+            const res = await fetch("/api/posts/publish", {
+                method: "PUT",
+                body: JSON.stringify({ postId, authorId, published }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    // console.log(data);
+                    setLoading(false);
+                });
+
+            // if (!res.ok) {
+            //     if (res.status === 403) {
+            //         // setLoading(false);
+            //     }
+            //     return;
+            // }
+            // console.log(res.status);
+
+            // setLoading(false);
+        } catch (error: any) {
+            // setLoading(false);
+            console.error(error);
+            alert(error.message);
+        }
+    };
+    
 
     const resizeTextArea = () => {
         // https://codesandbox.io/s/textarea-auto-resize-react-hngvd?file=/src/index.js:135-225
@@ -223,12 +255,38 @@ function PostForm() {
     };
     useEffect(resizeTextArea, [title]);
 
+
+    const json = editor?.getJSON();
+    const html = editor?.getHTML();
+        
     const onChange = (e: any) => {
         setTitle(e.target.value);
     };
 
-    const json = editor?.getJSON();
-    const html = editor?.getHTML();
+    const handleMessage = (msg: string) => {
+        setMessage(msg);
+        setShowMessage(true);
+        setTimeout(() => {
+            setShowMessage(false);
+        }, 3000);
+    };
+
+    const handleSave = async () => {
+        setLoading(true);
+        exists
+            ? await updatePost(postId, authorId, json, html, title, published)
+            : await savePost(json, html, title);
+    };
+
+    const handlePublish = async (publish: boolean) => {
+        !exists && await savePost(json, html, title);
+        setLoading(true);
+        setPublished(publish);
+        console.log("mudando published para", publish)
+        updatePost(postId, authorId, json, html, title, publish);
+        setConfirm(false);
+    };
+
     return (
         <div>
             <div>
@@ -249,7 +307,7 @@ function PostForm() {
                         font-bold
                         mr-4
                     `}
-                        onClick={() => {}}
+                        onClick={() => {handleMessage("Tá em contrução, calma aí...")}}
                     >
                         <TbSettings />
                     </button>
@@ -264,24 +322,16 @@ function PostForm() {
                         mr-4
                     `}
                         onClick={() => {
-                            console.log(json);
-                            console.log(html);
-                            console.log("Existe:", exists);
-                            setLoading(true);
-                            exists
-                                ? updatePost(
-                                      postId,
-                                      authorId,
-                                      json,
-                                      html,
-                                      title
-                                  )
-                                : savePost(json, html, title);
+                            // console.log(json);
+                            // console.log(html);
+                            // console.log("Existe:", exists);
+                            // setLoading(true);
+                            handleSave();
                         }}
                     >
-                        Salvar rascunho
+                        Salvar
                     </button>
-                    <button
+                    {exists && (<button
                         className={`
                         bg-violet-400 hover:bg-violet-500 transition
                         px-4 py-2
@@ -290,10 +340,10 @@ function PostForm() {
                         font-bold
                         mr-4
                     `}
-                        onClick={() => {}}
+                        onClick={() => {setConfirm(true)}}
                     >
-                        Publicar
-                    </button>
+                        {published ? "Remover publicação" : "Publicar"}
+                    </button>)}
                 </div>
                 <div
                     className={`
@@ -322,6 +372,45 @@ function PostForm() {
                     <EditorContent className="" editor={editor} />
                 </div>
             </div>
+            {confirm && (
+                <div
+                    className={`fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50`}
+                >
+                    <div
+                        className={`bg-white rounded-lg py-4 px-9`}
+                    >
+                        <h1
+                            className={`text-2xl font-bold mb-2`}
+                        >
+                            Publicar
+                        </h1>
+                        <p
+                            className={`text-sm text-gray-600`}
+                        >
+                            Tem certeza que deseja publicar este post?
+                        </p>
+                        <div
+                            className={`flex flex-row justify-end mt-4`}
+                        >
+                            <button
+                                className={`bg-gray-400 hover:bg-gray-500 transition px-4 py-2 rounded-lg text-gray-900 font-bold mr-4`}
+                                onClick={() => {setConfirm(false)}}
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                className={`bg-violet-400 hover:bg-violet-500 transition px-4 py-2 rounded-lg text-gray-800 font-bold mr-4`}
+                                onClick={() => {
+                                    handlePublish(!published)
+                                }}
+                            >
+                                Publicar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {loading && (
                 <div
                     className={`
@@ -365,86 +454,3 @@ function PostForm() {
 }
 
 export default PostForm;
-
-// import React, { Component, useState, useEffect } from "react";
-// import dynamic from "next/dynamic";
-
-// import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-// import { EditorProps } from "react-draft-wysiwyg";
-// import { convertToHTML } from "draft-convert";
-
-// import { BiAngry } from "react-icons/bi";
-
-// const Editor = dynamic<EditorProps>(
-//     () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
-//     { ssr: false }
-// );
-// import "@/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-// // import { Editor } from "react-draft-wysiwyg";
-// // import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
-// function BoldBtn () {
-//     return (
-//         <div className={`
-//             h-4 w-4 flex justify-center items-center rounded-md
-//             hover:bg-gray-200 cursor-pointer
-//         `}>
-//             <BiAngry />
-//         </div>
-//     )
-// }
-
-// export default function EditorComponent(this: any) {
-//     const [editorState, setEditorState] = useState(() =>
-//         EditorState.createEmpty()
-//     );
-
-//     const [convertedContent, setConvertedContent] = useState<any>(null);
-
-//     useEffect(() => {
-//         // let html = convertToHTML(editorState.getCurrentContent());
-//         // setConvertedContent(html);
-
-//         let raw = convertToRaw(editorState.getCurrentContent());
-//         setConvertedContent(raw);
-//     }, [editorState]);
-
-//     // printa o conteúdo do editor no console
-//     console.log(convertedContent);
-//     return (
-//         <div>
-//             <Editor
-//                 toolbarClassName="toolbarClassName"
-//                 wrapperClassName="wrapperClassName"
-//                 editorClassName="editorClassName"
-//                 toolbar={{
-//                     image: {
-//                         uploadCallback: () => {
-//                             return new Promise((resolve, reject) => {
-//                                 resolve({ data: { link: "link" } });
-//                             });
-//                         },
-//                         previewImage: true,
-//                         uploadEnabled: true,
-//                     },
-
-//                 }}
-//                 editorState={editorState}
-//                 onEditorStateChange={setEditorState}
-//                 toolbarStyle={{
-//                     border: "1px solid #ccc",
-//                     borderRadius: "12px",
-//                 }}
-//                 localization={{
-//                     locale: "pt",
-//                 }}
-//                 hashtag={{
-//                     separator: " ",
-//                     trigger: "#",
-//                 }}
-//                 // onEditorStateChange={this.onEditorStateChange}
-//             />
-//             {/* <pre>{JSON.stringify(convertedContent)}</pre> */}
-//         </div>
-//     );
-// }

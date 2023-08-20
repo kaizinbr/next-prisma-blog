@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const adaptHtml = replaceHtml(html);
     const subtitle = '<p>' + html.match(/<p.*?>(.*?)<\/p>/)[1] + '</p>';
 
-    const exists = await prisma.post.findUnique({
+    try {const exists = await prisma.post.findUnique({
         where: {
             slug,
         },
@@ -49,34 +49,44 @@ export async function POST(req: Request) {
         });
 
         return NextResponse.json({ message: "Salvo com sucesso", success: true, post });
+    }} catch (err) {
+        return NextResponse.json({ message: err, success: false });
     }
 }
 
 export async function PUT(req: Request) {
-    const { postId, authorId, json, html, title } = await req.json();
+    const { postId, authorId, json, html, title, published } = await req.json();
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const slug = slugify(title);
     const adaptHtml = replaceHtml(html);
     const subtitle = '<p>' + html.match(/<p.*?>(.*?)<\/p>/)[1] + '</p>';
 
-    if (authorId === userId) {
-        const post = await prisma.post.update({
-            where: {
-                id: postId,
-            },
-            data: {
-                title,
-                subtitle,
-                slug,
-                html: adaptHtml,
-                json,
-            },
-        });
+    try {
+        if (authorId === userId) {
+            const post = await prisma.post.update({
+                where: {
+                    id: postId,
+                },
+                data: {
+                    title,
+                    subtitle,
+                    slug,
+                    html: adaptHtml,
+                    json,
+                    published,
+                    updatedAt: new Date(),
+                },
+            });
 
-        return NextResponse.json({ message: "atualizado com sucesso", success: true });
-    } else {    
-        return NextResponse.json({ message: "Ocorreu um erro", success: false });
+            return NextResponse.json({
+                message: "atualizado com sucesso",
+                success: true,
+                post,
+            });
+        }
+    } catch (err) {
+        return NextResponse.json({ message: err, success: false });
     }
     
 }

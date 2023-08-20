@@ -11,7 +11,7 @@ export default async function EditPost({ params }: { params: { id: string } }) {
         },
     });
 
-    console.log(postInfo);
+    // console.log(postInfo);
     return (
         <div>
             <h1>Edit Post {params.id}</h1>
