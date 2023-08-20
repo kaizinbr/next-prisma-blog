@@ -28,7 +28,7 @@ import User from "@/components/User";
 import { TodoComponent, TodoCreate } from "@/components/Todo";
 import UserCreate from "@/components/UserCreate";
 import { LoginButton, LogoutButton } from "@/components/auth";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { ClientUser } from "./clientUser";
 import Link from "next/link";

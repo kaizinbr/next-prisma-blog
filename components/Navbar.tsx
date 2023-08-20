@@ -193,7 +193,7 @@ const AsideNavbar: React.FC = () => {
                                 
                             `}
                         />
-                        <span className={`ml-3`}>Publicações</span>
+                        <span className={`ml-3`}>Meus Posts</span>
                     </Link>
                 </li>
             </ul>
@@ -323,7 +323,7 @@ const AsideNavbar: React.FC = () => {
                     </li>
                     <li>
                         <Link
-                            href="/posts"
+                            href="/posts/my"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -336,7 +336,7 @@ const AsideNavbar: React.FC = () => {
                                 
                             `}
                             />
-                            <span className={`ml-3`}>Publicações</span>
+                            <span className={`ml-3`}>Meus Posts</span>
                         </Link>
                     </li>
                     <li>
@@ -399,7 +399,7 @@ const AsideNavbar: React.FC = () => {
                         alt="avatar"
                     />
                 </div>
-                <div className={`mt-4`}>
+                <div className={`mt-4 flex flex-col justify-center items-center`}>
                     <h1
                         className={`text-xl displayExtBold leading-7 text-gray-900 sm:text-2xl sm:truncate`}
                     >

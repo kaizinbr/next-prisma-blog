@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, SetStateAction } from "react";
 import {
     TbArrowBackUp,
     TbArrowForwardUp,
@@ -22,21 +22,55 @@ import {
     TbPhoto,
     TbTextSize,
     TbLetterT,
+    TbSourceCode,
+    TbDotsVertical,
+    TbPageBreak,
 } from "react-icons/tb";
+import { setLink} from "./SetLink";
+import FonteSize from "./FontSize";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
-export default function Toolbar() {
+export function Toolbar({ editor }: any) {
+    // fonte
     const [textStyle, setTextStyle] = useState("Normal");
     const [showTextStyle, setShowTextStyle] = useState(false);
     const txtStyleRef = useRef<HTMLButtonElement>(null);
+    // tamanho
+    const [textSize, setTextSize] = useState(16);
+    const [showTextSize, setShowTextSize] = useState(false);
+    const txtSizeRef = useRef<HTMLButtonElement>(null);
+    // ferramentas de texto
+    const [showTextTools, setShowTextTools] = useState(false);
+    const txtToolsRef = useRef<HTMLButtonElement>(null);
+    // demais ferramentas
+    const [showMoreTools, setShowMoreTools] = useState(false);
+    const moreToolsRef = useRef<HTMLButtonElement>(null);
+    // adicionar link
+    const [showLinkModal, setShowLinkModal] = useState(false);
+    const linkRef = useRef<HTMLButtonElement>(null);
 
-    const handleTextStyle = () => {
-        setShowTextStyle(!showTextStyle);
+    const [url, setUrl] = useState("");
+
+    if (!editor) {
+        return null;
+    }
+
+    const handleChange = (event: {
+        target: { value: SetStateAction<string> };
+    }) => {
+        setUrl(event.target.value);
+        console.log("value is:", event.target.value);
     };
 
-    useEffect(() => {
-        // const textStyle = txtStyleRef.current?.value;
-        // setTextStyle(textStyle);
-    }, [textStyle]);
+    // const handleTextStyle = () => {
+    //     setShowTextStyle(!showTextStyle);
+    // };
+
+    // useEffect(() => {
+    //     // const textStyle = txtStyleRef.current?.value;
+    //     // setTextStyle(textStyle);
+    // }, [textStyle]);
 
     return (
         <div
@@ -58,13 +92,17 @@ export default function Toolbar() {
                 `}
             >
                 <div className="flex items-center text-xl gap-2">
-                    <div className="arrows flex gap-1">
+                    <div className="arrows flex">
                         <button
                             className={`
                                 h-8 w-8 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() => editor.chain().focus().undo().run()}
+                            disabled={
+                                !editor.can().chain().focus().undo().run()
+                            }
                         >
                             <TbArrowBackUp />
                         </button>
@@ -74,11 +112,15 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() => editor.chain().focus().redo().run()}
+                            disabled={
+                                !editor.can().chain().focus().redo().run()
+                            }
                         >
                             <TbArrowForwardUp />
                         </button>
                     </div>
-                    <div className="text-base">
+                    <div className="text-base flex flex-row justify-center">
                         <button
                             className={`
                                 w-24
@@ -89,7 +131,10 @@ export default function Toolbar() {
                                 flex justify-between items-center
                             `}
                             ref={txtStyleRef}
-                            onClick={() => setShowTextStyle(!showTextStyle)}
+                            onClick={() => {
+                                setShowTextSize(false);
+                                setShowTextStyle(!showTextStyle);
+                            }}
                         >
                             {textStyle}{" "}
                             <TbChevronDown
@@ -115,6 +160,11 @@ export default function Toolbar() {
                                     onClick={() => {
                                         setTextStyle("Normal");
                                         setShowTextStyle(false);
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .setParagraph()
+                                            .run();
                                     }}
                                     className={`
                                     hover:bg-gray-200 cursor-pointer
@@ -128,107 +178,172 @@ export default function Toolbar() {
                                     onClick={() => {
                                         setTextStyle("Título 1");
                                         setShowTextStyle(false);
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleHeading({ level: 1 })
+                                            .run();
                                     }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
+                                    className={
+                                        editor.isActive("heading", { level: 1 })
+                                            ? "is-active"
+                                            : "" +
+                                              `
+                                        hover:bg-gray-200 cursor-pointer
+                                        rounded-md px-2
+                                        transition duration-300 delay-100
+                                    `
+                                    }
                                 >
-                                    Heading 1
+                                    Título 1
                                 </button>
                                 <button
                                     onClick={() => {
                                         setTextStyle("Título 2");
                                         setShowTextStyle(false);
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleHeading({ level: 2 })
+                                            .run();
                                     }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
+                                    className={
+                                        editor.isActive("heading", { level: 2 })
+                                            ? "is-active"
+                                            : "" +
+                                              `
+                                        hover:bg-gray-200 cursor-pointer
+                                        rounded-md px-2
+                                        transition duration-300 delay-100
+                                    `
+                                    }
                                 >
-                                    Heading 2
+                                    Título 2
                                 </button>
                                 <button
                                     onClick={() => {
                                         setTextStyle("Título 3");
                                         setShowTextStyle(false);
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleHeading({ level: 3 })
+                                            .run();
                                     }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
+                                    className={
+                                        editor.isActive("heading", { level: 3 })
+                                            ? "is-active"
+                                            : "" +
+                                              `
+                                        hover:bg-gray-200 cursor-pointer
+                                        rounded-md px-2
+                                        transition duration-300 delay-100
+                                    `
+                                    }
                                 >
-                                    Heading 3
+                                    Título 3
                                 </button>
                                 <button
                                     onClick={() => {
                                         setTextStyle("Título 4");
                                         setShowTextStyle(false);
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleHeading({ level: 4 })
+                                            .run();
                                     }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
+                                    className={
+                                        editor.isActive("heading", { level: 4 })
+                                            ? "is-active"
+                                            : "" +
+                                              `
+                                        hover:bg-gray-200 cursor-pointer
+                                        rounded-md px-2
+                                        transition duration-300 delay-100
+                                    `
+                                    }
                                 >
-                                    Heading 4
+                                    Título 4
                                 </button>
                                 <button
                                     onClick={() => {
                                         setTextStyle("Título 5");
                                         setShowTextStyle(false);
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleHeading({ level: 5 })
+                                            .run();
                                     }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
+                                    className={
+                                        editor.isActive("heading", { level: 5 })
+                                            ? "is-active"
+                                            : "" +
+                                              `
+                                        hover:bg-gray-200 cursor-pointer
+                                        rounded-md px-2
+                                        transition duration-300 delay-100
+                                    `
+                                    }
                                 >
-                                    Heading 5
+                                    Título 5
                                 </button>
                                 <button
                                     onClick={() => {
                                         setTextStyle("Título 6");
                                         setShowTextStyle(false);
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleHeading({ level: 6 })
+                                            .run();
                                     }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
+                                    className={
+                                        editor.isActive("heading", { level: 6 })
+                                            ? "is-active"
+                                            : "" +
+                                              `
+                                        hover:bg-gray-200 cursor-pointer
+                                        rounded-md px-2
+                                        transition duration-300 delay-100
+                                    `
+                                    }
                                 >
-                                    Heading 6
+                                    Título 6
                                 </button>
                             </div>
                         )}
                     </div>
-                    <div className="text-base">
+                    {/* <FonteSize /> */}
+                    {/* NA VERDADE NÃO TEM KKKKKK */}
+                    {/* <div className="text-base flex flex-row justify-center">
                         <button
                             className={`
-                                w-24
+                                w-14
                                 displayMedium px-2 py-1
                                 rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                                 flex justify-between items-center
                             `}
-                            ref={txtStyleRef}
-                            onClick={() => setShowTextStyle(!showTextStyle)}
+                            ref={txtSizeRef}
+                            onClick={() => {
+                                setShowTextStyle(false);
+                                setShowTextSize(!showTextSize);
+                            }}
                         >
-                            {textStyle}{" "}
+                            {textSize}{" "}
                             <TbChevronDown
                                 className={`transition duration-150`}
                                 style={{
-                                    transform: showTextStyle
+                                    transform: showTextSize
                                         ? "rotate(180deg)"
                                         : "rotate(0)",
                                 }}
                             />
                         </button>
-                        {showTextStyle && (
+                        {showTextSize && (
                             <div
                                 className={`
                             absolute top-14 
@@ -240,8 +355,8 @@ export default function Toolbar() {
                             >
                                 <button
                                     onClick={() => {
-                                        setTextStyle("Normal");
-                                        setShowTextStyle(false);
+                                        setTextSize(8);
+                                        setShowTextSize(false);
                                     }}
                                     className={`
                                     hover:bg-gray-200 cursor-pointer
@@ -249,12 +364,13 @@ export default function Toolbar() {
                                     transition duration-300 delay-100
                                 `}
                                 >
-                                    Normal
+                                    8
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setTextStyle("Título 1");
-                                        setShowTextStyle(false);
+                                        setTextSize(10);
+                                        setShowTextSize(false);
+                                        editor.chain().focus().setShowTextSize().run()
                                     }}
                                     className={`
                                     hover:bg-gray-200 cursor-pointer
@@ -262,12 +378,12 @@ export default function Toolbar() {
                                     transition duration-300 delay-100
                                 `}
                                 >
-                                    Heading 1
+                                    10
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setTextStyle("Título 2");
-                                        setShowTextStyle(false);
+                                        setTextSize(12);
+                                        setShowTextSize(false);
                                     }}
                                     className={`
                                     hover:bg-gray-200 cursor-pointer
@@ -275,12 +391,12 @@ export default function Toolbar() {
                                     transition duration-300 delay-100
                                 `}
                                 >
-                                    Heading 2
+                                    12
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setTextStyle("Título 3");
-                                        setShowTextStyle(false);
+                                        setTextSize(16);
+                                        setShowTextSize(false);
                                     }}
                                     className={`
                                     hover:bg-gray-200 cursor-pointer
@@ -288,12 +404,12 @@ export default function Toolbar() {
                                     transition duration-300 delay-100
                                 `}
                                 >
-                                    Heading 3
+                                    16
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setTextStyle("Título 4");
-                                        setShowTextStyle(false);
+                                        setTextSize(24);
+                                        setShowTextSize(false);
                                     }}
                                     className={`
                                     hover:bg-gray-200 cursor-pointer
@@ -301,12 +417,12 @@ export default function Toolbar() {
                                     transition duration-300 delay-100
                                 `}
                                 >
-                                    Heading 4
+                                    24
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setTextStyle("Título 5");
-                                        setShowTextStyle(false);
+                                        setTextSize(32);
+                                        setShowTextSize(false);
                                     }}
                                     className={`
                                     hover:bg-gray-200 cursor-pointer
@@ -314,12 +430,12 @@ export default function Toolbar() {
                                     transition duration-300 delay-100
                                 `}
                                 >
-                                    Heading 5
+                                    32
                                 </button>
                                 <button
                                     onClick={() => {
-                                        setTextStyle("Título 6");
-                                        setShowTextStyle(false);
+                                        setTextSize(36);
+                                        setShowTextSize(false);
                                     }}
                                     className={`
                                     hover:bg-gray-200 cursor-pointer
@@ -327,11 +443,11 @@ export default function Toolbar() {
                                     transition duration-300 delay-100
                                 `}
                                 >
-                                    Heading 6
+                                    36
                                 </button>
                             </div>
                         )}
-                    </div>
+                    </div> */}
                     <div className="flex flex-row">
                         <button
                             className={`
@@ -340,6 +456,12 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() =>
+                                editor.chain().focus().toggleBold().run()
+                            }
+                            disabled={
+                                !editor.can().chain().focus().toggleBold().run()
+                            }
                         >
                             <TbBold />
                         </button>
@@ -349,6 +471,17 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() =>
+                                editor.chain().focus().toggleItalic().run()
+                            }
+                            disabled={
+                                !editor
+                                    .can()
+                                    .chain()
+                                    .focus()
+                                    .toggleItalic()
+                                    .run()
+                            }
                         >
                             <TbItalic />
                         </button>
@@ -358,6 +491,17 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() => {
+                                editor.chain().focus().toggleStrike().run();
+                            }}
+                            disabled={
+                                !editor
+                                    .can()
+                                    .chain()
+                                    .focus()
+                                    .toggleStrike()
+                                    .run()
+                            }
                         >
                             <TbStrikethrough />
                         </button>
@@ -367,11 +511,22 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() => {
+                                editor.chain().focus().toggleUnderline().run();
+                            }}
+                            disabled={
+                                !editor
+                                    .can()
+                                    .chain()
+                                    .focus()
+                                    .toggleUnderline()
+                                    .run()
+                            }
                         >
                             <TbUnderline />
                         </button>
                     </div>
-                    <div className="flex flex-row">
+                    <div className="flex colorBtn flex-row">
                         <button
                             className={`
                                 h-8 w-8 flex justify-center items-center rounded-md
@@ -394,6 +549,13 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .setTextAlign("left")
+                                    .run()
+                            }
                         >
                             <TbAlignLeft />
                         </button>
@@ -403,6 +565,13 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .setTextAlign("center")
+                                    .run()
+                            }
                         >
                             <TbAlignCenter />
                         </button>
@@ -412,6 +581,13 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .setTextAlign("right")
+                                    .run()
+                            }
                         >
                             <TbAlignRight />
                         </button>
@@ -421,21 +597,62 @@ export default function Toolbar() {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .setTextAlign("justify")
+                                    .run()
+                            }
                         >
                             <TbAlignJustified />
                         </button>
-                    </div>
-                    <div className="flex flex-row">
+
+                        {/* <button
+                            onClick={() => editor.chain().focus().splitListItem('listItem').run()}
+                            disabled={!editor.can().splitListItem('listItem')}
+                        >
+                            splitListItem
+                        </button>
                         <button
+                            onClick={() => editor.chain().focus().sinkListItem('listItem').run()}
+                            disabled={!editor.can().sinkListItem('listItem')}
+                        >
+                            sinkListItem
+                        </button>
+                        <button
+                            onClick={() => editor.chain().focus().liftListItem('listItem').run()}
+                            disabled={!editor.can().liftListItem('listItem')}
+                        >
+                            liftListItem
+                        </button> */}
+                    </div>
+                    <div className="moreTextTools flex flex-row justify-center">
+                        <button
+                            onClick={() => {
+                                setShowTextTools(!showTextTools);
+                            }}
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                h-8 w-12 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            ref={txtToolsRef}
                         >
                             <TbLetterT />
+                            <TbChevronDown
+                                className={`
+                                    transition duration-150
+                                    text-base 
+                                `}
+                                style={{
+                                    transform: showTextTools
+                                        ? "rotate(180deg)"
+                                        : "rotate(0)",
+                                }}
+                            />
                         </button>
-                        {true && (
+                        {showTextTools && (
                             <div
                                 className={`
                             absolute top-14 
@@ -447,57 +664,119 @@ export default function Toolbar() {
                             >
                                 <button
                                     className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
-                                hover:bg-gray-200 cursor-pointer
-                                transition duration-300 delay-100
-                            `}
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .setHardBreak()
+                                            .run()
+                                    }
+                                >
+                                    <TbPageBreak />
+                                </button>
+                                <button
+                                    className={`
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        text-red-400
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleTaskList()
+                                            .run()
+                                    }
                                 >
                                     <TbList />
                                 </button>
                                 <button
                                     className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
-                                hover:bg-gray-200 cursor-pointer
-                                transition duration-300 delay-100
-                            `}
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        text-red-400
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleOrderedList()
+                                            .run()
+                                    }
                                 >
                                     <TbListNumbers />
                                 </button>
                                 <button
                                     className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
-                                hover:bg-gray-200 cursor-pointer
-                                transition duration-300 delay-100
-                            `}
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() => {
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleBlockquote()
+                                            .run();
+
+                                        console.log("clicou");
+                                    }}
                                 >
                                     <TbQuote />
                                 </button>
                                 <button
                                     className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
-                                hover:bg-gray-200 cursor-pointer
-                                transition duration-300 delay-100
-                            `}
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleCode()
+                                            .run()
+                                    }
                                 >
                                     <TbCode />
                                 </button>
                                 <button
                                     className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
-                                hover:bg-gray-200 cursor-pointer
-                                transition duration-300 delay-100
-                            `}
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleSubscript()
+                                            .run()
+                                    }
                                 >
-                                    <TbSuperscript />
+                                    <TbSubscript />
                                 </button>
                                 <button
                                     className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
-                                hover:bg-gray-200 cursor-pointer
-                                transition duration-300 delay-100
-                            `}
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleSuperscript()
+                                            .run()
+                                    }
                                 >
-                                    <TbSubscript />
+                                    <TbSuperscript />
                                 </button>
                             </div>
                         )}
@@ -512,15 +791,226 @@ export default function Toolbar() {
                         >
                             <TbPhoto />
                         </button>
+                        <div className="flex flex-row justify-center">
+                            <button
+                                className={`
+                                    h-8 w-8 flex justify-center items-center rounded-md
+                                    hover:bg-gray-200 cursor-pointer
+                                    transition duration-300 delay-100
+                                `}
+                                onClick={() => {
+                                    // setLink(editor)
+                                    setShowLinkModal(!showLinkModal);
+                                    setUrl(editor.getAttributes("link").href)
+                                }}
+                            >
+                                <TbLink />
+                            </button>
+                            {showLinkModal && (
+                                <div
+                                    className={`
+                                    absolute top-14 w-full
+                                    flex left-1/2 transform -translate-x-1/2
+                                    z-30
+                                `}
+                                >
+                                    <div
+                                        className={`
+                                            flex flex-col
+                                            m-auto
+                                            bg-white rounded-xl shadow-md shadow-gray-100/30
+                                            px-2 py-2
+                                            gap-4
+                                            z-30
+                                        `}
+                                    >
+                                        <input
+                                            type="text"
+                                            placeholder="URL"
+                                            className={`
+                                                outline-none bg-gray-300/30 rounded-md
+                                                px-2 py-1
+                                                text-sm min-w-[300px]
+                                            `}
+                                            onChange={handleChange}
+                                            value={url}
+                                        />
+                                        <div className="flex flex-row justify-between">
+                                            <button
+                                                onClick={() => {
+                                                    // const url = document.querySelector("input")?.value;
+                                                    setLink(url, editor);
+                                                    setShowLinkModal(!showLinkModal);
+                                                    setUrl("")
+                                                }}
+                                                className={`
+                                                    bg-blue-500 hover:bg-blue-600 text-base text-white
+                                                    px-2 py-1 rounded-md
+                                                `}
+                                            >
+                                                Adicionar link
+                                            </button>
+                                            <button
+                                                onClick={() =>{
+                                                    editor
+                                                        .chain()
+                                                        .focus()
+                                                        .extendMarkRange("link")
+                                                        .unsetLink()
+                                                        .run()
+                                                    
+                                                    setShowLinkModal(!showLinkModal);
+                                                    setUrl("")
+                                                    }
+                                                }
+                                                className={`
+                                                    border border-blue-500 hover:bg-blue-400 hover:text-white text-base 
+                                                    px-2 py-1 rounded-md
+                                                `}
+                                            >
+                                                Remover link
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="moreGeneralTools flex flex-row justify-center">
                         <button
+                            onClick={() => {
+                                setShowMoreTools(!showMoreTools);
+                            }}
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                h-8 w-12 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            ref={moreToolsRef}
                         >
-                            <TbLink />
+                            <TbDotsVertical />
+                            <TbChevronDown
+                                className={`
+                                    transition duration-150
+                                    text-base 
+                                `}
+                                style={{
+                                    transform: showMoreTools
+                                        ? "rotate(180deg)"
+                                        : "rotate(0)",
+                                }}
+                            />
                         </button>
+                        {showMoreTools && (
+                            <div
+                                className={`
+                            absolute top-14 
+                            flex flex-col gap-1
+                            bg-white rounded-xl shadow-md shadow-gray-100/30
+                            px-2 py-2
+                            z-30
+                        `}
+                            >
+                                <button
+                                    className={`
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                        
+                                        text-red-400
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleCodeBlock()
+                                            .run()
+                                    }
+                                >
+                                    <TbSourceCode />
+                                </button>
+                                <button
+                                    className={`
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleOrderedList()
+                                            .run()
+                                    }
+                                >
+                                    <TbListNumbers />
+                                </button>
+                                <button
+                                    className={`
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleBlockquote()
+                                            .run()
+                                    }
+                                >
+                                    <TbQuote />
+                                </button>
+                                <button
+                                    className={`
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleTaskList()
+                                            .run()
+                                    }
+                                >
+                                    <TbCode />
+                                </button>
+                                <button
+                                    className={`
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleTaskList()
+                                            .run()
+                                    }
+                                >
+                                    <TbSubscript />
+                                </button>
+                                <button
+                                    className={`
+                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleTaskList()
+                                            .run()
+                                    }
+                                >
+                                    <TbSuperscript />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

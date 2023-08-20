@@ -37,7 +37,7 @@ model Profile {
     bio      String?
     name     String? @map("name")
     image    String? @default("/static/images/default-profile.webp") @map("image")
-    user     User    @relation(fields: [userId], references: [id])
+    user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId   String  @unique
     liked    Post[]
     pronouns String?
@@ -47,11 +47,13 @@ model Post {
     id         String     @id @default(cuid())
     slug       String     @unique
     title      String?
-    content    Json?
+    subtitle   String?
+    json       Json?
+    html       String?
     images     String[]
     tags       String[]
     published  Boolean    @default(false)
-    author     User?      @relation(fields: [authorId], references: [id])
+    author     User?      @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId   String?
     categories Category[]
     likes      Int?       @default(0)

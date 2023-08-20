@@ -52,7 +52,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function DELETE(req: NextRequest, res: NextResponse) {
     const body = await req.json();
     try {
-        // console.log(req.body, "id");
+        console.log(req.body, "id");
         await prisma.user.delete({
             where: {
                 id: body.id,

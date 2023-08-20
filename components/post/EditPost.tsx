@@ -17,6 +17,7 @@ import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import HardBreak from "@tiptap/extension-hard-break";
 import { useEditor, EditorContent } from "@tiptap/react";
+// import { Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Toolbar } from "./toolbar/Toolbar";
 import { TbSettings } from "react-icons/tb";
@@ -38,7 +39,7 @@ const Message = (msg: string, success: boolean) => {
     );
 }
 
-function PostForm() {
+function EditPostForm(postInfo: any) {
     const editor = useEditor({
         extensions: [
             Document,
@@ -89,33 +90,12 @@ function PostForm() {
                 class: "text-writer outline-none",
             },
         },
-        content: `
-        
-        <p>Desde sua estreia, o Tomorrow X Together, mais conhecido como <a href="https://ibighit.com/txt/eng/" target="_blank">TXT</a>, tem cativado corações com sua música única e inovadora. Cada álbum lançado é uma obra-prima que reflete a evolução artística e criativa do grupo.</p>
-        
-        <p><strong>Lore Intrigante:</strong></p> 
-        
-        <blockquote><p>Uma das características mais notáveis da discografia do TXT é a construção cuidadosa da lore em seus álbuns. Através de elementos visuais, musicais e narrativos, eles criam universos coesos que interligam todas as faixas e álbuns. Essa narrativa transmídia não apenas envolve os fãs, mas também permite uma experiência imersiva única.</p></blockquote>
-        
-        <p><em>Representação da Geração Z:</em> Os <code>álbuns</code> do TXT são um reflexo sincero dos sentimentos, lutas e sonhos da geração Z. Suas letras abordam questões como autoaceitação, pressões sociais e busca de identidade. Através de músicas como "<em>Blue Hour</em>" e "<em>21st Century Girl</em>", eles capturam os altos e baixos emocionais pelos quais muitos jovens passam.</p>
-        
-        <p><strong>Liderança na 4ª Geração:</strong> Não se pode falar da 4ª geração do K-pop sem mencionar o TXT. Com sua musicalidade inovadora, coreografias marcantes e performances carismáticas, eles se estabeleceram como líderes incontestáveis dessa nova onda do gênero. Seu impacto vai além das fronteiras coreanas, conquistando fãs ao redor do mundo.</p>
-        
-        <p>Em conclusão, a discografia do TXT transcende simplesmente a música, mergulhando em narrativas profundas e representações genuínas da geração Z. Seu papel como líderes na 4ª geração do K-pop é evidente, cativando fãs e deixando uma marca indelével na indústria musical.</p>
-        
-        <h1>Teste de Título 1</h1>
-
-        <h2>Teste de Título 2</h2>
-
-        <h3>Teste de Título 3</h3>
-
-        <h4>Teste de Título 4</h4>
-
-        <h5>Teste de Título 5</h5>
-
-        <h6>Teste de Título 6</h6>
-        `,
+        content: postInfo.post.json,
     });
+
+    // new Editor({
+    //     content: postInfo.json,
+    // })
 
     const [exists, setExists] = useState(false);
     const [postId, setPostId] = useState("");
@@ -209,7 +189,7 @@ function PostForm() {
         }
     };
     const [title, setTitle] = useState(
-        "A Genialidade da Discografia do TXT e sua Liderança na 4ª Geração do K-pop"
+        postInfo.post.title ? postInfo.post.title : ""
     );
     const titleRef = useRef<HTMLTextAreaElement>(null);
 
@@ -279,7 +259,7 @@ function PostForm() {
                                 : savePost(json, html, title);
                         }}
                     >
-                        Salvar rascunho
+                        Salvar alterações
                     </button>
                     <button
                         className={`
@@ -292,7 +272,7 @@ function PostForm() {
                     `}
                         onClick={() => {}}
                     >
-                        Publicar
+                        {postInfo.post.published ? "Remover publicação" : "Publicar"}
                     </button>
                 </div>
                 <div
@@ -364,87 +344,4 @@ function PostForm() {
     );
 }
 
-export default PostForm;
-
-// import React, { Component, useState, useEffect } from "react";
-// import dynamic from "next/dynamic";
-
-// import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-// import { EditorProps } from "react-draft-wysiwyg";
-// import { convertToHTML } from "draft-convert";
-
-// import { BiAngry } from "react-icons/bi";
-
-// const Editor = dynamic<EditorProps>(
-//     () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
-//     { ssr: false }
-// );
-// import "@/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-// // import { Editor } from "react-draft-wysiwyg";
-// // import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
-// function BoldBtn () {
-//     return (
-//         <div className={`
-//             h-4 w-4 flex justify-center items-center rounded-md
-//             hover:bg-gray-200 cursor-pointer
-//         `}>
-//             <BiAngry />
-//         </div>
-//     )
-// }
-
-// export default function EditorComponent(this: any) {
-//     const [editorState, setEditorState] = useState(() =>
-//         EditorState.createEmpty()
-//     );
-
-//     const [convertedContent, setConvertedContent] = useState<any>(null);
-
-//     useEffect(() => {
-//         // let html = convertToHTML(editorState.getCurrentContent());
-//         // setConvertedContent(html);
-
-//         let raw = convertToRaw(editorState.getCurrentContent());
-//         setConvertedContent(raw);
-//     }, [editorState]);
-
-//     // printa o conteúdo do editor no console
-//     console.log(convertedContent);
-//     return (
-//         <div>
-//             <Editor
-//                 toolbarClassName="toolbarClassName"
-//                 wrapperClassName="wrapperClassName"
-//                 editorClassName="editorClassName"
-//                 toolbar={{
-//                     image: {
-//                         uploadCallback: () => {
-//                             return new Promise((resolve, reject) => {
-//                                 resolve({ data: { link: "link" } });
-//                             });
-//                         },
-//                         previewImage: true,
-//                         uploadEnabled: true,
-//                     },
-
-//                 }}
-//                 editorState={editorState}
-//                 onEditorStateChange={setEditorState}
-//                 toolbarStyle={{
-//                     border: "1px solid #ccc",
-//                     borderRadius: "12px",
-//                 }}
-//                 localization={{
-//                     locale: "pt",
-//                 }}
-//                 hashtag={{
-//                     separator: " ",
-//                     trigger: "#",
-//                 }}
-//                 // onEditorStateChange={this.onEditorStateChange}
-//             />
-//             {/* <pre>{JSON.stringify(convertedContent)}</pre> */}
-//         </div>
-//     );
-// }
+export default EditPostForm;

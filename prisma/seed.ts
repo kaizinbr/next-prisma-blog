@@ -19,7 +19,7 @@ const userData: Prisma.UserCreateInput[] = [
                 {
                     title: "Join the Prisma Slack",
                     slug: "join-the-prisma-slack",
-                    content: {
+                    json: {
                         "blocks": [
                             {
                                 "key": "a050g",
@@ -51,6 +51,7 @@ const userData: Prisma.UserCreateInput[] = [
                         ],
                         "entityMap": {}
                     },
+                    html: "<p>teste de texto um</p><p>aaaaa</p><p>taxi hey yeah</p>",
                     published: true,
                 },
             ],
@@ -65,8 +66,9 @@ const userData: Prisma.UserCreateInput[] = [
             create: [
                 {
                     title: "Join the Prisma Slack",
+                    subtitle: "subtitle",
                     slug: "draft-1",
-                    content: {
+                    json: {
                         "blocks": [
                             {
                                 "key": "a050g",
@@ -112,8 +114,9 @@ const userData: Prisma.UserCreateInput[] = [
             create: [
                 {
                     title: "Join the Prisma Slack",
+                    subtitle: "subtitle",
                     slug: "draft-2",
-                    content: {
+                    json: {
                         "blocks": [
                             {
                                 "key": "a050g",
