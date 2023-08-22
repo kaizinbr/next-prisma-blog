@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { TbTrash, TbSquareRoundedChevronRight } from "react-icons/tb"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 
-export default function PostCard (data: any) {
+export function MyPostCard (data: any) {
     const router = useRouter()
     // const post = data.post;
     // console.log(post);
@@ -79,6 +79,51 @@ export default function PostCard (data: any) {
                     </span>
                 </button>
                 
+            </div>
+        </div>
+    )
+}
+export function DefPostCard (data: any) {
+    const router = useRouter()
+    // const post = data.post;
+    // console.log(post);
+    return (
+        <div 
+            className={`
+                flex flex-col justify-between
+                bg-gray-50 shadow-lg shadow-transparent hover:shadow-violet-300/50 
+                transition transition-300 delay-100 ease-in-out
+                overflow-hidden
+                sm:rounded-xl col-span-2
+                min-[1144px]:col-span-1
+                px-4 sm:px-6 py-6 gap-4
+            `}>
+            <div className="">
+                <h3 className="text-lg mb-3 leading-6 displayBold text-gray-900">
+                    {data.post.title}
+                </h3>
+                <div
+                    className={`
+                        text-sm text-gray-800
+                    `}
+                    dangerouslySetInnerHTML={{
+                        __html: data.post.subtitle!.slice(0, 200) + "..."
+                    }}
+                ></div>
+            </div>
+            <div 
+                className={`
+                    flex flex-row gap-3 
+                    text-xs text-gray-700
+                `}
+            >
+                <div className="">
+                    Criado em {new Date(data.post.createdAt).toLocaleDateString()}
+                </div>
+                <span className="">|</span>
+                <div className="">
+                    Editado em {new Date(data.post.updatedAt).toLocaleDateString()}
+                </div>
             </div>
         </div>
     )

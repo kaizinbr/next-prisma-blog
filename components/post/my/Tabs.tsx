@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import PostCard from "./PostCard";
+import { MyPostCard } from "./PostCard";
 
 export default function Tabs({ posts }: any) {
     // console.log(posts);
@@ -30,7 +30,7 @@ export default function Tabs({ posts }: any) {
                 (a: any, b: any) =>
                     b.updatedAt.getTime() - a.updatedAt.getTime()
             )
-            .map((post: any) => <PostCard key={post.id} post={post} />);
+            .map((post: any) => <MyPostCard key={post.id} post={post} />);
     }
 
     if (publishedPosts.length === 0) {
@@ -41,7 +41,7 @@ export default function Tabs({ posts }: any) {
                 (a: any, b: any) =>
                     b.updatedAt.getTime() - a.updatedAt.getTime()
             )
-            .map((post: any) => <PostCard key={post.id} post={post} />);
+            .map((post: any) => <MyPostCard key={post.id} post={post} />);
     }
 
     return (

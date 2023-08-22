@@ -4,72 +4,74 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-
 export default function ProfileHeader(userData: any) {
-    const data = userData.userData; 
+    const data = userData.userData;
     console.log(data);
 
     return (
         <div
             className={`
             
-            h-96 w-full rounded-lg
-            bg-gray-100 overflow-hidden
+            w-full rounded-lg overflow-hidden
+            flex flex-row
+            z-10 relative mt-12 px-6
 
         `}
         >
-            <div className="bgPfp flex flex-col justify-center items-center relative mb-14">
-                <div
-                    className={`
-                        bg-gradient-to-r from-purple-500 to-blue-800
-                        h-48 w-full
-                
-                    `}
-                ></div>
+            <div className="bgPfp flex flex-col justify-center items-start relative">
                 <Image
                     src={data?.userProfile?.image!}
-                    width={176}
-                    height={176}
-                    alt="pfp"
+                    width={200}
+                    height={200}
+                    alt={`Profile picture of ${data?.user?.name}`}
                     className={`
                         rounded-full
-                        transform translate-y-1/3
-                        absolute
+                        h-32 w-32
                     `}
                 />
             </div>
-            <div className="flex flex-col justify-center items-center">
-                <h1 className="text-2xl displayExtBold mt-2">
+            <div className="flex flex-col justify-start items-start ml-6">
+                <h1 className="text-4xl displayExtBold mt-2">
                     {data?.user?.name}
                 </h1>
                 <h2 className="text-base displayMedium text-gray-600 ">
                     @{data?.user?.username}
                 </h2>
-                <div className="flex flex-row gap-6 justify-center items-center mt-4">
-                    <Link
-                        // href={`/profile/${session?.user?.username}/following`}
-                        href={`#`}
-                        id="pronous"
-                    >
-                        {data?.userProfile?.pronous!} 
-                    </Link>
-                    <Link
-                        // href={`/profile/${session?.user?.username}/following`}
-                        href={`#`}
-                        id="created"
-                    >
-                        Entrou em {new Date(data?.user?.createdAt).getUTCFullYear()}
-                    </Link>
-                    <Link
-                        // href={`/profile/${session?.user?.username}/following`}
-                        href={`#`}
-
-                    >
-                        {data?.user?.posts?.length} Posts
-                    </Link>
+                <div className={`
+                        flex flex-row gap-6 justify-center items-center mt-2
+                        text-gray-800 text-sm
+                    `}>
+                    {data?.user?.pronous ? (
+                        <Link
+                            // href={`/profile/${session?.user?.username}/following`}
+                            href={`#`}
+                            id="pronous"
+                        >
+                            {data?.userProfile?.pronous!}
+                        </Link>
+                    ) : null}
+                    {data?.user?.createdAt ? (
+                        <Link
+                            // href={`/profile/${session?.user?.username}/following`}
+                            href={`#`}
+                            id="pronous"
+                        >
+                            Entrou em{" "}
+                            {new Date(data?.user?.createdAt).getUTCFullYear()}
+                        </Link>
+                    ) : null}
+                    {data?.user?.posts ? (
+                        <Link
+                            // href={`/profile/${session?.user?.username}/following`}
+                            href={`#`}
+                            id="pronous"
+                            className="flex flex-row items-center hover:text-violet-500 transition-all"
+                        >
+                            {data?.user?.posts?.length} Posts
+                        </Link>
+                    ) : null}
                 </div>
             </div>
         </div>
     );
 }
-

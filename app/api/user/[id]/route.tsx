@@ -11,7 +11,11 @@ export async function GET(
             id,
         },
         include: {
-            posts: true,
+            posts: {
+                where: {
+                    published: true,
+                },
+            },
         },
     });
 
