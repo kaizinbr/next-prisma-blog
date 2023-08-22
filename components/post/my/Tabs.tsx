@@ -25,21 +25,24 @@ export default function Tabs({ posts }: any) {
             <div className="text-gray-500">Nenhum rascunho encontrado</div>
         );
     } else {
-        drafts = draftPosts.map((post: any) => (
-            <PostCard key={post.id} post={post} />
-        ));
+        drafts = draftPosts
+            .sort(
+                (a: any, b: any) =>
+                    b.updatedAt.getTime() - a.updatedAt.getTime()
+            )
+            .map((post: any) => <PostCard key={post.id} post={post} />);
     }
 
     if (publishedPosts.length === 0) {
-        publisheds = (
-            <div className="text-gray-500">Nenhum post publicado</div>
-        );
+        publisheds = <div className="text-gray-500">Nenhum post publicado</div>;
     } else {
-        publisheds = publishedPosts.map((post: any) => (
-            <PostCard key={post.id} post={post} />
-        ));
+        publisheds = publishedPosts
+            .sort(
+                (a: any, b: any) =>
+                    b.updatedAt.getTime() - a.updatedAt.getTime()
+            )
+            .map((post: any) => <PostCard key={post.id} post={post} />);
     }
-
 
     return (
         <div className="flex flex-col gap-6">
@@ -58,7 +61,11 @@ export default function Tabs({ posts }: any) {
                     </div>
                 ))}
             </div>
-            <div className="flex flex-col gap-6 px-8">
+            <div
+                className={`
+                grid grid-cols-2 gap-6
+            `}
+            >
                 {/* <PostCard /> */}
                 {activeTab === 0 ? drafts : publisheds}
                 {/* {posts.map((post: any) => (

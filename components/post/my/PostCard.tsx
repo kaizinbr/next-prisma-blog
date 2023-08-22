@@ -13,8 +13,8 @@ export default function PostCard (data: any) {
                 bg-gray-50 shadow-lg shadow-transparent hover:shadow-violet-300/50 
                 transition transition-300 delay-100 ease-in-out
                 overflow-hidden
-                sm:rounded-xl col-span-3
-        
+                sm:rounded-xl col-span-2
+                min-[1144px]:col-span-1
             `}>
             <div className="px-4 pt-5 pb-2 sm:px-6">
                 <h3 className="text-lg mb-3 leading-6 displayBold text-gray-900">
