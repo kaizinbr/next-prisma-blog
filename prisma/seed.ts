@@ -53,6 +53,7 @@ const userData: Prisma.UserCreateInput[] = [
                     },
                     html: "<p>teste de texto um</p><p>aaaaa</p><p>taxi hey yeah</p>",
                     published: true,
+                    serifed: true,
                 },
             ],
         },
@@ -101,6 +102,7 @@ const userData: Prisma.UserCreateInput[] = [
                         "entityMap": {}
                     },
                     published: true,
+                    serifed: true,
                 },
             ],
         },
@@ -149,6 +151,7 @@ const userData: Prisma.UserCreateInput[] = [
                         "entityMap": {}
                     },
                     published: true,
+                    serifed: true,
                 },
             ],
         },

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState, useEffect, useRef, SetStateAction } from "react";
 import {
@@ -25,13 +26,21 @@ import {
     TbSourceCode,
     TbDotsVertical,
     TbPageBreak,
+    TbCloudUpload,
 } from "react-icons/tb";
-import { setLink} from "./SetLink";
-import FonteSize from "./FontSize";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { setLink } from "./SetLink";
+
+import { useSession } from "next-auth/react";
+import { storage } from "@/firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { FileInput } from "./inputFile"
+import { ImgUpload } from "./imgUpload";
+// import { useState } from "react";
+
+
 
 export function Toolbar({ editor }: any) {
+    const { data: session } = useSession();
     // fonte
     const [textStyle, setTextStyle] = useState("Normal");
     const [showTextStyle, setShowTextStyle] = useState(false);
@@ -50,7 +59,15 @@ export function Toolbar({ editor }: any) {
     const [showLinkModal, setShowLinkModal] = useState(false);
     const linkRef = useRef<HTMLButtonElement>(null);
 
-    const [url, setUrl] = useState("");
+    const [imgUpload, setImgUpload] = useState(false);
+    const [imgURL, setImgURL] = useState("");
+    const [progressPorcent, setPorgessPorcent] = useState(0);
+    const [saving, setSaving] = useState(false);
+    const [url, setUrl] = useState("");        
+    const altRef = useRef<HTMLTextAreaElement>(null);
+    const subtitleRef = useRef<HTMLTextAreaElement>(null);
+    const [alt, setAlt] = useState<string>("")
+    const [subtitle, setSubtitle] = useState<string>("")
 
     if (!editor) {
         return null;
@@ -63,23 +80,13 @@ export function Toolbar({ editor }: any) {
         console.log("value is:", event.target.value);
     };
 
-    // const handleTextStyle = () => {
-    //     setShowTextStyle(!showTextStyle);
-    // };
-
-    // useEffect(() => {
-    //     // const textStyle = txtStyleRef.current?.value;
-    //     // setTextStyle(textStyle);
-    // }, [textStyle]);
-
     return (
         <div
             className={`
             flex justify-center items-center
             transition duration-300 delay-100
             fixed top-8 w-[calc(100%-18rem)]
-            h-12
-            z-30
+            h-12 z-50
         `}
         >
             <div
@@ -315,139 +322,7 @@ export function Toolbar({ editor }: any) {
                             </div>
                         )}
                     </div>
-                    {/* <FonteSize /> */}
-                    {/* NA VERDADE NÃO TEM KKKKKK */}
-                    {/* <div className="text-base flex flex-row justify-center">
-                        <button
-                            className={`
-                                w-14
-                                displayMedium px-2 py-1
-                                rounded-md
-                                hover:bg-gray-200 cursor-pointer
-                                transition duration-300 delay-100
-                                flex justify-between items-center
-                            `}
-                            ref={txtSizeRef}
-                            onClick={() => {
-                                setShowTextStyle(false);
-                                setShowTextSize(!showTextSize);
-                            }}
-                        >
-                            {textSize}{" "}
-                            <TbChevronDown
-                                className={`transition duration-150`}
-                                style={{
-                                    transform: showTextSize
-                                        ? "rotate(180deg)"
-                                        : "rotate(0)",
-                                }}
-                            />
-                        </button>
-                        {showTextSize && (
-                            <div
-                                className={`
-                            absolute top-14 
-                            flex flex-col gap-1
-                            bg-white rounded-xl shadow-md shadow-gray-100/30
-                            px-2 py-2
-                            z-30
-                        `}
-                            >
-                                <button
-                                    onClick={() => {
-                                        setTextSize(8);
-                                        setShowTextSize(false);
-                                    }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
-                                >
-                                    8
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setTextSize(10);
-                                        setShowTextSize(false);
-                                        editor.chain().focus().setShowTextSize().run()
-                                    }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
-                                >
-                                    10
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setTextSize(12);
-                                        setShowTextSize(false);
-                                    }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
-                                >
-                                    12
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setTextSize(16);
-                                        setShowTextSize(false);
-                                    }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
-                                >
-                                    16
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setTextSize(24);
-                                        setShowTextSize(false);
-                                    }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
-                                >
-                                    24
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setTextSize(32);
-                                        setShowTextSize(false);
-                                    }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
-                                >
-                                    32
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setTextSize(36);
-                                        setShowTextSize(false);
-                                    }}
-                                    className={`
-                                    hover:bg-gray-200 cursor-pointer
-                                    rounded-md px-2
-                                    transition duration-300 delay-100
-                                `}
-                                >
-                                    36
-                                </button>
-                            </div>
-                        )}
-                    </div> */}
+
                     <div className="flex flex-row">
                         <button
                             className={`
@@ -788,9 +663,13 @@ export function Toolbar({ editor }: any) {
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
+                            onClick={() => {
+                                setImgUpload(true);
+                            }}
                         >
                             <TbPhoto />
                         </button>
+
                         <div className="flex flex-row justify-center">
                             <button
                                 className={`
@@ -801,7 +680,7 @@ export function Toolbar({ editor }: any) {
                                 onClick={() => {
                                     // setLink(editor)
                                     setShowLinkModal(!showLinkModal);
-                                    setUrl(editor.getAttributes("link").href)
+                                    setUrl(editor.getAttributes("link").href);
                                 }}
                             >
                                 <TbLink />
@@ -840,8 +719,10 @@ export function Toolbar({ editor }: any) {
                                                 onClick={() => {
                                                     // const url = document.querySelector("input")?.value;
                                                     setLink(url, editor);
-                                                    setShowLinkModal(!showLinkModal);
-                                                    setUrl("")
+                                                    setShowLinkModal(
+                                                        !showLinkModal
+                                                    );
+                                                    setUrl("");
                                                 }}
                                                 className={`
                                                     bg-blue-500 hover:bg-blue-600 text-base text-white
@@ -851,18 +732,19 @@ export function Toolbar({ editor }: any) {
                                                 Adicionar link
                                             </button>
                                             <button
-                                                onClick={() =>{
+                                                onClick={() => {
                                                     editor
                                                         .chain()
                                                         .focus()
                                                         .extendMarkRange("link")
                                                         .unsetLink()
-                                                        .run()
-                                                    
-                                                    setShowLinkModal(!showLinkModal);
-                                                    setUrl("")
-                                                    }
-                                                }
+                                                        .run();
+
+                                                    setShowLinkModal(
+                                                        !showLinkModal
+                                                    );
+                                                    setUrl("");
+                                                }}
                                                 className={`
                                                     border border-blue-500 hover:bg-blue-400 hover:text-white text-base 
                                                     px-2 py-1 rounded-md
@@ -1014,6 +896,25 @@ export function Toolbar({ editor }: any) {
                     </div>
                 </div>
             </div>
+            {imgUpload &&
+                ImgUpload(
+                    editor,
+                    session?.user?.id!,
+                    setImgUpload,
+                    setImgURL,
+                    imgURL,
+                    setPorgessPorcent,
+                    progressPorcent,
+                    alt,
+                    setAlt,
+                    subtitle,
+                    setSubtitle,
+                    altRef,
+                    subtitleRef,
+                    saving,
+                    setSaving            
+                )}
+                
         </div>
     );
 }

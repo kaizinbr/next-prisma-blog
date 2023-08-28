@@ -9,7 +9,7 @@ import slugify from "@/services/slugify";
 import replaceHtml from "@/services/replaceHtml";
 
 export async function POST(req: Request) {
-    const { json, html, title } = await req.json();
+    const { json, html, title, serifed } = await req.json();
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const slug = slugify(title);
@@ -40,6 +40,7 @@ export async function POST(req: Request) {
                 slug,
                 html: adaptHtml,
                 json,
+                serifed,
                 author: {
                     connect: {
                         id: userId,
@@ -55,7 +56,7 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
-    const { postId, authorId, json, html, title, published } = await req.json();
+    const { postId, authorId, json, html, title, published, serifed } = await req.json();
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const slug = slugify(title);
@@ -75,6 +76,7 @@ export async function PUT(req: Request) {
                     html: adaptHtml,
                     json,
                     published,
+                    serifed,
                     updatedAt: new Date(),
                 },
             });

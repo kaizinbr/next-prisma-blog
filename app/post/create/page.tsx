@@ -4,8 +4,7 @@ import Test from "@/components/post/toolbar/Test";
 
 export default function NewPost() {
     return (
-        <div className="relative">
-            
+        <div className="relative">            
             <PostForm />
         </div>
     )

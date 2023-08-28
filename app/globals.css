@@ -18,6 +18,10 @@
     }
 }
 
+strong {
+    font-weight: 700 !important;
+}
+
 /* ::-webkit-scrollbar {
     height: 6px;
     width: 6px;
@@ -115,20 +119,36 @@ ul {
 
 /* CRIAR POST */
 
-.text-writer p {
-    font-family: "Helvetica Now Text";
+.helvetica {
+    font-family: "Helvetica Now Text", sans-serif;
     font-weight: normal;
 }
 
-.text-writer blockquote {
-    background-color: rgb(209 213 219);
-    padding: 1rem 0;
-    margin: 1.75rem 0 ;
-    border-radius: 0.5rem;
+.anko {
+    font-family: "Anko", serif;
+    font-weight: normal;
+    font-size: 17px;
 }
 
-.text-writer code {
-    font-family: "Fira Code";
+.text-writer p, .post-content p {
+    font-family: "Helvetica Now Text", sans-serif;
+    font-weight: normal;
+}
+
+.text-writer.serifed p, .post-content.serifed p {
+    font-family: "Anko", serif;
+    font-weight: normal;
+    font-size: 18px;
+}
+
+.postcard .serifed p {
+    font-family: "Anko", serif;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.text-writer code, .post-content code {
+    font-family: "Fira Code", monospace;
     font-weight: 500;
     font-size: 0.875rem; /* 14px */
     line-height: 1.25rem; /* 20px */
@@ -137,8 +157,15 @@ ul {
     border-radius: 0.25rem;
 }
 
-.text-writer blockquote p {
-    font-family: "EB Garamond";
+.text-writer blockquote, .post-content blockquote {
+    background-color: rgb(209 213 219);
+    padding: 1rem 0;
+    margin: 1.75rem 0 ;
+    border-radius: 0.5rem;
+}
+
+.text-writer blockquote p, .post-content blockquote p {
+    font-family: "Anko";
     font-weight: 500;
     margin: 0 1.50rem 0 2.5rem;
     padding: 0 0 0 1rem;
@@ -147,58 +174,55 @@ ul {
     line-height: 1.50rem; /* 20px */
 }
 
-.text-writer a {
+.text-writer.serifed blockquote p, .post-content.serifed blockquote p {
+    font-family: "Helvetica Now Text";
+    font-weight: 400;
+    margin: 0 1.50rem 0 2.5rem;
+    padding: 0 0 0 1rem;
+    border-left: 0.25rem solid rgb(156 163 175 / 50%);
+    font-size: .9rem; /* 16px */
+    line-height: 1.4rem; /* 24px */
+}
+
+.text-writer a, .post-content a {
     font-family: "Helvetica Now Text";
     font-weight: 500;
     color: rgb(0 0 0 / 80%);
     text-decoration: underline;
 }
 
-.text-writer h1.title {
+.text-writer h1, .post-content h1, .text-writer h2, .post-content h2, .text-writer h3, .post-content h3, .text-writer h4, .post-content h4, .text-writer h5, .post-content h5, .text-writer h6, .post-content h6 {
     font-family: "Helvetica Now Display";
     font-weight: 700;
+    color: rgb(0 0 0 / 80%);
+}
+
+.text-writer h1, .post-content h1 {
     font-size: 1.875rem; /* 30px */
     line-height: 2.25rem; /* 36px */
 }
 
-.text-writer h1 {
-    font-family: "Helvetica Now Display";
-    font-weight: 700;
-    font-size: 1.875rem; /* 30px */
-    line-height: 2.25rem; /* 36px */
-}
-
-.text-writer h2 {
-    font-family: "Helvetica Now Display";
-    font-weight: 700;
+.text-writer h2, .post-content h2 {
     font-size: 1.5rem; /* 24px */
     line-height: 2rem; /* 32px */
 }
 
-.text-writer h3 {
-    font-family: "Helvetica Now Display";
-    font-weight: 700;
+.text-writer h3, .post-content h3 {
     font-size: 1.25rem; /* 20px */
     line-height: 1.75rem; /* 28px */
 }
 
-.text-writer h4 {
-    font-family: "Helvetica Now Display";
-    font-weight: 700;
+.text-writer h4, .post-content h4 {
     font-size: 1.125rem; /* 18px */
     line-height: 1.75rem; /* 28px */
 }
 
-.text-writer h5 {
-    font-family: "Helvetica Now Display";
-    font-weight: 700;
+.text-writer h5, .post-content h5 {
     font-size: 1rem; /* 16px */
     line-height: 1.5rem; /* 24px */
 }
 
-.text-writer h6 {
-    font-family: "Helvetica Now Display";
-    font-weight: 500;
+.text-writer h6, .post-content h6 {
     font-size: 1rem; /* 16px */
     line-height: 1.5rem; /* 24px */
 }

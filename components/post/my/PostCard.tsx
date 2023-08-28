@@ -1,49 +1,55 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { TbTrash, TbSquareRoundedChevronRight } from "react-icons/tb"
-import { MdOutlineKeyboardArrowRight } from "react-icons/md"
+import Link from "next/link";
+import { TbTrash, TbSquareRoundedChevronRight } from "react-icons/tb";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
-export function MyPostCard (data: any) {
-    const router = useRouter()
+export function MyPostCard(data: any) {
+    const router = useRouter();
     // const post = data.post;
     // console.log(post);
+    const serifed = data.post.serifed ? "serifed" : "";
     return (
-        <div 
+        <div
             className={`
                 bg-gray-50 shadow-lg shadow-transparent hover:shadow-violet-300/50 
                 transition transition-300 delay-100 ease-in-out
                 overflow-hidden
                 sm:rounded-xl col-span-2
                 min-[1144px]:col-span-1
-            `}>
+                postcard
+            `}
+        >
             <div className="px-4 pt-5 pb-2 sm:px-6">
                 <h3 className="text-lg mb-3 leading-6 displayBold text-gray-900">
                     {data.post.title}
                 </h3>
                 <div
-                    className={`
+                    className={ serifed + `
                         text-sm text-gray-800
                     `}
                     dangerouslySetInnerHTML={{
-                        __html: data.post.subtitle!.slice(0, 200) + "..."
+                        __html: data.post.subtitle!.slice(0, 200) + "...",
                     }}
                 ></div>
             </div>
-            <div 
+            <div
                 className={`
                     flex flex-row gap-3 px-4 pt-2 pb-4 sm:px-6
                     text-xs text-gray-700
                 `}
             >
                 <div className="">
-                    Criado em {new Date(data.post.createdAt).toLocaleDateString()}
+                    Criado em{" "}
+                    {new Date(data.post.createdAt).toLocaleDateString()}
                 </div>
                 <span className="">|</span>
                 <div className="">
-                    Editado em {new Date(data.post.updatedAt).toLocaleDateString()}
+                    Editado em{" "}
+                    {new Date(data.post.updatedAt).toLocaleDateString()}
                 </div>
             </div>
-            <div 
+            <div
                 className={`
                     flex flex-row gap-2 justify-end
                     px-4 py-2 sm:px-6
@@ -51,7 +57,7 @@ export function MyPostCard (data: any) {
                     border-t border-gray-200
                 `}
             >
-                <button 
+                <button
                     className={`
                         flex flex-row gap-1 items-center
                         text-gray-700 py-2 px-3
@@ -61,7 +67,7 @@ export function MyPostCard (data: any) {
                 >
                     <TbTrash className="h-4 w-4" />
                 </button>
-                <button 
+                <button
                     className={`
                         flex flex-row gap-1 items-center
                         text-gray-700 py-2 pl-4 pr-2
@@ -69,62 +75,72 @@ export function MyPostCard (data: any) {
                         rounded-md transition trasition-200 ease-in-out
                     `}
                     onClick={() => {
-                        router.push(`/posts/my/edit/${data.post.id}`)
-                    }
-                    }
+                        router.push(`/post/my/edit/${data.post.id}`);
+                    }}
                 >
                     <span className="flex flex-row items-center">
                         Editar
-                        <MdOutlineKeyboardArrowRight className="h-5 w-5" />    
+                        <MdOutlineKeyboardArrowRight className="h-5 w-5" />
                     </span>
                 </button>
-                
             </div>
         </div>
-    )
+    );
 }
-export function DefPostCard (data: any) {
-    const router = useRouter()
+export function DefPostCard(data: any) {
+    const router = useRouter();
     // const post = data.post;
     // console.log(post);
+    const serifed = data.post.serifed ? "serifed" : "";
     return (
-        <div 
+        <Link
+            href={`/post/${data.post.slug}`}
             className={`
-                flex flex-col justify-between
-                bg-gray-50 shadow-lg shadow-transparent hover:shadow-violet-300/50 
-                transition transition-300 delay-100 ease-in-out
-                overflow-hidden
-                sm:rounded-xl col-span-2
-                min-[1144px]:col-span-1
-                px-4 sm:px-6 py-6 gap-4
-            `}>
-            <div className="">
-                <h3 className="text-lg mb-3 leading-6 displayBold text-gray-900">
-                    {data.post.title}
-                </h3>
-                <div
-                    className={`
-                        text-sm text-gray-800
-                    `}
-                    dangerouslySetInnerHTML={{
-                        __html: data.post.subtitle!.slice(0, 200) + "..."
-                    }}
-                ></div>
-            </div>
-            <div 
+                col-span-1
+            `}
+        >
+            <div
                 className={`
-                    flex flex-row gap-3 
-                    text-xs text-gray-700
+                    flex flex-col justify-between
+                    bg-gray-50 shadow-lg shadow-transparent hover:shadow-violet-300/50
+                    transition transition-300 delay-100 ease-in-out
+                    overflow-hidden
+                    sm:rounded-xl col-span-2
+                    min-[1144px]:col-span-1
+                    px-4 sm:px-6 py-6 gap-4
+                    postcard
                 `}
             >
                 <div className="">
-                    Criado em {new Date(data.post.createdAt).toLocaleDateString()}
+                    <h3 className="text-lg mb-3 leading-6 displayBold text-gray-900">
+                        {data.post.title}
+                    </h3>
+                    <div
+                        className={ serifed + `
+                            text-sm text-gray-800
+                        `}
+                        dangerouslySetInnerHTML={{
+                            __html: data.post.subtitle!.slice(0, 200) + "...",
+                        }}
+                    ></div>
                 </div>
-                <span className="">|</span>
-                <div className="">
-                    Editado em {new Date(data.post.updatedAt).toLocaleDateString()}
+                <div
+                    className={`
+                        flex flex-row gap-3
+                        text-xs text-gray-700
+                    `}
+                >
+                    <div className="">
+                        Criado em{" "}
+                        {new Date(data.post.createdAt).toLocaleDateString()}
+                    </div>
+                    <span className="">|</span>
+                    <div className="">
+                        Editado em{" "}
+                        {new Date(data.post.updatedAt).toLocaleDateString()}
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        </Link>
+    );
 }

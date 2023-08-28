@@ -39,7 +39,9 @@ const Message = (msg: string, success: boolean) => {
     );
 }
 
-function EditPostForm(postInfo: any) {
+function EditPostForm(postInfo: any) {    
+    const serifed = postInfo.post.serifed ? "serifed" : "";
+
     const editor = useEditor({
         extensions: [
             Document,
@@ -87,7 +89,7 @@ function EditPostForm(postInfo: any) {
         ],
         editorProps: {
             attributes: {
-                class: "text-writer outline-none",
+                class: `text-writer outline-none ${serifed}`,
             },
         },
         content: postInfo.post.json,

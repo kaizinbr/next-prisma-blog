@@ -52,9 +52,11 @@ model Post {
     html       String?
     images     String[]
     tags       String[]
+    serifed    Boolean    @default(false)
     published  Boolean    @default(false)
     author     User?      @relation(fields: [authorId], references: [id], onDelete: Cascade)
     authorId   String?
+    authorName String?
     categories Category[]
     likes      Int?       @default(0)
     likedBy    Profile[]
@@ -63,6 +65,15 @@ model Post {
     deletedAt  DateTime?  @map(name: "deleted_at")
     deleted    Boolean    @default(false)
     blocked    Boolean    @default(false)
+}
+
+model Img {
+    id        Int      @id @default(autoincrement())
+    url       String
+    alt       String
+    subtitle  String?
+    author    String?
+    createdAt DateTime @default(now())
 }
 
 model Account {

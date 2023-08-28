@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProfileHeader(userData: any) {
+export default function ProfileHeader(session: any, userData: any) {
     const data = userData.userData;
     console.log(data);
 
@@ -20,10 +20,10 @@ export default function ProfileHeader(userData: any) {
         >
             <div className="bgPfp flex flex-col justify-center items-start relative">
                 <Image
-                    src={data?.userProfile?.image!}
+                    src={session?.user?.image!}
                     width={200}
                     height={200}
-                    alt={`Profile picture of ${data?.user?.name}`}
+                    alt={`Profile picture of ${session?.user?.name}`}
                     className={`
                         rounded-full
                         h-32 w-32
@@ -32,10 +32,10 @@ export default function ProfileHeader(userData: any) {
             </div>
             <div className="flex flex-col justify-start items-start ml-6">
                 <h1 className="text-4xl displayExtBold mt-2">
-                    {data?.user?.name}
+                    {session?.user?.name}
                 </h1>
                 <h2 className="text-base displayMedium text-gray-600 ">
-                    @{data?.user?.username}
+                    @{session?.user?.username}
                 </h2>
                 <div className={`
                         flex flex-row gap-6 justify-center items-center mt-2
