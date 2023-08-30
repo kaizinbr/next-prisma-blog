@@ -93,9 +93,28 @@ export async function PUT(req: Request) {
     
 }
 
-// try {
-//     return NextResponse.json({ message: "This Worked", success: true });
-// } catch (err) {
-//     console.log(err);
-//     return NextResponse.json({ message: err, success: false });
-// }
+export async function DELETE(req: Request) {
+    const { postId, authorId } = await req.json();
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+
+    try {
+        if (authorId === userId) {
+            const post = await prisma.post.delete({
+                where: {
+                    id: postId,
+                }
+            });
+
+            return NextResponse.json({
+                message: "deletado com sucesso",
+                success: true,
+                post,
+            });
+        }
+    } catch (err) {
+        return NextResponse.json({ message: err, success: false });
+    }
+    
+}
+

@@ -129,7 +129,7 @@ export default async function RootLayout({
                 }
             >
                 <Provider>
-                    <main className="px-4 py-8 w-auto min-h-screen z-10">
+                    <main className="">
                         <AsideNavbar>
                             <Suspense fallback={<LoadingFullPage />}>{children}</Suspense>
                         </AsideNavbar>
