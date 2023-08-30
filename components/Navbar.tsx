@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,9 +18,13 @@ import {
     BiEdit,
     BiLogOut,
     BiUser,
-    BiArrowBack
+    BiArrowBack,
+    BiX
 } from "react-icons/bi";
+import { TbAlignCenter, TbX } from "react-icons/tb";
+import { IoIosArrowBack } from "react-icons/io";
 import CreatePostBtn from "@/components/buttons/CreatePostBtn";
+import { useSetMenuState, useMenuState } from "@/services/userLocalStorage";
 
 const Navbar: React.FC = () => {
     const router = usePathname();
@@ -124,9 +128,19 @@ const AsideNavbar = ({ children}: Props ) => {
     const router = useRouter();
 
     const { data: session, status } = useSession();
-    // console.log(session);
+    // const initialMenuState = useMenuState();
+    // console.log(initialMenuState);
 
     const [open, setOpen] = useState(true);
+    
+    useEffect(() => {
+        const menuState = localStorage.getItem("menuIs");
+        // verifica se é ou nao true pq o menuIs é uma string
+        menuState === "true" ? 'ta em true' : setOpen(false);
+        console.log("agora o menu está", menuState)
+    }, []);
+
+
     const urlRef = useRef<string>("");
 
 
@@ -245,9 +259,9 @@ const AsideNavbar = ({ children}: Props ) => {
                         <Link
                             href="/"
                             className={`
-                                flex items-center p-2 rounded-lg 
+                                flex items-center p-2 
                                 hover:bg-violet-400  transition duration-300 group 
-                                ${open ? "w-full" : "w-10 h-10"} justify-start 
+                                ${open ? "w-full rounded-lg" : "w-10 h-10 rounded-full"} justify-start 
                             `}
                         >
                             <BiHomeCircle
@@ -358,8 +372,8 @@ const AsideNavbar = ({ children}: Props ) => {
                         <Link
                             href="/settings"
                             className={`
-                                flex items-center p-2  rounded-lg 
-                                hover:bg-violet-400  transition duration-300 group 
+                                flex items-center p-2 rounded-lg 
+                                hover:bg-violet-400 transition duration-300 group 
                                 ${open ? "w-full" : "w-10 h-10"} justify-start 
                             
                             `}
@@ -380,7 +394,7 @@ const AsideNavbar = ({ children}: Props ) => {
                                 
                             }}
                             className={`
-                                flex items-center p-2 w-full rounded-lg 
+                                flex items-center p-2 rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
                                 ${open ? "w-full" : "w-10 h-10"} justify-start 
                             
@@ -469,19 +483,21 @@ const AsideNavbar = ({ children}: Props ) => {
                                 aria-controls="default-sidebar"
                                 type="button"
                                 className={`
-                                    w-9 h-9 text-gray-400
-                                    absolute right-2 top-3
-                                    bg-gray-200 border border-gray-400
-                                    inline-flex items-center p-2 rounded-full hover:bg-gray-500
+                                    w-10 h-10
+                                    absolute right-3 top-3
+                                    bg-gray-200
+                                    inline-flex items-center justify-center p-2 rounded-full hover:bg-violet-400 hover:border-violet-500
                                     hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200
-                                    transition duration-300 delay-100 ease-in-out
+                                    transition duration-300 delay-100 ease-in-out 
                                     z-20
                                 `}
-                                onClick={() =>
+                                onClick={() =>{
                                     setOpen(!open)
-                                }
+                                    localStorage.setItem("menuIs", !open + "");
+                                }}
                             >
-                                <BiArrowBack className="h-6 w-6"/>
+                                {open ? <TbX className="h-5 w-5" /> : <TbAlignCenter className="h-5 w-5"/>}
+                                {/* <IoIosArrowBack className={`h-6 w-6 duration {open ? "" : "rotate-180" }`} /> */}
                             </button>
                             {mainDiv}
                             {options}
@@ -494,8 +510,9 @@ const AsideNavbar = ({ children}: Props ) => {
                 className={`
                     bg-gray-200 bg-opacity-50
                     transition-all duration-300 ease-in-out
-                    ${open ? "ml-64 w-[calc(100%-256px)]" : "ml-16  w-[calc(100%-64px)]"}
+                    ${open ? "ml-64 w-[calc(100%-256px)] group is-open" : "ml-16  w-[calc(100%-64px)]"}
                     px-4 py-8 min-h-screen z-10
+                    
                 `}
             >{children}</div>
         </div>

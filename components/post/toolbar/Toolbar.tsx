@@ -84,8 +84,10 @@ export function Toolbar({ editor }: any) {
         <div
             className={`
             flex justify-center items-center
-            transition duration-300 delay-100
-            fixed top-8 w-[calc(100%-18rem)]
+            transition-all duration-300
+            fixed top-8 w-[calc(100%-6rem)] group-[.is-open]:w-[calc(100%-18rem)]
+            max-[1024px]:top-0 max-[1024px]:w-full max-[1024px]:left-16 
+            max-[1024px]:group-[.is-open]:left-64 max-[1024px]:group-[.is-open]:w-[calc(100%-16rem)]
             h-12 z-50
         `}
         >
