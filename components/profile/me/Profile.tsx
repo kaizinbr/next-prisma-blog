@@ -4,10 +4,10 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import getUserData from "@/services/useUserInfo";
+import getMyData from "@/services/useUserInfo";
 import ProfileHeader from "./ProfileHeader";
-import Bio from "./Bio";
-import Posts from "./Posts";
+import Bio from "../general/Bio";
+import Posts from "../general/Posts";
 import LoadingFullPage from "@/app/loading";
 
 export default function Profile() {
@@ -18,7 +18,7 @@ export default function Profile() {
 
     useEffect(() => {
         const getUser = async () => {
-            const data = await getUserData(session?.user?.id!);
+            const data = await getMyData();
             setUserData(data);
             setLoading(false);
         };
@@ -28,7 +28,7 @@ export default function Profile() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // console.log(userData);
+    console.log(userData);
 
     return (
         <div
@@ -86,16 +86,16 @@ export default function Profile() {
                         text-gray-800 text-sm
                     `}
                         >
-                            {userData?.user?.pronous ? (
+                            {userData?.Profile?.pronouns ? (
                                 <Link
                                     // href={`/profile/${session?.user?.username}/following`}
                                     href={`#`}
                                     id="pronous"
                                 >
-                                    {userData?.userProfile?.pronous!}
+                                    {userData?.Profile?.pronouns!}
                                 </Link>
                             ) : null}
-                            {userData?.user?.createdAt ? (
+                            {userData?.createdAt ? (
                                 <Link
                                     // href={`/profile/${session?.user?.username}/following`}
                                     href={`#`}
@@ -103,25 +103,25 @@ export default function Profile() {
                                 >
                                     Entrou em{" "}
                                     {new Date(
-                                        userData?.user?.createdAt
+                                        userData?.createdAt
                                     ).getUTCFullYear()}
                                 </Link>
                             ) : null}
-                            {userData?.user?.posts ? (
+                            {userData?.posts ? (
                                 <Link
                                     // href={`/profile/${session?.user?.username}/following`}
                                     href={`#`}
                                     id="pronous"
                                     className="flex flex-row items-center hover:text-violet-500 transition-all"
                                 >
-                                    {userData?.user?.posts?.length} Posts
+                                    {userData?.posts?.length} Posts
                                 </Link>
                             ) : null}
                         </div>
                     </div>
                 </div>
-                <Bio userData={userData} />
-                <Posts userData={userData} />
+                {userData?.Profile ? <Bio Profile={userData?.Profile} /> : null}
+                {userData?.posts ? <Posts data={userData?.posts} /> : null}
             </div>
             {/* {loading && (
                 <div className="fixed top-0 w-full h-full z-30 bg-gray-200">

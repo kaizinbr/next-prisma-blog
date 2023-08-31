@@ -92,7 +92,7 @@ export default function Tabs({ posts1 }: any) {
                         `}
                     key={post.id}
                 >
-                    <MyPostCardUp post={post} />
+                    <MyPostCardUp post={post} authorId={id} />
                     <div
                         className={`
                                 flex flex-row gap-2 justify-end
