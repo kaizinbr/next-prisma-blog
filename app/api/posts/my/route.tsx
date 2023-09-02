@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
-import { authOptions } from "../../../auth/[...nextauth]/route";
+import { authOptions } from "../../auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
 import slugify from "@/services/slugify";
 import replaceHtml from "@/services/replaceHtml";
@@ -27,6 +27,7 @@ export async function GET(req: Request) {
 
         return NextResponse.json({
             message: `posts de ${userId}`,
+            authorId: userId,
             post,
             success: true,
         });

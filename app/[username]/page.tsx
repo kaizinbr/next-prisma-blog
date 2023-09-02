@@ -31,19 +31,16 @@ export default async function Page({
             updatedAt: true,
             posts: {
                 where: {
-                    published: false,
+                    published: true,
                 },
             },
             Profile: true,
         },
     });
-
-    // const test = await getmyPosts();
-    // console.log(USER);
-
+    console.log(USER);
     return (
         <div>
-            <div>Perfil de: {params.username}</div>
+            {/* <div>Perfil de: {params.username}</div> */}
             <Profile userData={USER} />
         </div>
     );

@@ -20,7 +20,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
 
     const subtitle = { __html: postInfo?.subtitle!};
     // let contentStr = postInfo?.html!.replace('className=', 'class=');
-    const content = { __html: (postInfo?.html!).replaceAll('className=', 'class=')};
+    // const content = { __html: (postInfo?.html!).replaceAll('className=', 'class=')};
     
     // console.log(postInfo);
     const serifed = postInfo?.serifed ? "serifed" : "";
@@ -45,10 +45,10 @@ export default async function Post({ params }: { params: { slug: string } }) {
                     <span>Por {authorData?.name!}</span>
                 </div>
                 {/* <h2 dangerouslySetInnerHTML={subtitle}></h2> */}
-                <div className={`
+                {/* <div className={`
                     content
                     lg:text-[1.076rem]
-                `} dangerouslySetInnerHTML={content}></div>
+                `} dangerouslySetInnerHTML={content}></div> */}
             </div>
         </div>
     )

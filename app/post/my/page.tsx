@@ -24,8 +24,8 @@ export default async function Posts() {
         <ContextProvider>
             <div className="flex flex-col items-center gap-6">
                 <h1 className="displayExtBold">Meus Posts</h1>
-                <div className="flex flex-col items-center gap-6 px-8">
-                    <Tabs posts={POSTS} />
+                <div className="flex flex-col items-center gap-6 px-8 w-full">
+                    <Tabs />
                 </div>
             </div>
         </ContextProvider>

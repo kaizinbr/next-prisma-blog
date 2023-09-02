@@ -3,14 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import getMyData from "@/services/useUserInfo";
-import ProfileHeader from "./ProfileHeader";
 import Bio from "../general/Bio";
 import Posts from "../general/Posts";
-import LoadingFullPage from "@/app/loading";
+import ProfilePic from "../general/ProfilePic";
 
-type userProps = ({
+type userProps = {
     id: string;
     username: string;
     name: string | null;
@@ -29,32 +26,22 @@ type userProps = ({
         id: string;
         slug: string;
         title: string | null;
+        color: string | null;
         subtitle: string | null;
         tags: string | null;
         createdAt: Date;
         updatedAt: Date;
-
     }[];
-})
+};
 
-export default function Profile({userData}: userProps | any) {
-    // const [userData, setUserData] = useState<any>(null);
+export default function Profile({ userData }: userProps | any) {
+    const ProfilePicProps = {
+        src: userData.Profile?.image!,
+        size: 250,
+        alt: `Foto de perfil de ${userData.name}`,
+    };
+
     const [loading, setLoading] = useState(true);
-    // console.log(userData)
-
-    // useEffect(() => {
-    //     const getUser = async () => {
-    //         const data = await getUserData(session?.user?.id!);
-    //         setUserData(data);
-    //         setLoading(false);
-    //     };
-    //     if (session) {
-    //         getUser();
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
-
-    // console.log(userData);
 
     return (
         <div
@@ -70,12 +57,16 @@ export default function Profile({userData}: userProps | any) {
             >
                 <div
                     className={`
-                    color h-40 w-full flex justify-center items-center
-                    absolute top-0 left-0
-                    bg-gradient-to-b from-violet-500/60 from-10% via-violet-500/40 via-30% to-transparent to-90%
-                    mb-3
-                    z-0
-                `}
+                        color h-40 w-full flex justify-center items-center
+                        absolute top-0 left-0
+                        bg-gradient-to-b from-[#F79256]/60 from-10% via-[#F79256]/40 via-30% to-transparent to-90%
+                        mb-3
+                        z-0
+                    `}
+                    style={{
+                        backgroundImage: `linear-gradient(${userData.Profile.color}99 10%, ${userData.Profile.color}66 30%, rgba(0, 0, 0, 0) 90%)
+                    `,
+                    }}
                 ></div>
                 {/* <ProfileHeader sessionData={session} userData={userData} /> */}
                 <div
@@ -87,18 +78,7 @@ export default function Profile({userData}: userProps | any) {
 
                     `}
                 >
-                    <div className="bgPfp flex flex-col justify-center items-start relative">
-                        <Image
-                            src={userData.Profile?.image!}
-                            width={200}
-                            height={200}
-                            alt={`Profile picture of ${userData.name}`}
-                            className={`
-                        rounded-full
-                        h-32 w-32
-                    `}
-                        />
-                    </div>
+                    <ProfilePic props={ProfilePicProps} />
                     <div className="flex flex-col justify-start items-start ml-6">
                         <h1 className="text-4xl displayExtBold mt-2">
                             {userData.name}
@@ -108,9 +88,9 @@ export default function Profile({userData}: userProps | any) {
                         </h2>
                         <div
                             className={`
-                        flex flex-row gap-6 justify-center items-center mt-2
-                        text-gray-800 text-sm
-                    `}
+                                flex flex-row gap-6 justify-center items-center mt-2
+                                text-gray-800 text-sm
+                            `}
                         >
                             {userData.Profile?.pronouns ? (
                                 <Link

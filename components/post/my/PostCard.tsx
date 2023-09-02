@@ -367,7 +367,7 @@ export function DefPostCard(data: any) {
             <div
                 className={`
                     flex flex-col justify-between
-                    bg-gray-50 shadow-lg shadow-transparent hover:shadow-violet-300/50
+                    bg-gray-50 border-2 border-transparent hover:border-gray-300/80
                     transition transition-300 delay-100 ease-in-out
                     overflow-hidden
                     sm:rounded-xl col-span-2

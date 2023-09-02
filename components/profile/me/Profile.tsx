@@ -9,12 +9,18 @@ import ProfileHeader from "./ProfileHeader";
 import Bio from "../general/Bio";
 import Posts from "../general/Posts";
 import LoadingFullPage from "@/app/loading";
+import ProfilePic from "../general/ProfilePic";
 
 export default function Profile() {
     const { data: session } = useSession();
     console.log(session);
     const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const ProfilePicProps = {
+        src: session?.user?.image!,
+        size: 250,
+        alt: `Foto de perfil de ${session?.user?.name}`,
+    };
 
     useEffect(() => {
         const getUser = async () => {
@@ -24,11 +30,11 @@ export default function Profile() {
         };
         if (session) {
             getUser();
+
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+            // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log(userData);
 
     return (
         <div
@@ -38,9 +44,9 @@ export default function Profile() {
         >
             <div
                 className={`
-            profile
-            
-        `}
+                    profile
+                    
+                `}
             >
                 <div
                     className={`
@@ -51,7 +57,6 @@ export default function Profile() {
                     z-0
                 `}
                 ></div>
-                {/* <ProfileHeader sessionData={session} userData={userData} /> */}
                 <div
                     className={`
                             
@@ -61,18 +66,7 @@ export default function Profile() {
 
                     `}
                 >
-                    <div className="bgPfp flex flex-col justify-center items-start relative">
-                        <Image
-                            src={session?.user?.image!}
-                            width={200}
-                            height={200}
-                            alt={`Profile picture of ${session?.user?.name}`}
-                            className={`
-                        rounded-full
-                        h-32 w-32
-                    `}
-                        />
-                    </div>
+                    <ProfilePic props={ProfilePicProps} />
                     <div className="flex flex-col justify-start items-start ml-6">
                         <h1 className="text-4xl displayExtBold mt-2">
                             {session?.user?.name}

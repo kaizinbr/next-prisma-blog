@@ -2,8 +2,6 @@ import { DefPostCard } from "@/components/post/my/PostCard";
 import Link from "next/link";
 
 export default function Posts({data}: [any] | any) {
-    // const data = userData.userData;
-    // console.log(data);
 
     // https://github.com/nekusu/shopping-cart/blob/main/src/pages/GameList/components/Grid.tsx
     const columnsCount = 2;

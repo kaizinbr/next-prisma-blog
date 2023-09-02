@@ -36,7 +36,8 @@ model Profile {
     id       String  @id @default(cuid())
     bio      String?
     name     String? @map("name")
-    image    String? @default("/static/images/default-profile.webp") @map("image")
+    image    String? @default("/static/images/default.webp") @map("image")
+    color    String? @default("#59656F")
     user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId   String  @unique
     liked    Post[]

@@ -9,7 +9,7 @@ import { TbTrash, TbSquareRoundedChevronRight } from "react-icons/tb";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import getMyPosts from "@/services/usePostInfo";
 
-export default function Tabs({ posts1 }: any) {
+export default function Tabs() {
     // const { data: session, status } = useSession()
     const [activeTab, setActiveTab] = useState(0);
 
@@ -21,24 +21,23 @@ export default function Tabs({ posts1 }: any) {
 
     const [draftPosts, setDraftPosts] = useState([]);
     const [publishedPosts, setPublishedPosts] = useState([]);
+    let id: string;
     const getPosts = async () => {
-        const posts = await getMyPosts(id);
+        const res = await getMyPosts();
+        console.log(res);
+        const posts = res.post;
+        id = res.authorId;
         setDraftPosts(posts.filter((post: any) => !post.published));
         setPublishedPosts(posts.filter((post: any) => post.published));
     };
 
-    const id = "cllst1yms0000v32kcgtxqokn";
     useEffect(() => {
         setActiveTab(0);
-
-        // if (session) {
         getPosts();
-        // }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const router = useRouter();
-    // const thisPost = useRef(null);
 
     function deletePostCard(e: any) {
         const item = e;
@@ -83,13 +82,13 @@ export default function Tabs({ posts1 }: any) {
             return (
                 <div
                     className={`
-                            bg-gray-50 shadow-lg shadow-transparent hover:shadow-violet-300/50 
-                            transition transition-300 delay-100 ease-in-out
-                            overflow-hidden
-                            sm:rounded-xl col-span-2
-                            min-[1144px]:col-span-1
-                            postcard
-                        `}
+                        bg-gray-50 shadow-lg shadow-transparent hover:shadow-violet-300/50 
+                        transition transition-300 delay-100 ease-in-out
+                        overflow-hidden
+                        sm:rounded-xl col-span-2
+                        min-[1144px]:col-span-1
+                        postcard
+                    `}
                     key={post.id}
                 >
                     <MyPostCardUp post={post} authorId={id} />
@@ -111,7 +110,6 @@ export default function Tabs({ posts1 }: any) {
                             onClick={(e) => {
                                 setLoading(true);
                                 deletePost(post.id, post.authorId);
-                                // deletePostCard(thisPost.current);
                             }}
                         >
                             <TbTrash className="h-4 w-4" />
