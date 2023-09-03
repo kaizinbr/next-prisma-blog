@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoginButton, LogoutButton, SignupButton } from "@/components/auth";
-import Loading from "./Loading";
+import Loading from "@/components/Loading";
 import {
     BiHomeCircle,
     BiNotification,
@@ -19,150 +19,60 @@ import {
     BiLogOut,
     BiUser,
     BiArrowBack,
-    BiX
+    BiX,
 } from "react-icons/bi";
-import { TbAlignCenter, TbX } from "react-icons/tb";
-import { IoIosArrowBack } from "react-icons/io";
+import { TbAlignCenter, TbX, TbExclamationMark } from "react-icons/tb";
 import CreatePostBtn from "@/components/buttons/CreatePostBtn";
-import { useSetMenuState, useMenuState } from "@/services/userLocalStorage";
-
-const Navbar: React.FC = () => {
-    const router = usePathname();
-    const isActive: (pathname: string) => boolean = (pathname) =>
-        router === pathname;
-
-    const { data: session, status } = useSession();
-
-    let left = (
-        <div className={`left`}>
-            <Link href="/" className={`font-bold`}>
-                Blog
-            </Link>
-        </div>
-    );
-
-    let right = null;
-
-    if (status === "loading") {
-        left = (
-            <div className={`left`}>
-                <Link
-                    href="/"
-                    className={`font-bold`}
-                    data-active={isActive("/")}
-                >
-                    Blog
-                </Link>
-            </div>
-        );
-        right = (
-            <div className={`right`}>
-                <p>Validating session ...</p>
-            </div>
-        );
-    }
-
-    if (!session) {
-        right = (
-            <div className={`right flex flex-row gap-5`}>
-                <LoginButton />
-                <SignupButton />
-            </div>
-        );
-    }
-
-    if (session) {
-        left = (
-            <div className={`left`}>
-                <Link
-                    href="/"
-                    className={`font-bold`}
-                    data-active={isActive("/")}
-                >
-                    Blog
-                </Link>
-                {/* <Link href="/drafts" data-active={isActive("/drafts")}>
-                    My drafts
-                </Link> */}
-            </div>
-        );
-        right = (
-            <div className={`right flex flex-row gap-5`}>
-                <p className={`font-bold`}>
-                    {session?.user?.name} ({session?.user?.email})
-                </p>
-                <Link href="/create">
-                    <button>New post</button>
-                </Link>
-                <LogoutButton />
-            </div>
-        );
-    }
-
-    return (
-        <nav
-            className={`
-            flex flex-row w-full
-            fixed top-0 left-0
-            justify-between items-center
-            border-b border-gray-200
-            px-4 py-5
-            bg-gray-400/50
-            backdrop-filter backdrop-blur-md
-        `}
-        >
-            {left}
-            {right}
-        </nav>
-    );
-};
 
 type Props = {
     children?: React.ReactNode;
 };
 
-const AsideNavbar = ({ children}: Props ) => {
-    // const router = usePathname();
-    // const isActive: (pathname: string) => boolean = (pathname) =>
-    //     router === pathname;
+const AsideNavbar = ({ children }: Props) => {
     const router = useRouter();
 
     const { data: session, status } = useSession();
-    // const initialMenuState = useMenuState();
-    // console.log(initialMenuState);
 
     const [open, setOpen] = useState(true);
-    
+
     useEffect(() => {
         const menuState = localStorage.getItem("menuIs");
         // verifica se é ou nao true pq o menuIs é uma string
-        menuState === "true" ? 'ta em true' : setOpen(false);
-        console.log("agora o menu está", menuState)
+        menuState === "true" ? "ta em true" : setOpen(false);
+        console.log("agora o menu está", menuState);
     }, []);
-
 
     const urlRef = useRef<string>("");
 
-
     let options = (
-        <div className={``}>
-            <ul className={`space-y-2 transition duration-300`}>
+        <div className={`w-[232px] mb-20`}>
+            <ul className={`space-y-2 transition duration-300 displayMedium`}>
                 <li>
                     <Link
                         href="/"
                         className={`
-                                flex items-center p-2  rounded-lg 
+                                flex items-center p-2 
                                 hover:bg-violet-400  transition duration-300 group 
-                            
+                                ${
+                                    open
+                                        ? "w-full rounded-lg"
+                                        : "w-10 h-10 rounded-full"
+                                } justify-start 
                             `}
                     >
                         <BiHomeCircle
                             className={`
-                                w-5 h-5 
-                                
-                            `}
+                                    w-5 h-5
+                                    ${open ? "" : "fixed ml-[.13rem]"}
+                                `}
                         />
-                        <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Home</span>
+                        <span
+                            className={`transition duration-100 ml-3 ${
+                                open ? "" : "scale-0 opacity-0"
+                            }`}
+                        >
+                            Home
+                        </span>
                     </Link>
                 </li>
                 <li>
@@ -171,16 +81,25 @@ const AsideNavbar = ({ children}: Props ) => {
                         className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
+                                ${open ? "w-full" : "w-10 h-10"} justify-start 
                             
                             `}
                     >
                         <BiFile
                             className={`
                                 w-5 h-5 
-                                
+                                    ${
+                                        open ? "" : "fixed ml-[.13rem]"
+                                    }                                
                             `}
                         />
-                        <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Blogs</span>
+                        <span
+                            className={`transition duration-100 ml-3 ${
+                                open ? "" : "scale-0 opacity-0"
+                            }`}
+                        >
+                            Blogs
+                        </span>
                     </Link>
                 </li>
                 <li>
@@ -189,34 +108,25 @@ const AsideNavbar = ({ children}: Props ) => {
                         className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
+                                ${open ? "w-full" : "w-10 h-10"} justify-start 
                             
                             `}
                     >
                         <BiSearch
                             className={`
                                 w-5 h-5 
-                                
+                                    ${
+                                        open ? "" : "fixed ml-[.13rem]"
+                                    }                                
                             `}
                         />
-                        <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Pesquisar</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href="/post/my"
-                        className={`
-                                flex items-center p-2  rounded-lg 
-                                hover:bg-violet-400  transition duration-300 group 
-                            
-                            `}
-                    >
-                        <BiEdit
-                            className={`
-                                w-5 h-5 
-                                
-                            `}
-                        />
-                        <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Meus Posts</span>
+                        <span
+                            className={`transition duration-100 ml-3 ${
+                                open ? "" : "scale-0 opacity-0"
+                            }`}
+                        >
+                            Pesquisar
+                        </span>
                     </Link>
                 </li>
             </ul>
@@ -235,16 +145,38 @@ const AsideNavbar = ({ children}: Props ) => {
         mainDiv = (
             <div
                 className={`
-                right flex flex-col gap-5 
-                p-4 text-center
-                rounded-lg bg-violet-300 border border-violet-500
+                flex flex-col  gap-5
+                text-center
+                 bg-violet-300 border
+                mt-11
+                transition-transform duration-300 ease-in-out
+                ${open ? "p-4 w-[232px] rounded-xl" : "p-1 h-10 w-10 rounded-full"}
             `}
             >
-                <h3 className="font-bold text-violet-800 text-lg">
-                    Personalize seu blog!
-                </h3>
-                <LoginButton />
-                <SignupButton />
+                {open ? (
+                    <div className={`
+                        flex flex-col gap-3
+                        transition-all duration-300 ease-in-out
+                        
+                        ${open ? "opacity-100 scale-100" : "opacity-0 scale-0"}
+                    `}>
+                        <h3 className="font-bold text-violet-800 text-lg">
+                            Personalize seu blog!
+                        </h3>
+                        <LoginButton />
+                        <SignupButton />
+                    </div>
+                ) : (
+                    <span 
+                        className="text-xl displayBold text-violet-800 cursor-pointer" 
+                        title="Faça login para personalizar seu blog!"
+                        onClick={() => {
+                            setOpen(true);
+                        }}
+                    >
+                            !
+                        </span>
+                )}
             </div>
         );
     }
@@ -261,7 +193,11 @@ const AsideNavbar = ({ children}: Props ) => {
                             className={`
                                 flex items-center p-2 
                                 hover:bg-violet-400  transition duration-300 group 
-                                ${open ? "w-full rounded-lg" : "w-10 h-10 rounded-full"} justify-start 
+                                ${
+                                    open
+                                        ? "w-full rounded-lg"
+                                        : "w-10 h-10 rounded-full"
+                                } justify-start 
                             `}
                         >
                             <BiHomeCircle
@@ -270,7 +206,13 @@ const AsideNavbar = ({ children}: Props ) => {
                                     ${open ? "" : "fixed ml-[.13rem]"}
                                 `}
                             />
-                            <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Home</span>
+                            <span
+                                className={`transition duration-100 ml-3 ${
+                                    open ? "" : "scale-0 opacity-0"
+                                }`}
+                            >
+                                Home
+                            </span>
                         </Link>
                     </li>
                     <li>
@@ -286,10 +228,18 @@ const AsideNavbar = ({ children}: Props ) => {
                             <BiUser
                                 className={`
                                 w-5 h-5 
-                                    ${open ? "" : "fixed ml-[.13rem]"}                                
+                                    ${
+                                        open ? "" : "fixed ml-[.13rem]"
+                                    }                                
                             `}
                             />
-                            <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Perfil</span>
+                            <span
+                                className={`transition duration-100 ml-3 ${
+                                    open ? "" : "scale-0 opacity-0"
+                                }`}
+                            >
+                                Perfil
+                            </span>
                         </Link>
                     </li>
                     <li>
@@ -305,10 +255,18 @@ const AsideNavbar = ({ children}: Props ) => {
                             <BiFile
                                 className={`
                                 w-5 h-5 
-                                    ${open ? "" : "fixed ml-[.13rem]"}                                
+                                    ${
+                                        open ? "" : "fixed ml-[.13rem]"
+                                    }                                
                             `}
                             />
-                            <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Blogs</span>
+                            <span
+                                className={`transition duration-100 ml-3 ${
+                                    open ? "" : "scale-0 opacity-0"
+                                }`}
+                            >
+                                Blogs
+                            </span>
                         </Link>
                     </li>
                     <li>
@@ -324,13 +282,21 @@ const AsideNavbar = ({ children}: Props ) => {
                             <BiSearch
                                 className={`
                                 w-5 h-5 
-                                    ${open ? "" : "fixed ml-[.13rem]"}                                
+                                    ${
+                                        open ? "" : "fixed ml-[.13rem]"
+                                    }                                
                             `}
                             />
-                            <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Pesquisar</span>
+                            <span
+                                className={`transition duration-100 ml-3 ${
+                                    open ? "" : "scale-0 opacity-0"
+                                }`}
+                            >
+                                Pesquisar
+                            </span>
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link
                             href="/notifications"
                             className={`
@@ -348,7 +314,7 @@ const AsideNavbar = ({ children}: Props ) => {
                             />
                             <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Notificações</span>
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link
                             href="/post/my"
@@ -362,10 +328,18 @@ const AsideNavbar = ({ children}: Props ) => {
                             <BiEdit
                                 className={`
                                 w-5 h-5 
-                                    ${open ? "" : "fixed ml-[.13rem]"}                                
+                                    ${
+                                        open ? "" : "fixed ml-[.13rem]"
+                                    }                                
                             `}
                             />
-                            <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Meus Posts</span>
+                            <span
+                                className={`transition duration-100 ml-3 ${
+                                    open ? "" : "scale-0 opacity-0"
+                                }`}
+                            >
+                                Meus Posts
+                            </span>
                         </Link>
                     </li>
                     <li>
@@ -381,17 +355,24 @@ const AsideNavbar = ({ children}: Props ) => {
                             <BiCog
                                 className={`
                                 w-5 h-5 
-                                    ${open ? "" : "fixed ml-[.13rem]"}                                
+                                    ${
+                                        open ? "" : "fixed ml-[.13rem]"
+                                    }                                
                             `}
                             />
-                            <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Conta</span>
+                            <span
+                                className={`transition duration-100 ml-3 ${
+                                    open ? "" : "scale-0 opacity-0"
+                                }`}
+                            >
+                                Conta
+                            </span>
                         </Link>
                     </li>
                     <li>
                         <button
                             onClick={() => {
                                 signOut();
-                                
                             }}
                             className={`
                                 flex items-center p-2 rounded-lg 
@@ -403,10 +384,18 @@ const AsideNavbar = ({ children}: Props ) => {
                             <BiLogOut
                                 className={`
                                 w-5 h-5 
-                                    ${open ? "" : "fixed ml-[.13rem]"}                                
+                                    ${
+                                        open ? "" : "fixed ml-[.13rem]"
+                                    }                                
                             `}
                             />
-                            <span className={`transition duration-100 ml-3 ${open ? "" : "scale-0 opacity-0"}`}>Sair</span>
+                            <span
+                                className={`transition duration-100 ml-3 ${
+                                    open ? "" : "scale-0 opacity-0"
+                                }`}
+                            >
+                                Sair
+                            </span>
                         </button>
                     </li>
                 </ul>
@@ -435,7 +424,11 @@ const AsideNavbar = ({ children}: Props ) => {
                         alt="avatar"
                     />
                 </div>
-                <div className={`flex flex-col justify-center items-center text-center duration-300 ${open ? "mt-4" : "scale-0 h-0 mt-2"}`}>
+                <div
+                    className={`flex flex-col justify-center items-center text-center duration-300 ${
+                        open ? "mt-4" : "scale-0 h-0 mt-2"
+                    }`}
+                >
                     <h1
                         className={`text-xl displayExtBold leading-7 text-gray-900 sm:text-2xl`}
                     >
@@ -446,7 +439,6 @@ const AsideNavbar = ({ children}: Props ) => {
                     >
                         @{session?.user?.username}
                     </h3>
-                    
                 </div>
             </div>
         );
@@ -491,12 +483,16 @@ const AsideNavbar = ({ children}: Props ) => {
                                     transition duration-300 delay-100 ease-in-out 
                                     z-20
                                 `}
-                                onClick={() =>{
-                                    setOpen(!open)
+                                onClick={() => {
+                                    setOpen(!open);
                                     localStorage.setItem("menuIs", !open + "");
                                 }}
                             >
-                                {open ? <TbX className="h-5 w-5" /> : <TbAlignCenter className="h-5 w-5"/>}
+                                {open ? (
+                                    <TbX className="h-5 w-5" />
+                                ) : (
+                                    <TbAlignCenter className="h-5 w-5" />
+                                )}
                                 {/* <IoIosArrowBack className={`h-6 w-6 duration {open ? "" : "rotate-180" }`} /> */}
                             </button>
                             {mainDiv}
@@ -510,13 +506,19 @@ const AsideNavbar = ({ children}: Props ) => {
                 className={`
                     bg-gray-200 bg-opacity-50
                     transition-all duration-300 ease-in-out
-                    ${open ? "ml-64 w-[calc(100%-256px)] group is-open" : "ml-16  w-[calc(100%-64px)]"}
+                    ${
+                        open
+                            ? "ml-64 w-[calc(100%-256px)] group is-open"
+                            : "ml-16  w-[calc(100%-64px)]"
+                    }
                     px-4 py-8 min-h-screen z-10
                     
                 `}
-            >{children}</div>
+            >
+                {children}
+            </div>
         </div>
     );
 };
 
-export { Navbar, AsideNavbar };
+export default AsideNavbar;

@@ -172,7 +172,7 @@ export default function LoginForm() {
 
                 <div className="flex flex-row text-gray-500 text-sm gap-8 justify-center items-center">
                     <Link
-                        href={"/signin"}
+                        href={"/signup"}
                         className="hover:text-gray-950 transition duration-200"
                     >
                         Criar conta

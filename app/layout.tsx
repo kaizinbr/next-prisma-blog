@@ -13,7 +13,7 @@ const inter = Inter({
     display: "swap",
 });
 import localFont from "next/font/local";
-import { Navbar, AsideNavbar } from "@/components/Navbar";
+import AsideNavbar from "@/components/navbar/Navbar";
 import BasicBody from "@/components/Provider copy";
 
 const HelveticaNowText = localFont({

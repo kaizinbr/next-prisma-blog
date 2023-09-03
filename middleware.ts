@@ -50,7 +50,7 @@ export default withAuth(
          * - favicon.ico (favicon file)
          */
         //    '/((?!signin|_next/static|_next/image|favicon.ico).*)',
-        "/api/auth/signin",
+        "/api/:path*",
         "/post/:path*",
         "/profile"
     ],

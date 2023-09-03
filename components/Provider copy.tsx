@@ -5,7 +5,7 @@ type Props = {
 };
 
 import { useState } from "react";
-import { Navbar, AsideNavbar } from "@/components/Navbar";
+import { Navbar, AsideNavbar } from "@/components/navbar/Navbar";
 import { Suspense } from "react";
 import LoadingFullPage from "@/app/loading";
 

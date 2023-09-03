@@ -1,10 +1,18 @@
 import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
-import { hash } from "bcrypt";
+import encryptPass from "@/services/encryptPass";
+import containsSpecialChars from "@/services/containsSpecialChars";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     const { name, username, password } = await req.json();
+    const specialChars = containsSpecialChars(username);
+    if (specialChars) {
+        return NextResponse.json(
+            { error: "O nome de usuário não pode contar com caracteres especiais" },
+            { status: 403 }
+        );
+    }
     const exists = await prisma.user.findUnique({
         where: {
             username,
@@ -20,7 +28,7 @@ export async function POST(req: Request) {
             data: {
                 name,
                 username,
-                password: await hash(password, 12),
+                password: await encryptPass(password),
             },
         });
 
