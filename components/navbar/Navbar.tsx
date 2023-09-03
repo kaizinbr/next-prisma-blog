@@ -29,6 +29,7 @@ import {
     TbUserEdit,
 } from "react-icons/tb";
 import CreatePostBtn from "@/components/buttons/CreatePostBtn";
+import { useAnimate, stagger, motion, AnimatePresence } from "framer-motion";
 
 type Props = {
     children?: React.ReactNode;
@@ -555,21 +556,49 @@ const AsideNavbar = ({ children }: Props) => {
     );
 };
 
+const staggerMenuItems = stagger(0.1, { startDelay: 0.15 });
+
+function useMenuAnimation(isOpen: boolean) {
+    const [scope, animate] = useAnimate();
+
+    useEffect(() => {
+        // animate(".arrow", { rotate: isOpen ? 180 : 0 }, { duration: 0.2 });
+
+        animate(
+            "ul",
+            {
+                clipPath: isOpen
+                    ? "inset(0% 0% 0% 0% round 10px)"
+                    : "inset(90% 50% 10% 50% round 10px)",
+            },
+            {
+                type: "spring",
+                bounce: 0,
+                duration: 0.5,
+            }
+        );
+
+        animate(
+            "li",
+            isOpen
+                ? { opacity: 1, scale: 1, filter: "blur(0px)" }
+                : { opacity: 0, scale: 0.3, filter: "blur(20px)" },
+            {
+                duration: 0.2,
+                delay: isOpen ? staggerMenuItems : 0,
+            }
+        );
+    }, [isOpen]);
+
+    return scope;
+}
+
 const MobileMenu = () => {
-
-    // var oldScrollY = window.scrollY;
-    //   var directionText = document.getElementById('direction');
-    //   window.onscroll = function(e) {
-    //     if(oldScrollY < window.scrollY){
-    //         directionText.textContent = " Down";
-    //     } else {
-    //         directionText.textContent = " Up";
-    //     }
-    //     oldScrollY = window.scrollY;
-    //   }
-
     const [scrollY, setScrollY] = useState(0);
-    const [scrollDirection, setScrollDirection] = useState("down");
+    const [scrollDirection, setScrollDirection] = useState("up");
+    const [moreOptions, setMoreOptions] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const scope = useMenuAnimation(isOpen);
 
     const handleScroll = () => {
         const currentScrollY = window.scrollY;
@@ -586,20 +615,129 @@ const MobileMenu = () => {
     useEffect(() => {
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [scrollY]);
 
     return (
-        <div 
+        <div
             className={`
                 fixed bottom-0 left-0 z-40  h-16 w-screen transition-transform md:translate-y-full translate-y-0
-                bg-gray-300/80 backdrop-blur-lg border-t border-gray-400/30
+                bg-gray-100/80 backdrop-blur-lg border-t border-gray-400/30
+                rounded-t-2xl
                 ${scrollDirection === "up" ? "translate-y-0" : "translate-y-16"}
             `}
         >
-            <span>O scroll está para {scrollDirection}</span>
+            <AnimatePresence>
+                {/* <span>O scroll está para {scrollDirection}</span> */}
+                <div
+                    className={`
+                        flex justify-between items-center h-full 
+                        px-8 py-4 overflow-y-auto 
+                        text-gray-600 gap-3
+                    `}
+                >
+                    <Link href="/">
+                        <BiHomeCircle className="h-6 w-6" />
+                    </Link>
+                    <Link href="/search">
+                        <BiSearch className="h-6 w-6" />
+                    </Link>
+                    <Link href="/notifications">
+                        <BiPlus className="h-6 w-6" />
+                    </Link>
+                    <Link href="/notifications">
+                        <BiEdit className="h-6 w-6" />
+                    </Link>
+                    <div
+                        className={`
+                        flex justify-center items-center
+                        relative
+                    `}
+                    >
+                        <button
+                            onClick={() => {
+                                setMoreOptions(!moreOptions);
+                                setIsOpen(!isOpen);
+                            }}
+                        >
+                            <TbAlignCenter className="h-6 w-6" />
+                        </button>
+                        <motion.div
+                            className={`
+                                fixed bottom-20
+                                h-52
+                            `}
+                            ref={scope}
+                        >
+                            <ul
+                                className={`
+                                    flex flex-col-reverse gap-2
+                                    bg-gray-100 border-gray-400/30
+                                    rounded-xl p-2
+                                    transition-all duration-300 ease-in-out
+                                    ${isOpen ? "z-40" : "-z-10"}
+                                `}
+                                style={{
+                                    pointerEvents: isOpen ? "auto" : "none",
+                                    clipPath:
+                                        "inset(90% 50% 10% 50% round 10px)",
+                                }}
+                            >
+                                <li>
+                                    <Link
+                                        href="/profile"
+                                        className={`
+                                            h-10 w-10 justify-center items-center flex
+                                            rounded-lg
+                                            bg-transparent hover:bg-violet-300
+                                        `}
+                                    >
+                                        <BiUser className="h-6 w-6" />
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="#"
+                                        className={`
+                                            h-10 w-10 justify-center items-center flex
+                                            rounded-lg
+                                            bg-transparent hover:bg-violet-300
+                                        `}
+                                    >
+                                        <BiNotification className="h-6 w-6" />
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="#"
+                                        className={`
+                                            h-10 w-10 justify-center items-center flex
+                                            rounded-lg
+                                            bg-transparent hover:bg-violet-300
+                                        `}
+                                    >
+                                        <BiCog className="h-6 w-6" />
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="#"
+                                        className={`
+                                            h-10 w-10 justify-center items-center flex
+                                            rounded-lg
+                                            bg-transparent hover:bg-violet-300
+                                        `}
+                                    >
+                                        <BiLogOut className="h-6 w-6" />
+                                    </Link>
+                                </li>
+                            </ul>
+                        </motion.div>
+                    </div>
+                </div>
+            </AnimatePresence>
         </div>
-    )
+    );
 };
 
 export { AsideNavbar, MobileMenu };
