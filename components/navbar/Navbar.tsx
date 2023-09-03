@@ -8,6 +8,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoginButton, LogoutButton, SignupButton } from "@/components/auth";
 import Loading from "@/components/Loading";
+import ProfilePic from "../profile/general/ProfilePic";
 import {
     BiHomeCircle,
     BiNotification,
@@ -21,7 +22,12 @@ import {
     BiArrowBack,
     BiX,
 } from "react-icons/bi";
-import { TbAlignCenter, TbX, TbExclamationMark } from "react-icons/tb";
+import {
+    TbAlignCenter,
+    TbX,
+    TbExclamationMark,
+    TbUserEdit,
+} from "react-icons/tb";
 import CreatePostBtn from "@/components/buttons/CreatePostBtn";
 
 type Props = {
@@ -38,7 +44,9 @@ const AsideNavbar = ({ children }: Props) => {
     useEffect(() => {
         const menuState = localStorage.getItem("menuIs");
         // verifica se é ou nao true pq o menuIs é uma string
-        menuState === "true" ? "ta em true" : setOpen(false);
+        menuState === "true"
+            ? document.body.classList.add("is-open")
+            : setOpen(false);
         console.log("agora o menu está", menuState);
     }, []);
 
@@ -150,16 +158,22 @@ const AsideNavbar = ({ children }: Props) => {
                  bg-violet-300 border
                 mt-11
                 transition-transform duration-300 ease-in-out
-                ${open ? "p-4 w-[232px] rounded-xl" : "p-1 h-10 w-10 rounded-full"}
+                ${
+                    open
+                        ? "p-4 w-[232px] rounded-xl"
+                        : "p-1 h-10 w-10 rounded-full"
+                }
             `}
             >
                 {open ? (
-                    <div className={`
+                    <div
+                        className={`
                         flex flex-col gap-3
                         transition-all duration-300 ease-in-out
                         
                         ${open ? "opacity-100 scale-100" : "opacity-0 scale-0"}
-                    `}>
+                    `}
+                    >
                         <h3 className="font-bold text-violet-800 text-lg">
                             Personalize seu blog!
                         </h3>
@@ -167,15 +181,15 @@ const AsideNavbar = ({ children }: Props) => {
                         <SignupButton />
                     </div>
                 ) : (
-                    <span 
-                        className="text-xl displayBold text-violet-800 cursor-pointer" 
+                    <span
+                        className="text-xl displayBold text-violet-800 cursor-pointer"
                         title="Faça login para personalizar seu blog!"
                         onClick={() => {
                             setOpen(true);
                         }}
                     >
-                            !
-                        </span>
+                        !
+                    </span>
                 )}
             </div>
         );
@@ -217,7 +231,7 @@ const AsideNavbar = ({ children }: Props) => {
                     </li>
                     <li>
                         <Link
-                            href="/profile"
+                            href="/profile/edit"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -225,7 +239,7 @@ const AsideNavbar = ({ children }: Props) => {
                             
                             `}
                         >
-                            <BiUser
+                            <TbUserEdit
                                 className={`
                                 w-5 h-5 
                                     ${
@@ -402,28 +416,41 @@ const AsideNavbar = ({ children }: Props) => {
             </div>
         );
 
+        // const profilePicProps = {
+        //     src: session?.user?.image!,
+        //     alt: "avatar",
+        //     width: 144,
+        //     height: 144,
+        //     className: "rounded-full",
+        // };
+        // console.log(profilePicProps)
+
         mainDiv = (
             <div
                 className={`flex flex-col items-center justify-between w-full z-10`}
             >
-                <div
-                    className={`
-                        flex items-center justify-center flex-shrink-0 bg-gray-200 rounded-full
-                        transition-all duration-300 ease-in-out scale-100 
-                        ${open ? "w-36 h-36" : "w-11 h-11 mt-11"}
-                    `}
-                >
-                    <Image
+                <Link href={`/${session.user.username}`}>
+                    <div
                         className={`
-                                 rounded-full
-                                 transition duration-300 ease-in-out
-                            `}
-                        src={session?.user?.image!}
-                        height={144}
-                        width={144}
-                        alt="avatar"
-                    />
-                </div>
+                            flex items-center justify-center flex-shrink-0 bg-gray-200 rounded-full
+                            transition-all duration-300 ease-in-out scale-100
+                            ${open ? "w-36 h-36" : "w-11 h-11 mt-11"}
+                        `}
+                    >
+                        <Image
+                            className={`
+                                     rounded-full
+                                     transition duration-300 ease-in-out
+                                `}
+                            src={session?.user?.image!}
+                            height={144}
+                            width={144}
+                            alt="avatar"
+                        />
+                    </div>
+                </Link>
+                {/* <ProfilePic {...profilePicProps} /> */}
+                <Link href={"/profile"}></Link>
                 <div
                     className={`flex flex-col justify-center items-center text-center duration-300 ${
                         open ? "mt-4" : "scale-0 h-0 mt-2"
@@ -451,8 +478,8 @@ const AsideNavbar = ({ children }: Props) => {
             <aside
                 id="default-sidebar"
                 className={`
-                    fixed top-0 left-0 z-40  h-screen transition-transform -translate-x-full sm:translate-x-0
-                    bg-gray-200 border-r border-gray-400
+                    fixed top-0 left-0 z-40  h-screen transition-transform -translate-x-full md:translate-x-0
+                    bg-gray-200 border-r border-gray-400/70
                 `}
                 aria-label="Sidebar"
             >
@@ -486,6 +513,13 @@ const AsideNavbar = ({ children }: Props) => {
                                 onClick={() => {
                                     setOpen(!open);
                                     localStorage.setItem("menuIs", !open + "");
+                                    open
+                                        ? document.body.classList.remove(
+                                              "is-open"
+                                          )
+                                        : document.body.classList.add(
+                                              "is-open"
+                                          );
                                 }}
                             >
                                 {open ? (
@@ -508,8 +542,8 @@ const AsideNavbar = ({ children }: Props) => {
                     transition-all duration-300 ease-in-out
                     ${
                         open
-                            ? "ml-64 w-[calc(100%-256px)] group is-open"
-                            : "ml-16  w-[calc(100%-64px)]"
+                            ? "md:ml-64 md:w-[calc(100%-256px)] group is-open"
+                            : "md:ml-16 md:w-[calc(100%-64px)]"
                     }
                     px-4 py-8 min-h-screen z-10
                     
@@ -521,4 +555,51 @@ const AsideNavbar = ({ children }: Props) => {
     );
 };
 
-export default AsideNavbar;
+const MobileMenu = () => {
+
+    // var oldScrollY = window.scrollY;
+    //   var directionText = document.getElementById('direction');
+    //   window.onscroll = function(e) {
+    //     if(oldScrollY < window.scrollY){
+    //         directionText.textContent = " Down";
+    //     } else {
+    //         directionText.textContent = " Up";
+    //     }
+    //     oldScrollY = window.scrollY;
+    //   }
+
+    const [scrollY, setScrollY] = useState(0);
+    const [scrollDirection, setScrollDirection] = useState("down");
+
+    const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY > scrollY) {
+            setScrollDirection("down");
+            console.log("down");
+        } else {
+            setScrollDirection("up");
+            console.log("up");
+        }
+        setScrollY(currentScrollY);
+    };
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [scrollY]);
+
+    return (
+        <div 
+            className={`
+                fixed bottom-0 left-0 z-40  h-16 w-screen transition-transform md:translate-y-full translate-y-0
+                bg-gray-300/80 backdrop-blur-lg border-t border-gray-400/30
+                ${scrollDirection === "up" ? "translate-y-0" : "translate-y-16"}
+            `}
+        >
+            <span>O scroll está para {scrollDirection}</span>
+        </div>
+    )
+};
+
+export { AsideNavbar, MobileMenu };

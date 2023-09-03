@@ -22,7 +22,7 @@ export default function Posts({data}: [any] | any) {
         });
 
     return (
-        <div className="flex justify-start items-start w-full">
+        <div className="flex justify-center items-start w-full">
             <div
                 className={`
                 grid grid-cols-2 gap-6

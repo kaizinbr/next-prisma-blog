@@ -21,7 +21,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
             updatedAt: true,
             posts: {
                 where: {
-                    published: false,
+                    published: true,
                 },
             },
             Profile: true,

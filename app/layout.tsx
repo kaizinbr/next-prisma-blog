@@ -13,7 +13,7 @@ const inter = Inter({
     display: "swap",
 });
 import localFont from "next/font/local";
-import AsideNavbar from "@/components/navbar/Navbar";
+import { AsideNavbar, MobileMenu } from "@/components/navbar/Navbar";
 import BasicBody from "@/components/Provider copy";
 
 const HelveticaNowText = localFont({
@@ -125,14 +125,18 @@ export default async function RootLayout({
                         bg-gray-200 h-screen text-neutral-800
                         relative
                         flex flex-col 
+                        group
                     `
                 }
             >
                 <Provider>
                     <main className="">
                         <AsideNavbar>
-                            <Suspense fallback={<LoadingFullPage />}>{children}</Suspense>
+                            <Suspense fallback={<LoadingFullPage />}>
+                                {children}
+                            </Suspense>
                         </AsideNavbar>
+                        <MobileMenu/>
                     </main>
                 </Provider>
             </body>

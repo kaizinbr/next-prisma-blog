@@ -80,7 +80,7 @@ export default function Profile({ userData }: userProps | any) {
                 >
                     <ProfilePic props={ProfilePicProps} />
                     <div className="flex flex-col justify-start items-start ml-6">
-                        <h1 className="text-4xl displayExtBold mt-2">
+                        <h1 className="text-3xl displayBold mt-2">
                             {userData.name}
                         </h1>
                         <h2 className="text-base displayMedium text-gray-600 ">

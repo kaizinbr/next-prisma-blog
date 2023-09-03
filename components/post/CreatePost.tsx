@@ -284,7 +284,6 @@ function PostForm() {
     });
 
     const [config, setConfig] = useState(false);
-    // const [imgUpload, setImgUpload] = useState(false);
     const [serifed, setSerif] = useState(false);
     const [published, setPublished] = useState(false);
     const [exists, setExists] = useState(false);

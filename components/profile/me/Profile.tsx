@@ -13,7 +13,7 @@ import ProfilePic from "../general/ProfilePic";
 
 export default function Profile() {
     const { data: session } = useSession();
-    console.log(session);
+    // console.log(session);
     const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const ProfilePicProps = {
@@ -68,7 +68,7 @@ export default function Profile() {
                 >
                     <ProfilePic props={ProfilePicProps} />
                     <div className="flex flex-col justify-start items-start ml-6">
-                        <h1 className="text-4xl displayExtBold mt-2">
+                        <h1 className="text-3xl displayBold mt-2">
                             {session?.user?.name}
                         </h1>
                         <h2 className="text-base displayMedium text-gray-600 ">
