@@ -19,8 +19,17 @@
 }
 
 strong {
-    font-weight: 700 !important;
+    font-weight: bold !important;
 }
+
+body {
+    font-family: "Open Sans", sans-serif;
+}
+
+/* 
+.sofia{
+    font-family: "Sofia Sans", sans-serif;
+} */
 
 /* ::-webkit-scrollbar {
     height: 6px;
@@ -104,12 +113,11 @@ strong {
 } */
 
 ul {
-    font-family: "Helvetica Now Display";
     font-weight: 500;
 }
 
 .editorClassName {
-    font-family: "Helvetica Now Display";
+    /* font-family: "Helvetica Now Display"; */
     font-weight: 500;
 }
 
@@ -120,7 +128,7 @@ ul {
 /* CRIAR POST */
 
 .helvetica {
-    font-family: "Helvetica Now Text", sans-serif;
+    /* font-family: "Helvetica Now Text", sans-serif; */
     font-weight: normal;
 }
 
@@ -131,8 +139,12 @@ ul {
 }
 
 .text-writer p, .post-content p {
-    font-family: "Helvetica Now Text", sans-serif;
+    /* font-family: "Helvetica Now Text", sans-serif; */
     font-weight: normal;
+}
+
+.text-writer img, .post-content img {
+    margin: 32px auto;
 }
 
 .text-writer.serifed p, .post-content.serifed p {
@@ -157,6 +169,11 @@ ul {
     border-radius: 0.25rem;
 }
 
+.text-writer em, .post-content em {
+    font-weight: 500;
+    font-style: italic;
+}
+
 .text-writer blockquote, .post-content blockquote {
     background-color: rgb(209 213 219);
     padding: 1rem 0;
@@ -175,7 +192,7 @@ ul {
 }
 
 .text-writer.serifed blockquote p, .post-content.serifed blockquote p {
-    font-family: "Helvetica Now Text";
+    /* font-family: "Helvetica Now Text"; */
     font-weight: 400;
     margin: 0 1.50rem 0 2.5rem;
     padding: 0 0 0 1rem;
@@ -185,7 +202,7 @@ ul {
 }
 
 .text-writer a, .post-content a {
-    font-family: "Helvetica Now Text";
+    /* font-family: "Helvetica Now Text"; */
     font-weight: 500;
     color: rgb(0 0 0 / 80%);
     text-decoration: underline;
@@ -230,5 +247,5 @@ ul {
 /* PERFIL */
 
 .Profile {
-    font-family: "Helvetica Now Text";
+    /* font-family: "Helvetica Now Text"; */
 }
