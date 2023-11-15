@@ -10,17 +10,13 @@ import replaceHtml from "@/services/replaceHtml";
 import getImage from "@/services/formatImg";
 
 export async function POST(req: Request) {
-    const { json, html, title, serifed } = await req.json();
+    const { json, html, title, serifed, imageURL, imageAlt, imageTitle } = await req.json();
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
     const slug = slugify(title);
     const adaptHtml = replaceHtml(html);
     const subtitle = '<p>' + html.match(/<p.*?>(.*?)<\/p>/)[1] + '</p>';
-    // const newJson = 
-    // console.log('json antes', json)
-    // console.log('slug', slug)
     const image = await getImage(json);
-    console.log('image', image)
 
     try {const exists = await prisma.post.findUnique({
         where: {
@@ -35,7 +31,7 @@ export async function POST(req: Request) {
             authorId: true,
         },
     });
-    console.log(exists);
+    // console.log(exists);
     if (exists) {
         return NextResponse.json({ message: "Parece que já existe um post com esse título, tente outro", success: false });
     } else {
@@ -46,13 +42,16 @@ export async function POST(req: Request) {
                 slug,
                 html: adaptHtml,
                 json,
+                imageURL,
+                imageAlt,
+                imageTitle,
                 serifed,
-                // images: image + '',
                 author: {
                     connect: {
                         id: userId,
                     },
                 },
+                authorName: session?.user?.name,
             },
         });
 

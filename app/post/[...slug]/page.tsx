@@ -47,6 +47,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
                 {/* <h2 dangerouslySetInnerHTML={subtitle}></h2> */}
                 <div className={`
                     content
+                    text-xl
                     lg:text-[1.076rem]
                 `} dangerouslySetInnerHTML={content}></div>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -5,6 +6,7 @@ import { TbTrash, TbSquareRoundedChevronRight } from "react-icons/tb";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { useRef, useState, useContext } from "react";
 import Context from "@/services/context";
+import Image from "next/image";
 
 export function MyPostCard(data: any) {
     const router = useRouter();
@@ -355,13 +357,36 @@ export function MyPostCardDown(data: any, setLoading: Function) {
 export function DefPostCard(data: any) {
     const router = useRouter();
     // const post = data.post;
-    // console.log(post);
+    console.log(data.post);
     const serifed = data.post.serifed ? "serifed" : "";
+
+    const img = data.post.imageURL ? true : false;
+
+    const imagePreview = (
+        <div
+            className={`
+                w-fit h-auto rounded-2xl
+                max-h-[444px] max-w-auto
+                flex justify-start items-center
+                overflow-hidden
+            `}
+        >
+            <img
+                src={data.post.imageURL}
+                alt={data.post.imageAlt}
+                className={`
+                    h-full w-auto max-h-[444px]
+                `}
+            />
+        </div>
+    )
+
     return (
         <Link
             href={`/post/${data.post.slug}`}
             className={`
                 col-span-1
+                
             `}
         >
             <div
@@ -370,21 +395,43 @@ export function DefPostCard(data: any) {
                     bg-gray-50 border-2 border-transparent hover:border-gray-300/80
                     transition transition-300 delay-100 ease-in-out
                     overflow-hidden
-                    sm:rounded-xl col-span-2
+                    rounded-xl col-span-2
                     min-[1144px]:col-span-1
                     px-4 sm:px-6 py-6 gap-4
                     postcard
                 `}
             >
+                <div className=
+                {` head
+                    flex flex-row gap-3 items-center
+                
+                `}>
+                    <img 
+                        src={data.post.author.Profile.image}
+                        alt={data.post.imageAlt}
+                        className={`
+                            h-11 w-11 rounded-full md:h-10 md:w-10
+                        `}
+                    />
+                    <div className="flex flex-col">
+                        <h3 className="md:text-sm text-base displayBold text-gray-900">
+                            {data.post.author.name}
+                        </h3>
+                        <span className="md:text-xs text-md text-gray-900">
+                            @{data.post.author.username}
+                        </span>
+                    </div>
+                    
+                </div>
                 <div className="">
-                    <h3 className="text-lg mb-3 leading-6 displayBold text-gray-900">
+                    <h3 className="md:text-lg text-xl mb-3 leading-6 displayBold text-gray-900">
                         {data.post.title}
                     </h3>
                     <div
                         className={
                             serifed +
                             `
-                            text-sm text-gray-800
+                            md:text-sm text-base text-gray-800
                         `
                         }
                         dangerouslySetInnerHTML={{
@@ -408,6 +455,7 @@ export function DefPostCard(data: any) {
                         {new Date(data.post.updatedAt).toLocaleDateString()}
                     </div>
                 </div>
+                {img ? imagePreview : ""}
             </div>
         </Link>
     );

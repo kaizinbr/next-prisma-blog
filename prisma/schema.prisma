@@ -51,7 +51,9 @@ model Post {
     subtitle   String?
     json       Json?
     html       String?
-    images     String[]
+    imageURL   String?
+    imageAlt   String?
+    imageTitle String?
     tags       String[]
     serifed    Boolean    @default(false)
     published  Boolean    @default(false)
@@ -59,13 +61,11 @@ model Post {
     authorId   String?
     authorName String?
     categories Category[]
-    likes      Int?       @default(0)
-    likedBy    Profile[]
     createdAt  DateTime   @default(now()) @map(name: "created_at")
     updatedAt  DateTime   @updatedAt @map(name: "updated_at")
-    deletedAt  DateTime?  @map(name: "deleted_at")
-    deleted    Boolean    @default(false)
     blocked    Boolean    @default(false)
+    Profile    Profile?   @relation(fields: [profileId], references: [id])
+    profileId  String?
 }
 
 model Img {

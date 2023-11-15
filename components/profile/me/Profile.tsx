@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -10,6 +10,7 @@ import Bio from "../general/Bio";
 import Posts from "../general/Posts";
 import LoadingFullPage from "@/app/loading";
 import ProfilePic from "../general/ProfilePic";
+import { useWindowWidth } from "@react-hook/window-size";
 
 export default function Profile() {
     const { data: session } = useSession();
@@ -30,17 +31,17 @@ export default function Profile() {
         };
         if (session) {
             getUser();
-
+            console.log(userData);
         }
-            // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
 
     return (
         <div
             className={`
                 flex flex-col justify-center
             `}
+            // ref={elementRef}
         >
             <div
                 className={`
@@ -50,19 +51,10 @@ export default function Profile() {
             >
                 <div
                     className={`
-                    color h-40 w-full flex justify-center items-center
-                    absolute top-0 left-0
-                    bg-gradient-to-b from-violet-500/60 from-10% via-violet-500/40 via-30% to-transparent to-90%
-                    mb-3
-                    z-0
-                `}
-                ></div>
-                <div
-                    className={`
                             
                         w-full rounded-lg overflow-hidden
                         flex flex-row
-                        z-10 relative mt-12 px-6
+                        z-10 relative px-6
 
                     `}
                 >
@@ -74,48 +66,57 @@ export default function Profile() {
                         <h2 className="text-base displayMedium text-gray-600 ">
                             @{session?.user?.username}
                         </h2>
-                        <div
-                            className={`
-                        flex flex-row gap-6 justify-center items-center mt-2
-                        text-gray-800 text-sm
-                    `}
-                        >
-                            {userData?.Profile?.pronouns ? (
-                                <Link
-                                    // href={`/profile/${session?.user?.username}/following`}
-                                    href={`#`}
-                                    id="pronous"
-                                >
-                                    {userData?.Profile?.pronouns!}
-                                </Link>
-                            ) : null}
-                            {userData?.createdAt ? (
-                                <Link
-                                    // href={`/profile/${session?.user?.username}/following`}
-                                    href={`#`}
-                                    id="pronous"
-                                >
-                                    Entrou em{" "}
-                                    {new Date(
-                                        userData?.createdAt
-                                    ).getUTCFullYear()}
-                                </Link>
-                            ) : null}
-                            {userData?.posts ? (
-                                <Link
-                                    // href={`/profile/${session?.user?.username}/following`}
-                                    href={`#`}
-                                    id="pronous"
-                                    className="flex flex-row items-center hover:text-violet-500 transition-all"
-                                >
-                                    {userData?.posts?.length} Posts
-                                </Link>
-                            ) : null}
-                        </div>
                     </div>
                 </div>
-                {userData?.Profile ? <Bio Profile={userData?.Profile} /> : null}
-                {userData?.posts ? <Posts data={userData?.posts} /> : null}
+                <div
+                    className={`
+                        flex flex-row justify-center items-start
+                        gap-8
+                    `}
+                >
+                    
+                    {userData?.posts ? <Posts data={userData?.posts} /> : null}
+                    <div
+                        className={`
+                                flex flex-col gap-6  mt-2
+                                max-w-xs
+                                text-gray-800 text-sm
+                            `}
+                    >
+                        {userData?.Profile ? (
+                            <Bio Profile={userData?.Profile} />
+                        ) : null}
+                        {userData?.Profile?.pronouns ? (
+                            <Link
+                                // href={`/profile/${session?.user?.username}/following`}
+                                href={`#`}
+                                id="pronous"
+                            >
+                                {userData?.Profile?.pronouns!}
+                            </Link>
+                        ) : null}
+                        {userData?.createdAt ? (
+                            <Link
+                                // href={`/profile/${session?.user?.username}/following`}
+                                href={`#`}
+                                id="pronous"
+                            >
+                                Entrou em{" "}
+                                {new Date(userData?.createdAt).getUTCFullYear()}
+                            </Link>
+                        ) : null}
+                        {userData?.posts ? (
+                            <Link
+                                // href={`/profile/${session?.user?.username}/following`}
+                                href={`#`}
+                                id="pronous"
+                                className="flex flex-row items-center hover:text-violet-500 transition-all"
+                            >
+                                {userData?.posts?.length} Posts
+                            </Link>
+                        ) : null}
+                    </div>
+                </div>
             </div>
             {/* {loading && (
                 <div className="fixed top-0 w-full h-full z-30 bg-gray-200">

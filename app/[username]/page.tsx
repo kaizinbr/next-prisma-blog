@@ -33,6 +33,19 @@ export default async function Page({
                 where: {
                     published: true,
                 },
+                include: {
+                    author: {
+                        select: {
+                            name: true,
+                            username: true,
+                            Profile: {
+                                select: {
+                                    image: true,
+                                },
+                            },
+                        },
+                    },
+                },
             },
             Profile: true,
         },

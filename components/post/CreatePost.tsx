@@ -26,6 +26,7 @@ import { TbSettings, TbX } from "react-icons/tb";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import Loading from "../Loading";
+import getImage from "@/services/formatImg";
 // import Commands from "./toolbar/Commands";
 
 const Message = (msg: string, success: boolean) => {
@@ -216,7 +217,7 @@ function PostForm() {
                 },
                 paragraph: {
                     HTMLAttributes: {
-                        class: "sm:mb-4 mb-6",
+                        class: "sm:mb-6 mb-8",
                     },
                 },
             }),
@@ -252,6 +253,7 @@ function PostForm() {
             },
         },
         content: `
+        <img src="https://firebasestorage.googleapis.com/v0/b/blog-img-a2e09.appspot.com/o/images%2Fclm9hizir0000v3fka0zeyai4%2FF47nR2sbYAAz0ff.jpeg?alt=media&amp;token=36d6652b-4bcb-40e7-9462-5d94fd3d3f92" alt="teste" title="" contenteditable="false" draggable="true" class="ProseMirror-selectednode">
             <p>Parágrafo normal</p>
             <p><em>Parágrafo em itálico</em></p>   
             <p><strong>Parágrafo em negrito</strong></p>     
@@ -281,9 +283,15 @@ function PostForm() {
     ) => {
         console.log("Salvando post no banco de dados...");
         try {
+
+            const { imageURL, imageAlt, imageTitle } = await getImage(json);
+            console.log("imageURL", imageURL);
+            console.log("imageAlt", imageAlt);
+            console.log("imageTitle", imageTitle);
+
             const res = await fetch("/api/posts/new", {
                 method: "POST",
-                body: JSON.stringify({ json, html, title, serifed }),
+                body: JSON.stringify({ json, html, title, serifed, imageURL, imageAlt, imageTitle }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -486,6 +494,7 @@ function PostForm() {
                     `}
                         onClick={() => {
                             handleSave();
+                            console.log("salvando...");
                         }}
                     >
                         Salvar
