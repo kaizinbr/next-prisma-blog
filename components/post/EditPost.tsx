@@ -1,8 +1,10 @@
 "use client";
 import Document from "@tiptap/extension-document";
 import Color from "@tiptap/extension-color";
+import Image from "@tiptap/extension-image";
 import ListItem from "@tiptap/extension-list-item";
 import TaskList from "@tiptap/extension-task-list";
+import FontFamily from "@tiptap/extension-font-family";
 import Link from "@tiptap/extension-link";
 import OrderedList from "@tiptap/extension-ordered-list";
 import TextAlign from "@tiptap/extension-text-align";
@@ -41,6 +43,7 @@ const Message = (msg: string, success: boolean) => {
 
 function EditPostForm(postInfo: any) {    
     const serifed = postInfo.post.serifed ? "serifed" : "";
+    console.log(postInfo.post.json)
 
     const editor = useEditor({
         extensions: [
@@ -86,6 +89,7 @@ function EditPostForm(postInfo: any) {
             Subscript,
             Superscript,
             HardBreak,
+            Image
         ],
         editorProps: {
             attributes: {

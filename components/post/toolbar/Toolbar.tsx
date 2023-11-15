@@ -67,7 +67,7 @@ export function Toolbar({ editor }: any) {
     const altRef = useRef<HTMLTextAreaElement>(null);
     const subtitleRef = useRef<HTMLTextAreaElement>(null);
     const [alt, setAlt] = useState<string>("")
-    const [subtitle, setSubtitle] = useState<string>("")
+    const [title, setTitle] = useState<string>("")
 
     if (!editor) {
         return null;
@@ -910,8 +910,8 @@ export function Toolbar({ editor }: any) {
                     progressPorcent,
                     alt,
                     setAlt,
-                    subtitle,
-                    setSubtitle,
+                    title,
+                    setTitle,
                     altRef,
                     subtitleRef,
                     saving,

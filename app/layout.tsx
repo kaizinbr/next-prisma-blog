@@ -4,13 +4,12 @@ import LoadingFullPage from "./loading";
 import "./globals.css";
 import Provider from "@/components/Provider";
 import { PageWrapper } from "@/components/config/pageWrapper";
-import { Inter } from "next/font/google";
 
-import { useState } from "react";
+import { Inter, Open_Sans } from "next/font/google";
 
-const inter = Inter({
+const OpenSans = Open_Sans({
     subsets: ["latin"],
-    display: "swap",
+    display: "swap"
 });
 import localFont from "next/font/local";
 import { AsideNavbar, MobileMenu } from "@/components/navbar/Navbar";
@@ -120,7 +119,7 @@ export default async function RootLayout({
         <html lang="pt-br">
             <body
                 className={
-                    HelveticaNowText.className +
+                    // OpenSans.className +
                     ` 
                         bg-gray-200 h-screen text-neutral-800
                         relative

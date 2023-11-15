@@ -37,8 +37,8 @@ export function ImgUpload(
     progressPorcent: number,
     alt: string,
     setAlt: Function,
-    subtitle: string,
-    setSubtitle: Function,
+    title: string,
+    setTitle: Function,
     altRef: any,
     subtitleRef: any,
     saving: boolean,
@@ -91,7 +91,7 @@ export function ImgUpload(
 
     const end = () => {
         setAlt("");
-        setSubtitle("");
+        setTitle("");
         // setImgURL("");
         setImgUpload(false);
         setProgressPorcent(0);
@@ -130,13 +130,13 @@ export function ImgUpload(
                     .then((downloadURL) => {
                         setImgURL(downloadURL);
                         (async () => {
-                            await saveImgURL(imgURL, authorId, alt, subtitle);
+                            await saveImgURL(imgURL, authorId, alt, title);
 
                             console.log(imgURL);
                             editor
                                 .chain()
                                 .focus()
-                                .setImage({ src: downloadURL, alt: alt, title: subtitle })
+                                .setImage({ src: downloadURL, alt: alt, title: title })
                                 .run();
                         })();
                     })
@@ -158,7 +158,7 @@ export function ImgUpload(
     };
 
     const onChangeSubtitle = (e: any) => {
-        setSubtitle(e.target.value);
+        setTitle(e.target.value);
     };
 
     return (
@@ -219,7 +219,7 @@ export function ImgUpload(
                             className="displayBold text-sm text-gray-600 mb-2"
                             htmlFor="subtitle"
                         >
-                            Legenda:
+                            Título da imagem (opcional):
                         </label>
                         <textarea
                             className={`
@@ -233,8 +233,8 @@ export function ImgUpload(
                             `}
                             id="subtitle"
                             ref={subtitleRef}
-                            value={subtitle}
-                            placeholder="Adicione informações sobre a imagem"
+                            value={title}
+                            placeholder="Adicione um título para a imagem"
                             rows={1}
                             onChange={onChangeSubtitle}
                         />

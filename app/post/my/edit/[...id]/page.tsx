@@ -19,3 +19,4 @@ export default async function EditPost({ params }: { params: { id: string } }) {
         </div>
     )
 }
+

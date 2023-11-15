@@ -55,7 +55,7 @@ const AsideNavbar = ({ children }: Props) => {
 
     let options = (
         <div className={`w-[232px] mb-20`}>
-            <ul className={`space-y-2 transition duration-300 displayMedium`}>
+            <ul className={`space-y-2 transition duration-300`}>
                 <li>
                     <Link
                         href="/"
@@ -200,7 +200,7 @@ const AsideNavbar = ({ children }: Props) => {
         options = (
             <div className={`w-[232px] mb-20`}>
                 <ul
-                    className={`space-y-2 transition duration-300 displayMedium`}
+                    className={`space-y-2 transition duration-300 font-semibold`}
                 >
                     <li>
                         <Link

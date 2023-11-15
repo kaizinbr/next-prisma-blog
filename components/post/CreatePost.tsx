@@ -244,11 +244,7 @@ function PostForm() {
             Text,
             TextStyle,
             FontFamily,
-            Image.configure({
-                HTMLAttributes: {
-                    class: "my-custom-class",
-                },
-            }),
+            Image,
         ],
         editorProps: {
             attributes: {
@@ -256,30 +252,9 @@ function PostForm() {
             },
         },
         content: `
-        
-        <p>Desde sua estreia, o Tomorrow X Together, mais conhecido como <a href="https://ibighit.com/txt/eng/" target="_blank">TXT</a>, tem cativado corações com sua música única e inovadora. Cada álbum lançado é uma obra-prima que reflete a evolução artística e criativa do grupo.</p>
-        
-        <p><strong>Lore Intrigante:</strong></p> 
-        
-        <blockquote><p>Uma das características mais notáveis da discografia do TXT é a construção cuidadosa da lore em seus álbuns. Através de elementos visuais, musicais e narrativos, eles criam universos coesos que interligam todas as faixas e álbuns. Essa narrativa transmídia não apenas envolve os fãs, mas também permite uma experiência imersiva única.</p></blockquote>
-        
-        <p><em>Representação da Geração Z:</em> Os <code>álbuns</code> do TXT são um reflexo sincero dos sentimentos, lutas e sonhos da geração Z. Suas letras abordam questões como autoaceitação, pressões sociais e busca de identidade. Através de músicas como "<em>Blue Hour</em>" e "<em>21st Century Girl</em>", eles capturam os altos e baixos emocionais pelos quais muitos jovens passam.</p>
-        
-        <p><strong>Liderança na 4ª Geração:</strong> Não se pode falar da 4ª geração do K-pop sem mencionar o TXT. Com sua musicalidade inovadora, coreografias marcantes e performances carismáticas, eles se estabeleceram como líderes incontestáveis dessa nova onda do gênero. Seu impacto vai além das fronteiras coreanas, conquistando fãs ao redor do mundo.</p>
-        
-        <p>Em conclusão, a discografia do TXT transcende simplesmente a música, mergulhando em narrativas profundas e representações genuínas da geração Z. Seu papel como líderes na 4ª geração do K-pop é evidente, cativando fãs e deixando uma marca indelével na indústria musical.</p>
-        
-        <h1>Teste de Título 1</h1>
-
-        <h2>Teste de Título 2</h2>
-
-        <h3>Teste de Título 3</h3>
-
-        <h4>Teste de Título 4</h4>
-
-        <h5>Teste de Título 5</h5>
-
-        <h6>Teste de Título 6</h6>
+            <p>Parágrafo normal</p>
+            <p><em>Parágrafo em itálico</em></p>   
+            <p><strong>Parágrafo em negrito</strong></p>     
         `,
     });
 
@@ -294,7 +269,7 @@ function PostForm() {
     const [message, setMessage] = useState("");
     const [confirm, setConfirm] = useState(false);
     const [title, setTitle] = useState(
-        "A Genialidade da Discografia do TXT e sua Liderança na 4ª Geração do K-pop"
+        ""
     );
     const titleRef = useRef<HTMLTextAreaElement>(null);
 
@@ -455,14 +430,14 @@ function PostForm() {
         setLoading(true);
         exists
             ? await updatePost(
-                  postId,
-                  authorId,
-                  json,
-                  html,
-                  title,
-                  published,
-                  serifed
-              )
+                postId,
+                authorId,
+                json,
+                html,
+                title,
+                published,
+                serifed
+            )
             : await savePost(json, html, title, serifed);
     };
 
