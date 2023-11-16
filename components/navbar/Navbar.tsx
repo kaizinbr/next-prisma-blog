@@ -637,16 +637,16 @@ const MobileMenu = () => {
                     `}
                 >
                     <Link href="/">
-                        <BiHomeCircle className="h-6 w-6" />
+                        <BiHomeCircle className="h-7 w-7" />
                     </Link>
                     <Link href="/search">
-                        <BiSearch className="h-6 w-6" />
+                        <BiSearch className="h-7 w-7" />
                     </Link>
-                    <Link href="/notifications">
-                        <BiPlus className="h-6 w-6" />
+                    <Link href="/post/create">
+                        <BiPlus className="h-7 w-7" />
                     </Link>
-                    <Link href="/notifications">
-                        <BiEdit className="h-6 w-6" />
+                    <Link href="/post/my">
+                        <BiEdit className="h-7 w-7" />
                     </Link>
                     <div
                         className={`
@@ -660,7 +660,7 @@ const MobileMenu = () => {
                                 setIsOpen(!isOpen);
                             }}
                         >
-                            <TbAlignCenter className="h-6 w-6" />
+                            <TbAlignCenter className="h-7 w-7" />
                         </button>
                         <motion.div
                             className={`

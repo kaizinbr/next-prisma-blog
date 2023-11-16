@@ -357,7 +357,7 @@ export function MyPostCardDown(data: any, setLoading: Function) {
 export function DefPostCard(data: any) {
     const router = useRouter();
     // const post = data.post;
-    console.log(data.post);
+    // console.log(data.post);
     const serifed = data.post.serifed ? "serifed" : "";
 
     const img = data.post.imageURL ? true : false;

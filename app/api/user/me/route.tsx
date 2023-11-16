@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function GET(req: NextRequest, res: NextResponse) {
-    
     const session = await getServerSession(authOptions);
     const id = session?.user?.id;
     // const id = params.id;
@@ -26,13 +25,62 @@ export async function GET(req: NextRequest, res: NextResponse) {
             },
             Profile: true,
         },
-    })
+    });
 
     if (!user) {
         return new NextResponse("No user with ID found", { status: 404 });
     }
 
     return NextResponse.json(user);
+}
+
+export async function PUT(req: NextRequest, res: NextResponse) {
+    const searchParams = req.nextUrl.searchParams;
+    const session = await getServerSession(authOptions);
+
+    const formParams = await req.json();
+    const formId = formParams.myId;
+    const sessionId = session?.user?.id;
+    const paramsId = searchParams.get("id");
+    // console.log(formParams)
+    // console.log(formId, sessionId, paramsId);
+    
+    if (formId !== sessionId) {
+        return new NextResponse("Unauthorized", { status: 401 });
+    }
+    else if (formId !== paramsId) {
+        return new NextResponse("Unauthorized", { status: 401 });
+    }
+    else if (sessionId !== paramsId) {
+        return new NextResponse("Unauthorized", { status: 401 });
+    }
+    else {
+        const updateUser = await prisma.user.update({
+            where: {
+                id: sessionId,
+            },
+            data: {
+                name: formParams.formValues.name,
+                username: formParams.formValues.username,
+                Profile: {
+                    update: {
+                        name: formParams.formValues.name,
+                        bio: formParams.formValues.bio,
+                        pronouns: formParams.formValues.pronouns,
+                    },
+                },
+            },
+        });
+    
+        if (!updateUser) {
+            return new NextResponse("No user with ID found", { status: 404 });
+        }
+
+        return NextResponse.json(updateUser);
+    }
+    
+
+    // return NextResponse.json(updateUser);
 }
 
 export async function PATCH(
@@ -58,6 +106,7 @@ export async function DELETE(
     request: Request,
     { params }: { params: { id: string } }
 ) {
+    console.log(params);
     try {
         const id = params.id;
         await prisma.user.delete({

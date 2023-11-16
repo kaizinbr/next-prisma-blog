@@ -466,7 +466,7 @@ function PostForm() {
                     className={`
                         flex flex-row
                         justify-end
-                        mt-20
+                        md:mt-20 mt-24 max-[460px]:mt-56
                     `}
                 >
                     <button

@@ -85,27 +85,28 @@ export function Toolbar({ editor }: any) {
             className={`
             flex justify-center items-center
             transition-all duration-300
-            fixed top-8 w-[calc(100%-6rem)] group-[.is-open]:w-[calc(100%-18rem)]
-            max-[1024px]:top-0 max-[1024px]:w-[calc(100%-64px)] max-[1024px]:left-16 
-            max-[1024px]:group-[.is-open]:left-64 max-[1024px]:group-[.is-open]:w-[calc(100%-16rem)]
-            h-12 z-50 overflow-hidden
+            fixed top-8 w-full group-[.is-open]:w-[calc(100%-16rem)]
+            max-[1024px]:top-0 md:w-[calc(100%-64px)] md:left-16 left-0
+            md:group-[.is-open]:left-64 max-[1024px]:group-[.is-open]:w-[calc(100%-16rem)]
+            h-auto z-50 
         `}
         >
             <div
                 className={`
-                    flex justify-between items-center
-                    bg-white 
+                    flex flex-row justify-between items-center flex-wrap
+                    bg-gray-50/70 backdrop-blur-xl
+                    max-[1024px]:w-full max-[1024px]:rounded-none max-[1024px]:shadow-none
                     rounded-xl shadow-md shadow-gray-100/30
                     px-4 py-2
                     transition duration-300 delay-100
-                    max-w-full
+                    max-w-full h-auto
                 `}
             >
-                <div className="flex items-center text-xl gap-2">
+                <div className="flex flex-wrap items-center md:text-xl text-2xl gap-2">
                     <div className="arrows flex">
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -118,7 +119,7 @@ export function Toolbar({ editor }: any) {
                         </button>
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -329,7 +330,7 @@ export function Toolbar({ editor }: any) {
                     <div className="flex flex-row">
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 text-lg
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
@@ -345,7 +346,7 @@ export function Toolbar({ editor }: any) {
                         </button>
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -365,7 +366,7 @@ export function Toolbar({ editor }: any) {
                         </button>
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -385,7 +386,7 @@ export function Toolbar({ editor }: any) {
                         </button>
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -407,7 +408,7 @@ export function Toolbar({ editor }: any) {
                     <div className="flex colorBtn flex-row">
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -423,7 +424,7 @@ export function Toolbar({ editor }: any) {
                     <div className="flex flex-row">
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -439,7 +440,7 @@ export function Toolbar({ editor }: any) {
                         </button>
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -455,7 +456,7 @@ export function Toolbar({ editor }: any) {
                         </button>
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -471,7 +472,7 @@ export function Toolbar({ editor }: any) {
                         </button>
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -505,164 +506,10 @@ export function Toolbar({ editor }: any) {
                             liftListItem
                         </button> */}
                     </div>
-                    <div className="moreTextTools flex flex-row justify-center">
-                        <button
-                            onClick={() => {
-                                setShowTextTools(!showTextTools);
-                            }}
-                            className={`
-                                h-8 w-12 flex justify-center items-center rounded-md
-                                hover:bg-gray-200 cursor-pointer
-                                transition duration-300 delay-100
-                            `}
-                            ref={txtToolsRef}
-                        >
-                            <TbLetterT />
-                            <TbChevronDown
-                                className={`
-                                    transition duration-150
-                                    text-base 
-                                `}
-                                style={{
-                                    transform: showTextTools
-                                        ? "rotate(180deg)"
-                                        : "rotate(0)",
-                                }}
-                            />
-                        </button>
-                        {showTextTools && (
-                            <div
-                                className={`
-                            absolute top-14 
-                            flex flex-col gap-1
-                            bg-white rounded-xl shadow-md shadow-gray-100/30
-                            px-2 py-2
-                            z-30
-                        `}
-                            >
-                                <button
-                                    className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
-                                        hover:bg-gray-200 cursor-pointer
-                                        transition duration-300 delay-100
-                                    `}
-                                    onClick={() =>
-                                        editor
-                                            .chain()
-                                            .focus()
-                                            .setHardBreak()
-                                            .run()
-                                    }
-                                >
-                                    <TbPageBreak />
-                                </button>
-                                <button
-                                    className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
-                                        hover:bg-gray-200 cursor-pointer
-                                        text-red-400
-                                        transition duration-300 delay-100
-                                    `}
-                                    onClick={() =>
-                                        editor
-                                            .chain()
-                                            .focus()
-                                            .toggleTaskList()
-                                            .run()
-                                    }
-                                >
-                                    <TbList />
-                                </button>
-                                <button
-                                    className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
-                                        hover:bg-gray-200 cursor-pointer
-                                        text-red-400
-                                        transition duration-300 delay-100
-                                    `}
-                                    onClick={() =>
-                                        editor
-                                            .chain()
-                                            .focus()
-                                            .toggleOrderedList()
-                                            .run()
-                                    }
-                                >
-                                    <TbListNumbers />
-                                </button>
-                                <button
-                                    className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
-                                        hover:bg-gray-200 cursor-pointer
-                                        transition duration-300 delay-100
-                                    `}
-                                    onClick={() => {
-                                        editor
-                                            .chain()
-                                            .focus()
-                                            .toggleBlockquote()
-                                            .run();
-
-                                        console.log("clicou");
-                                    }}
-                                >
-                                    <TbQuote />
-                                </button>
-                                <button
-                                    className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
-                                        hover:bg-gray-200 cursor-pointer
-                                        transition duration-300 delay-100
-                                    `}
-                                    onClick={() =>
-                                        editor
-                                            .chain()
-                                            .focus()
-                                            .toggleCode()
-                                            .run()
-                                    }
-                                >
-                                    <TbCode />
-                                </button>
-                                <button
-                                    className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
-                                        hover:bg-gray-200 cursor-pointer
-                                        transition duration-300 delay-100
-                                    `}
-                                    onClick={() =>
-                                        editor
-                                            .chain()
-                                            .focus()
-                                            .toggleSubscript()
-                                            .run()
-                                    }
-                                >
-                                    <TbSubscript />
-                                </button>
-                                <button
-                                    className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
-                                        hover:bg-gray-200 cursor-pointer
-                                        transition duration-300 delay-100
-                                    `}
-                                    onClick={() =>
-                                        editor
-                                            .chain()
-                                            .focus()
-                                            .toggleSuperscript()
-                                            .run()
-                                    }
-                                >
-                                    <TbSuperscript />
-                                </button>
-                            </div>
-                        )}
-                    </div>
                     <div className="flex flex-row">
                         <button
                             className={`
-                                h-8 w-8 flex justify-center items-center rounded-md
+                                md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                 hover:bg-gray-200 cursor-pointer
                                 transition duration-300 delay-100
                             `}
@@ -676,7 +523,7 @@ export function Toolbar({ editor }: any) {
                         <div className="flex flex-row justify-center">
                             <button
                                 className={`
-                                    h-8 w-8 flex justify-center items-center rounded-md
+                                    md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                     hover:bg-gray-200 cursor-pointer
                                     transition duration-300 delay-100
                                 `}
@@ -761,6 +608,160 @@ export function Toolbar({ editor }: any) {
                             )}
                         </div>
                     </div>
+                    <div className="moreTextTools flex flex-row justify-center">
+                        <button
+                            onClick={() => {
+                                setShowTextTools(!showTextTools);
+                            }}
+                            className={`
+                                h-8 w-12 flex justify-center items-center rounded-md
+                                hover:bg-gray-200 cursor-pointer
+                                transition duration-300 delay-100
+                            `}
+                            ref={txtToolsRef}
+                        >
+                            <TbLetterT />
+                            <TbChevronDown
+                                className={`
+                                    transition duration-150
+                                    text-base 
+                                `}
+                                style={{
+                                    transform: showTextTools
+                                        ? "rotate(180deg)"
+                                        : "rotate(0)",
+                                }}
+                            />
+                        </button>
+                        {showTextTools && (
+                            <div
+                                className={`
+                            absolute md:top-14 max-[460px]:top-56 max-[768px]:top-28
+                            flex flex-col gap-1
+                            bg-white rounded-xl shadow-md shadow-gray-100/30
+                            px-2 py-2
+                            z-30
+                        `}
+                            >
+                                <button
+                                    className={`
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .setHardBreak()
+                                            .run()
+                                    }
+                                >
+                                    <TbPageBreak />
+                                </button>
+                                <button
+                                    className={`
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        text-red-400
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleTaskList()
+                                            .run()
+                                    }
+                                >
+                                    <TbList />
+                                </button>
+                                <button
+                                    className={`
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        text-red-400
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleOrderedList()
+                                            .run()
+                                    }
+                                >
+                                    <TbListNumbers />
+                                </button>
+                                <button
+                                    className={`
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() => {
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleBlockquote()
+                                            .run();
+
+                                        console.log("clicou");
+                                    }}
+                                >
+                                    <TbQuote />
+                                </button>
+                                <button
+                                    className={`
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleCode()
+                                            .run()
+                                    }
+                                >
+                                    <TbCode />
+                                </button>
+                                <button
+                                    className={`
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleSubscript()
+                                            .run()
+                                    }
+                                >
+                                    <TbSubscript />
+                                </button>
+                                <button
+                                    className={`
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
+                                        hover:bg-gray-200 cursor-pointer
+                                        transition duration-300 delay-100
+                                    `}
+                                    onClick={() =>
+                                        editor
+                                            .chain()
+                                            .focus()
+                                            .toggleSuperscript()
+                                            .run()
+                                    }
+                                >
+                                    <TbSuperscript />
+                                </button>
+                            </div>
+                        )}
+                    </div>
                     <div className="moreGeneralTools flex flex-row justify-center">
                         <button
                             onClick={() => {
@@ -789,7 +790,7 @@ export function Toolbar({ editor }: any) {
                         {showMoreTools && (
                             <div
                                 className={`
-                            absolute top-14 
+                            absolute md:top-14 max-[460px]:top-56 max-[768px]:top-28
                             flex flex-col gap-1
                             bg-white rounded-xl shadow-md shadow-gray-100/30
                             px-2 py-2
@@ -798,7 +799,7 @@ export function Toolbar({ editor }: any) {
                             >
                                 <button
                                     className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                         hover:bg-gray-200 cursor-pointer
                                         transition duration-300 delay-100
                                         
@@ -816,7 +817,7 @@ export function Toolbar({ editor }: any) {
                                 </button>
                                 <button
                                     className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                         hover:bg-gray-200 cursor-pointer
                                         transition duration-300 delay-100
                                     `}
@@ -832,7 +833,7 @@ export function Toolbar({ editor }: any) {
                                 </button>
                                 <button
                                     className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                         hover:bg-gray-200 cursor-pointer
                                         transition duration-300 delay-100
                                     `}
@@ -848,7 +849,7 @@ export function Toolbar({ editor }: any) {
                                 </button>
                                 <button
                                     className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                         hover:bg-gray-200 cursor-pointer
                                         transition duration-300 delay-100
                                     `}
@@ -864,7 +865,7 @@ export function Toolbar({ editor }: any) {
                                 </button>
                                 <button
                                     className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                         hover:bg-gray-200 cursor-pointer
                                         transition duration-300 delay-100
                                     `}
@@ -880,7 +881,7 @@ export function Toolbar({ editor }: any) {
                                 </button>
                                 <button
                                     className={`
-                                        h-8 w-8 flex justify-center items-center rounded-md
+                                        md:h-8 md:w-8 w-11 h-11 flex justify-center items-center rounded-md
                                         hover:bg-gray-200 cursor-pointer
                                         transition duration-300 delay-100
                                     `}

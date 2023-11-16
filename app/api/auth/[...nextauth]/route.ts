@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
                         username,
                     },
                 });
-                
+
                 if (!user || !(await compare(password, user.password))) {
                     throw new Error("Invalid username or password");
                 }
@@ -38,7 +38,6 @@ export const authOptions: NextAuthOptions = {
                 console.log("User", user);
                 console.log("Profile", profile);
 
-
                 return {
                     id: user.id,
                     username: user.username,
@@ -49,7 +48,7 @@ export const authOptions: NextAuthOptions = {
             },
         }),
     ],
-    pages: {    
+    pages: {
         signIn: "/signin",
         signOut: "/signout",
         error: "/error", // Error code passed in query string as ?error=
@@ -71,7 +70,7 @@ export const authOptions: NextAuthOptions = {
                 },
             };
         },
-        jwt: ({ token, user }) => {
+        jwt: ({ token, user, trigger, session }) => {
             // console.log("JWT Callback", { token, user });
             if (user) {
                 const u = user as unknown as any;
@@ -83,7 +82,13 @@ export const authOptions: NextAuthOptions = {
                     randomKey: u.randomKey,
                 };
             }
-            // console.log(token)
+            if (trigger === "update" && session?.name) {
+                // Note, that `session` can be any arbitrary object, remember to validate it!
+                token.name = session.name;
+                token.image = session.image;
+                token.username = session.username;
+            }
+            console.log(token)
             return token;
         },
     },

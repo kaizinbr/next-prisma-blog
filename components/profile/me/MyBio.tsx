@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ProfilePic from "./ProfilePic";
+import ProfilePic from "../general/ProfilePic";
 
 type userProps = {
     id: string;
@@ -28,13 +28,13 @@ type userProps = {
     }[];
 };
 
-export default function Bio({ userData }: userProps | any) {
+export default function MyBio({ userData }: userProps | any) {
     console.log(userData);
-    const ProfilePicProps = {
-        src: userData.Profile?.image!,
-        size: 220,
-        alt: `Foto de perfil de ${userData.name}`,
-    };
+    // const ProfilePicProps = {
+    //     src: userData.Profile?.image!,
+    //     size: 220,
+    //     alt: `Foto de perfil de ${userData.name}`,
+    // };
 
     // console.log("aaaa");
 
@@ -47,7 +47,7 @@ export default function Bio({ userData }: userProps | any) {
         
         `}
         >
-            <div
+            {/* <div
                 className={`
                     flex flex-col justify-center items-center
                     border-2 border-gray-300/80
@@ -113,7 +113,8 @@ export default function Bio({ userData }: userProps | any) {
                     <span className="font-semibold">Bio:</span>
                     <p>{userData.Profile?.bio!}</p>
                 </div>
-            </div>
+            </div> */}
+            <h1>bio</h1>
         </div>
     );
 }
