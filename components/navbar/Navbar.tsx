@@ -605,6 +605,127 @@ function useMenuAnimation(isOpen: boolean) {
 }
 
 const MobileMenu = () => {
+    const { data: session, status } = useSession();
+
+    let options = (
+        <>
+            <li>
+                <button
+                    className={`
+                                    h-16 w-16 justify-center items-center flex
+                                    hover:bg-violet-300 p-4
+                                    rounded-xl
+                                `}
+                    onClick={() => {
+                        setMoreOptions(!moreOptions);
+                        setIsOpen(!isOpen);
+                    }}
+                >
+                    <TbX className="h-8 w-8" />
+                </button>
+            </li>
+            <li>
+                <Link
+                    href="/profile"
+                    className={`
+                                    h-16 w-16 justify-center items-center flex
+                                    hover:bg-violet-300 p-4
+                                    rounded-xl
+                                `}
+                >
+                    <BiUser className="h-8 w-8" />
+                </Link>
+            </li>
+            
+            <li>
+                    <Link
+                        href="/blogs"
+                        className={`
+                            h-16 w-16 justify-center items-center flex
+                            rounded-lg
+                            hover:bg-violet-300
+                        `}
+                    >
+                        <BiFile className="h-8 w-8" />
+                    </Link>
+                </li>
+        </>
+    );
+
+    if (session) {
+        options = (
+            <>
+                <li>
+                    <button
+                        className={`
+                            h-16 w-16 justify-center items-center flex
+                            hover:bg-violet-300 p-4
+                            rounded-xl
+                        `}
+                        onClick={() => {
+                            setMoreOptions(!moreOptions);
+                            setIsOpen(!isOpen);
+                        }}
+                    >
+                        <TbX className="h-8 w-8" />
+                    </button>
+                </li>
+                <li>
+                    <Link
+                        href="/profile"
+                        className={`
+                            h-16 w-16 justify-center items-center flex
+                            hover:bg-violet-300 p-4
+                            rounded-xl
+                        `}
+                    >
+                        <BiUser className="h-8 w-8" />
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href="/blogs"
+                        className={`
+                            h-16 w-16 justify-center items-center flex
+                            rounded-lg
+                            hover:bg-violet-300
+                        `}
+                    >
+                        <BiFile className="h-8 w-8" />
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href="#"
+                        className={`
+                            h-16 w-16 justify-center items-center flex
+                            rounded-lg
+                            hover:bg-violet-300
+                        `}
+                    >
+                        <BiCog className="h-8 w-8" />
+                    </Link>
+                </li>
+                <li
+                    onClick={() => {
+                        signOut();
+                    }}
+                >
+                    <Link
+                        href="#"
+                        className={`
+                            h-16 w-16 justify-center items-center flex
+                            rounded-lg
+                            hover:bg-violet-300
+                        `}
+                    >
+                        <BiLogOut className="h-8 w-8" />
+                    </Link>
+                </li>
+            </>
+        );
+    }
+
     const [scrollY, setScrollY] = useState(0);
     const [scrollDirection, setScrollDirection] = useState("up");
     const [moreOptions, setMoreOptions] = useState(false);
@@ -702,69 +823,7 @@ const MobileMenu = () => {
                             rounded-l-2xl
                         `}
                     >
-                        <li>
-                            <button
-                                className={`
-                                    h-16 w-16 justify-center items-center flex
-                                    hover:bg-violet-300 p-4
-                                    rounded-xl
-                                `}
-                                onClick={() => {
-                                    setMoreOptions(!moreOptions);
-                                    setIsOpen(!isOpen);
-                                }}
-                            >
-                                <TbX className="h-8 w-8" />
-                            </button>
-                        </li>
-                        <li>
-                            <Link
-                                href="/profile"
-                                className={`
-                                    h-16 w-16 justify-center items-center flex
-                                    hover:bg-violet-300 p-4
-                                    rounded-xl
-                                `}
-                            >
-                                <BiUser className="h-8 w-8" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="#"
-                                className={`
-                                                h-16 w-16 justify-center items-center flex
-                                                rounded-lg
-                                                hover:bg-violet-300
-                                            `}
-                            >
-                                <BiNotification className="h-8 w-8" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="#"
-                                className={`
-                                                h-16 w-16 justify-center items-center flex
-                                                rounded-lg
-                                                hover:bg-violet-300
-                                            `}
-                            >
-                                <BiCog className="h-8 w-8" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="#"
-                                className={`
-                                                h-16 w-16 justify-center items-center flex
-                                                rounded-lg
-                                                hover:bg-violet-300
-                                            `}
-                            >
-                                <BiLogOut className="h-8 w-8" />
-                            </Link>
-                        </li>
+                        {options}
                     </ul>
                 </motion.div>
             </AnimatePresence>
