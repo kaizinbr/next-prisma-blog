@@ -162,7 +162,7 @@ const AsideNavbar = ({ children }: Props) => {
                 ${
                     open
                         ? "p-4 w-[232px] rounded-xl"
-                        : "p-1 h-10 w-10 rounded-full"
+                        : "p-1 h-16 w-16 rounded-full"
                 }
             `}
             >
@@ -567,9 +567,10 @@ function useMenuAnimation(isOpen: boolean) {
         animate(
             "ul",
             {
-                clipPath: isOpen
-                    ? "inset(0% 0% 0% 0% round 10px)"
-                    : "inset(90% 50% 10% 50% round 10px)",
+                // clipPath: isOpen
+                //     ? "inset(0% 0% 0% 0% round 10px)"
+                //     : "inset(0% 0% 0% 0% round 10px)",
+                // : "inset(90% 50% 10% 50% round 10px)",
             },
             {
                 type: "spring",
@@ -581,8 +582,18 @@ function useMenuAnimation(isOpen: boolean) {
         animate(
             "li",
             isOpen
-                ? { opacity: 1, scale: 1, filter: "blur(0px)" }
-                : { opacity: 0, scale: 0.3, filter: "blur(20px)" },
+                ? {
+                      opacity: 1,
+                      scale: 1,
+                      filter: "blur(0px)",
+                      transform: "translateX(0)",
+                  }
+                : {
+                      opacity: 0,
+                      scale: 0.3,
+                      filter: "blur(20px)",
+                      transform: "translateX(150%)",
+                  },
             {
                 duration: 0.2,
                 delay: isOpen ? staggerMenuItems : 0,
@@ -619,122 +630,143 @@ const MobileMenu = () => {
     }, [scrollY]);
 
     return (
-        <div
-            className={`
-                fixed bottom-0 left-0 z-40  h-16 w-screen transition-transform md:translate-y-full translate-y-0
-                bg-gray-100/80 backdrop-blur-lg border-t border-gray-400/30
-                rounded-t-2xl
-                ${scrollDirection === "up" ? "translate-y-0" : "translate-y-16"}
-            `}
-        >
+        <div className="fixed">
             <AnimatePresence>
-                {/* <span>O scroll está para {scrollDirection}</span> */}
                 <div
                     className={`
-                        flex justify-between items-center h-full 
-                        px-8 py-4 overflow-y-auto 
-                        text-gray-600 gap-3
-                    `}
+                    fixed bottom-0 left-0 z-40  h-16 w-screen transition-transform md:translate-y-full translate-y-0
+                    bg-gray-100/80 backdrop-blur-lg border-t border-gray-400/30
+                    rounded-t-2xl
+                    ${
+                        scrollDirection === "up"
+                            ? "translate-y-0"
+                            : "translate-y-16"
+                    }
+                `}
                 >
-                    <Link href="/">
-                        <BiHomeCircle className="h-7 w-7" />
-                    </Link>
-                    <Link href="/search">
-                        <BiSearch className="h-7 w-7" />
-                    </Link>
-                    <Link href="/post/create">
-                        <BiPlus className="h-7 w-7" />
-                    </Link>
-                    <Link href="/post/my">
-                        <BiEdit className="h-7 w-7" />
-                    </Link>
+                    {/* <span>O scroll está para {scrollDirection}</span> */}
                     <div
                         className={`
-                        flex justify-center items-center
-                        relative
-                    `}
+                            flex justify-between items-center h-full
+                            px-8 py-4 overflow-y-auto
+                            text-gray-600 gap-3
+                        `}
                     >
-                        <button
-                            onClick={() => {
-                                setMoreOptions(!moreOptions);
-                                setIsOpen(!isOpen);
-                            }}
-                        >
-                            <TbAlignCenter className="h-7 w-7" />
-                        </button>
-                        <motion.div
+                        <Link href="/">
+                            <BiHomeCircle className="h-7 w-7" />
+                        </Link>
+                        <Link href="/search">
+                            <BiSearch className="h-7 w-7" />
+                        </Link>
+                        <Link href="/post/create">
+                            <BiPlus className="h-7 w-7" />
+                        </Link>
+                        <Link href="/post/my">
+                            <BiEdit className="h-7 w-7" />
+                        </Link>
+                        <div
                             className={`
-                                fixed bottom-20
-                                h-52
-                            `}
-                            ref={scope}
+                            flex justify-center items-center
+                            relative
+                        `}
                         >
-                            <ul
-                                className={`
-                                    flex flex-col-reverse gap-2
-                                    bg-gray-100 border-gray-400/30
-                                    rounded-xl p-2
-                                    transition-all duration-300 ease-in-out
-                                    ${isOpen ? "z-40" : "-z-10"}
-                                `}
-                                style={{
-                                    pointerEvents: isOpen ? "auto" : "none",
-                                    clipPath:
-                                        "inset(90% 50% 10% 50% round 10px)",
+                            <button
+                                onClick={() => {
+                                    setMoreOptions(!moreOptions);
+                                    setIsOpen(!isOpen);
                                 }}
                             >
-                                <li>
-                                    <Link
-                                        href="/profile"
-                                        className={`
-                                            h-10 w-10 justify-center items-center flex
-                                            rounded-lg
-                                            bg-transparent hover:bg-violet-300
-                                        `}
-                                    >
-                                        <BiUser className="h-6 w-6" />
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        href="#"
-                                        className={`
-                                            h-10 w-10 justify-center items-center flex
-                                            rounded-lg
-                                            bg-transparent hover:bg-violet-300
-                                        `}
-                                    >
-                                        <BiNotification className="h-6 w-6" />
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        href="#"
-                                        className={`
-                                            h-10 w-10 justify-center items-center flex
-                                            rounded-lg
-                                            bg-transparent hover:bg-violet-300
-                                        `}
-                                    >
-                                        <BiCog className="h-6 w-6" />
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        href="#"
-                                        className={`
-                                            h-10 w-10 justify-center items-center flex
-                                            rounded-lg
-                                            bg-transparent hover:bg-violet-300
-                                        `}
-                                    >
-                                        <BiLogOut className="h-6 w-6" />
-                                    </Link>
-                                </li>
-                            </ul>
-                        </motion.div>
+                                <TbAlignCenter className="h-7 w-7" />
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <motion.div
+                    className={`
+                        fixed top-0 h-full w-fit z-50 
+                        transition-all duration-300 ease-in-out
+                        transitio
+                        ${isOpen ? "right-0" : "-right-full"}
+                    `}
+                    ref={scope}
+                >
+                    <ul
+                        className={`
+                            flex flex-col-reverse gap-3 p-2
+                            justify-center items-center
+                            transition-all duration-300 ease-in-out
+                            ${isOpen ? "z-40" : "-z-10"}
+                            w-24 bg-gray-50/70 backdrop-blur-xl saturate-50
+                            h-full float-right
+                            border border-gray-400/30
+                            rounded-l-2xl
+                        `}
+                    >
+                        <li>
+                            <button
+                                className={`
+                                    h-16 w-16 justify-center items-center flex
+                                    hover:bg-violet-300 p-4
+                                    rounded-xl
+                                `}
+                                onClick={() => {
+                                    setMoreOptions(!moreOptions);
+                                    setIsOpen(!isOpen);
+                                }}
+                            >
+                                <TbX className="h-8 w-8" />
+                            </button>
+                        </li>
+                        <li>
+                            <Link
+                                href="/profile"
+                                className={`
+                                    h-16 w-16 justify-center items-center flex
+                                    hover:bg-violet-300 p-4
+                                    rounded-xl
+                                `}
+                            >
+                                <BiUser className="h-8 w-8" />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="#"
+                                className={`
+                                                h-16 w-16 justify-center items-center flex
+                                                rounded-lg
+                                                hover:bg-violet-300
+                                            `}
+                            >
+                                <BiNotification className="h-8 w-8" />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="#"
+                                className={`
+                                                h-16 w-16 justify-center items-center flex
+                                                rounded-lg
+                                                hover:bg-violet-300
+                                            `}
+                            >
+                                <BiCog className="h-8 w-8" />
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="#"
+                                className={`
+                                                h-16 w-16 justify-center items-center flex
+                                                rounded-lg
+                                                hover:bg-violet-300
+                                            `}
+                            >
+                                <BiLogOut className="h-8 w-8" />
+                            </Link>
+                        </li>
+                    </ul>
+                </motion.div>
             </AnimatePresence>
         </div>
     );

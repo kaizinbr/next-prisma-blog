@@ -43,7 +43,8 @@ export default function LoginForm() {
                 router.push(callbackUrl);
                 setLoading(false);
             } else {
-                setError("invalid email or password");
+                setError("invalid email or cpassword");
+                console.log(res);
                 setLoading(false);
             }
         } catch (error: any) {
@@ -66,14 +67,10 @@ export default function LoginForm() {
             bg-gray-100
             hover:shadow-2xl hover:shadow-gray-400/20
             transition duration-300 ease-in-out
-            px-16
+            px-16 relative
         `}
         >
-            {error && (
-                <p className="text-center bg-red-300 py-4 mb-6 rounded">
-                    {error}
-                </p>
-            )}
+            
 
             <form
                 onSubmit={onSubmit}
@@ -185,6 +182,20 @@ export default function LoginForm() {
                     </Link>
                 </div>
             </form>
+
+            {error && (
+                <div
+                    className={`
+                    absolute top-0 left-0 right-0
+                    flex flex-col justify-center items-center
+                    h-14
+                `}
+                >
+                    <span className="text-center bg-red-300 py-4 px-6 mb-6 rounded">
+                        {error}
+                    </span>
+                </div>
+            )}
         </div>
     );
 }
