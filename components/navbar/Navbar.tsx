@@ -451,7 +451,6 @@ const AsideNavbar = ({ children }: Props) => {
                     </div>
                 </Link>
                 {/* <ProfilePic {...profilePicProps} /> */}
-                <Link href={"/profile"}></Link>
                 <div
                     className={`flex flex-col justify-center items-center text-center duration-300 ${
                         open ? "mt-4" : "scale-0 h-0 mt-2"
@@ -626,7 +625,7 @@ const MobileMenu = () => {
             </li>
             <li>
                 <Link
-                    href="/profile"
+                    href="/profile/edit"
                     className={`
                                     h-16 w-16 justify-center items-center flex
                                     hover:bg-violet-300 p-4
@@ -636,19 +635,19 @@ const MobileMenu = () => {
                     <BiUser className="h-8 w-8" />
                 </Link>
             </li>
-            
+
             <li>
-                    <Link
-                        href="/blogs"
-                        className={`
+                <Link
+                    href="/blogs"
+                    className={`
                             h-16 w-16 justify-center items-center flex
                             rounded-lg
                             hover:bg-violet-300
                         `}
-                    >
-                        <BiFile className="h-8 w-8" />
-                    </Link>
-                </li>
+                >
+                    <BiFile className="h-8 w-8" />
+                </Link>
+            </li>
         </>
     );
 
@@ -671,15 +670,36 @@ const MobileMenu = () => {
                     </button>
                 </li>
                 <li>
+                    <Link href={`/${session.user.username}`}>
+                        <div
+                            className={`
+                            flex items-center justify-center flex-shrink-0 bg-gray-200 rounded-full
+                            transition-all duration-300 ease-in-out scale-100 w-11 h-11 
+                        `}
+                        >
+                            <Image
+                                className={`
+                                     rounded-full
+                                     transition duration-300 ease-in-out
+                                `}
+                                src={session?.user?.image!}
+                                height={144}
+                                width={144}
+                                alt="avatar"
+                            />
+                        </div>
+                    </Link>
+                </li>
+                <li>
                     <Link
-                        href="/profile"
+                        href="/profile/edit"
                         className={`
                             h-16 w-16 justify-center items-center flex
                             hover:bg-violet-300 p-4
                             rounded-xl
                         `}
                     >
-                        <BiUser className="h-8 w-8" />
+                        <TbUserEdit className="h-8 w-8" />
                     </Link>
                 </li>
                 <li>
