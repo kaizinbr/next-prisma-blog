@@ -37,5 +37,5 @@ next-env.d.ts
 
 .ui-templates
 
-/fonts 
+# /fonts 
 /prisma-nextjs-blog
