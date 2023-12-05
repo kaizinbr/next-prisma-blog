@@ -15,90 +15,90 @@ import localFont from "next/font/local";
 import { AsideNavbar, MobileMenu } from "@/components/navbar/Navbar";
 import BasicBody from "@/components/Provider copy";
 
-const HelveticaNowText = localFont({
-    src: [
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-Thin.woff2",
-            weight: "100",
-            style: "normal",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-ThinItalic.woff2",
-            weight: "100",
-            style: "italic",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-ExtraLight.woff2",
-            weight: "200",
-            style: "normal",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-ExtLtIta.woff2",
-            weight: "200",
-            style: "italic",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-Light.woff2",
-            weight: "300",
-            style: "normal",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-LightItalic.woff2",
-            weight: "300",
-            style: "italic",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-Regular.woff2",
-            weight: "400",
-            style: "normal",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-RegIta.woff2",
-            weight: "400",
-            style: "italic",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-Medium.woff2",
-            weight: "500",
-            style: "normal",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-MediumItalic.woff2",
-            weight: "500",
-            style: "italic",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-Bold.woff2",
-            weight: "700",
-            style: "normal",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-BoldItalic.woff2",
-            weight: "700",
-            style: "italic",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-ExtraBold.woff2",
-            weight: "800",
-            style: "normal",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-ExtBdIta.woff2",
-            weight: "800",
-            style: "italic",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-Black.woff2",
-            weight: "900",
-            style: "normal",
-        },
-        {
-            path: "../fonts/HelveticaNowText/HelveticaNowText-BlackItalic.woff2",
-            weight: "900",
-            style: "italic",
-        },
-    ],
-});
+// const HelveticaNowText = localFont({
+//     src: [
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-Thin.woff2",
+//             weight: "100",
+//             style: "normal",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-ThinItalic.woff2",
+//             weight: "100",
+//             style: "italic",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-ExtraLight.woff2",
+//             weight: "200",
+//             style: "normal",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-ExtLtIta.woff2",
+//             weight: "200",
+//             style: "italic",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-Light.woff2",
+//             weight: "300",
+//             style: "normal",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-LightItalic.woff2",
+//             weight: "300",
+//             style: "italic",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-Regular.woff2",
+//             weight: "400",
+//             style: "normal",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-RegIta.woff2",
+//             weight: "400",
+//             style: "italic",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-Medium.woff2",
+//             weight: "500",
+//             style: "normal",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-MediumItalic.woff2",
+//             weight: "500",
+//             style: "italic",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-Bold.woff2",
+//             weight: "700",
+//             style: "normal",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-BoldItalic.woff2",
+//             weight: "700",
+//             style: "italic",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-ExtraBold.woff2",
+//             weight: "800",
+//             style: "normal",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-ExtBdIta.woff2",
+//             weight: "800",
+//             style: "italic",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-Black.woff2",
+//             weight: "900",
+//             style: "normal",
+//         },
+//         {
+//             path: "../fonts/HelveticaNowText/HelveticaNowText-BlackItalic.woff2",
+//             weight: "900",
+//             style: "italic",
+//         },
+//     ],
+// });
 
 export const metadata = {
     title: "dots",
