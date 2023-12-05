@@ -7,11 +7,13 @@
         "build": "npx prisma migrate deploy && next build",
         "start": "next start",
         "db:up": "docker-compose up -d",
-        "db:down": "docker-compose down"
+        "db:down": "docker-compose down",
+        "vercel-build": "npx prisma generate --data-proxy && next build"
     },
     "dependencies": {
         "@next-auth/prisma-adapter": "^1.0.7",
         "@prisma/client": "^5.6.0",
+        "@prisma/extension-accelerate": "^0.6.2",
         "@react-hook/window-size": "^3.1.1",
         "@tiptap/extension-blockquote": "^2.0.4",
         "@tiptap/extension-code": "^2.0.4",
@@ -48,7 +50,7 @@
         "eslint-config-next": "13.4.12",
         "firebase": "^10.3.0",
         "framer-motion": "^10.16.2",
-        "next": "^14.0.2",
+        "next": "^14.0.3",
         "next-auth": "^4.22.3",
         "next-page-transitions": "^1.0.0-beta.2",
         "postcss": "8.4.27",

@@ -42,17 +42,18 @@ export default function Bio({ userData }: userProps | any) {
         <div
             className={`
             flex items-center justify-center
-            col-span-4 
+            col-span-6 lg:col-span-4 
             relative
+            order-1 lg:order-none w-full 
         
         `}
         >
             <div
                 className={`
-                    flex flex-col justify-center items-center
+                    flex flex-col justify-center lg:items-center
                     border-2 border-gray-300/80
                     bg-gray-100/60
-                    rounded-2xl fixed w-[352px] top-9
+                    rounded-2xl lg:fixed w-full md:w-[352px] top-9
                     py-4 px-6 gap-6
                 `}
             >

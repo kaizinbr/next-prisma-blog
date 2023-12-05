@@ -170,7 +170,7 @@ export default function Profile(
         >
             <div
                 className={`
-                    profile grid grid-cols-12 gap-8 flex-col-reverse
+                    profile flex justify-center items-center flex-col-reverse
                     
                 `}
             >
@@ -188,20 +188,21 @@ export default function Profile(
                     }}
                 ></div>
                 {/* <Posts data={myData.posts}/> */}
-                <div
+                {/* <div
                     className={`
                         flex items-center justify-center
                         col-span-4 col-start-8
                         relative
                     
                     `}
-                >
+                > */}
                     <div
                         className={`
                             flex flex-col justify-center items-center
                             border-2 border-gray-300/80
                             bg-gray-100/60
-                            rounded-2xl fixed w-[352px] top-9
+                            rounded-2xl  
+                            md:w-[352px] w-full
                             py-4 px-6 gap-6
                         `}
                     >
@@ -214,7 +215,7 @@ export default function Profile(
                         >
                             <label
                                 htmlFor="name"
-                                className="text-xs text-gray-500 displayMedium mb-2"
+                                className="text-base md:text-xs text-gray-500 displayMedium mb-2"
                             >
                                 Seu nome
                             </label>
@@ -229,12 +230,12 @@ export default function Profile(
                                     bg-gray-200 w-full
                                     focus:bg-gray-300
                                     transition duration-200 ease-in-out
-                                    text-base displayMedium text-gray-600
+                                    text-lg md:text-lg md:text-base displayMedium text-gray-600
                                 `}
                             ></input>
                             <label
                                 htmlFor="username"
-                                className="text-xs text-gray-500 displayMedium mb-2 mt-6"
+                                className="text-base md:text-xs text-gray-500 displayMedium mb-2 mt-6"
                             >
                                 Nome de usuário
                             </label>
@@ -254,12 +255,12 @@ export default function Profile(
                                     bg-gray-200 w-full
                                     focus:bg-gray-300
                                     transition duration-200 ease-in-out
-                                    text-base displayMedium text-gray-600
+                                    text-lg md:text-base displayMedium text-gray-600
                                 `}
                             ></input>
                             <span>
                                 {testUsername(formValues.username) ? (
-                                    <p className="text-xs text-red-500">
+                                    <p className="text-base md:text-xs text-red-500">
                                         {testUsername(formValues.username)}
                                     </p>
                                 ) : null}
@@ -267,7 +268,7 @@ export default function Profile(
 
                             <label
                                 htmlFor="pronouns"
-                                className="text-xs text-gray-500 displayMedium mb-2 mt-6"
+                                className="text-base md:text-xs text-gray-500 displayMedium mb-2 mt-6"
                             >
                                 Seus pronomes
                             </label>
@@ -286,7 +287,7 @@ export default function Profile(
                                     bg-gray-200 w-full
                                     focus:bg-gray-300
                                     transition duration-200 ease-in-out
-                                    text-base displayMedium text-gray-600
+                                    text-lg md:text-base displayMedium text-gray-600
                                 `}
                             ></input>
                             <div
@@ -327,7 +328,7 @@ export default function Profile(
                             >
                                 <label
                                     htmlFor="bio"
-                                    className="text-xs text-gray-500 displayMedium mb-2"
+                                    className="text-base md:text-xs text-gray-500 displayMedium mb-2"
                                 >
                                     Bio
                                 </label>
@@ -341,7 +342,7 @@ export default function Profile(
                                     bg-gray-200 w-full
                                     focus:bg-gray-300
                                     transition duration-200 ease-in-out
-                                    text-base displayMedium text-gray-600
+                                    text-lg md:text-base displayMedium text-gray-600
                                 `}
                                 ></textarea>
                             </div>
@@ -371,7 +372,7 @@ export default function Profile(
                                 </button>
                             </div>
                         </form>
-                    </div>
+                    {/* </div> */}
                 </div>
             </div>
             {disabled && (

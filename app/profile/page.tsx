@@ -1,25 +1,65 @@
+import React from "react";
+import { prisma } from "@/lib/prisma";
 
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-import { useSession } from "next-auth/react"
+import Profile from "@/components/profile/me/Profile";
 
-export default function Page() {
-  const { data: session, status, update } = useSession()
+export default async function Page() {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+    console.log(session?.user);
 
-  if (status === "authenticated") {
+    const ME = await prisma.user.findUnique({
+        where: {
+            username: session?.user.username,
+        },
+
+        select: {
+            id: true,
+            username: true,
+            name: true,
+            email: true,
+            createdAt: true,
+            updatedAt: true,
+            posts: {
+                where: {
+                    published: true,
+                },
+                include: {
+                    author: {
+                        select: {
+                            name: true,
+                            username: true,
+                            Profile: {
+                                select: {
+                                    image: true,
+                                },
+                            },
+                        },
+                    },
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            },
+            Profile: true,
+        },
+    });
+
+    const USERSLIST = await prisma.user.findMany({
+        select: {
+            username: true,
+        },
+    });
+    // console.log(USERSLIST);
+    const usersArr = USERSLIST.map((user) => user.username);
+    console.log(usersArr);
     return (
-      <>
-        <p>Signed in as {session.user.name}</p>
-
-        {/* Update the value by sending it to the backend. */}
-        <button onClick={() => update({ name: "John Doe" })}>Edit name</button>
-        {/*
-         * Only trigger a session update, assuming you already updated the value server-side.
-         * All `useSession().data` references will be updated.
-         */}
-        <button onClick={() => update()}>Edit name</button>
-      </>
-    )
-  }
-
-  return <a href="/api/auth/signin">Sign in</a>
+        <div>
+            {/* <div>Perfil de: {params.username}</div> */}
+            <Profile data={{ME, usersArr}} allUsernames={usersArr} />
+        </div>
+    );
 }

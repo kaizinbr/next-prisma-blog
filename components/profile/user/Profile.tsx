@@ -47,7 +47,9 @@ export default function Profile({ userData }: userProps | any) {
         >
             <div
                 className={`
-                    profile grid grid-cols-12 gap-8 flex-col-reverse
+                    profile grid flex-col-reverse
+                    grid-cols-6 gap-4 
+                    lg:grid-cols-12 lg:gap-8
                     
                 `}
             >

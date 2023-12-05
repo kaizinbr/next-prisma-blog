@@ -37,12 +37,13 @@ export default function Posts({ data }: [any] | any) {
     // https://github.com/nekusu/shopping-cart/blob/main/src/pages/GameList/components/Grid.tsx
 
     return (
-        <div className="flex justify-center items-start col-span-8">
+        <div className="flex justify-center items-start col-span-6 lg:col-span-7 order-2 lg:order-none">
             <div
                 className={`
                 grid grid-cols-1 gap-6
                 py-4 px-6 max-md:px-0
                 max-w-3xl m-auto
+
             `}
             >
                 <>

@@ -232,7 +232,7 @@ const AsideNavbar = ({ children }: Props) => {
                     </li>
                     <li>
                         <Link
-                            href="/profile/edit"
+                            href="/profile"
                             className={`
                                 flex items-center p-2  rounded-lg 
                                 hover:bg-violet-400  transition duration-300 group 
@@ -625,7 +625,7 @@ const MobileMenu = () => {
             </li>
             <li>
                 <Link
-                    href="/profile/edit"
+                    href="/profile"
                     className={`
                                     h-16 w-16 justify-center items-center flex
                                     hover:bg-violet-300 p-4
@@ -692,7 +692,7 @@ const MobileMenu = () => {
                 </li>
                 <li>
                     <Link
-                        href="/profile/edit"
+                        href="/profile"
                         className={`
                             h-16 w-16 justify-center items-center flex
                             hover:bg-violet-300 p-4
