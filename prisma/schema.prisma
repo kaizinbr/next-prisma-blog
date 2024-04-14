@@ -15,21 +15,48 @@ model Todo {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String        @id @default(cuid())
     name          String?
-    username      String    @unique
+    username      String        @unique
     password      String
-    email         String?   @unique
-    emailVerified DateTime? @map("email_verified")
-    createdAt     DateTime  @default(now()) @map(name: "created_at")
-    updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-    posts         Post[]
+    email         String?       @unique
+    emailVerified DateTime?     @map("email_verified")
+    createdAt     DateTime      @default(now()) @map(name: "created_at")
+    updatedAt     DateTime      @updatedAt @map(name: "updated_at")
+    posts         Post[]        @relation("author")
+    LikesByUser   LikesByUser[]
     accounts      Account[]
     sessions      Session[]
     postId        String?
     Profile       Profile?
+    following     Follower[]    @relation("UserFollows")
+    followers     Follower[]    @relation("UserFollowedBy")
+    blocking      Block[]       @relation("UserBlocks")
+    blocks        Block[]       @relation("UserBlockedBy")
 
     @@map(name: "users")
+}
+
+model Follower {
+    id         String   @id @default(cuid())
+    followedAt DateTime @default(now())
+
+    Seguidor   User   @relation("UserFollows", fields: [userId], references: [id])
+    Seguindo   User   @relation("UserFollowedBy", fields: [followerId], references: [id])
+    userId     String
+    followerId String
+}
+
+model Block {
+    id        String   @id @default(cuid())
+    blockedAt DateTime @default(now())
+
+    blocker   User   @relation("UserBlocks", fields: [userId], references: [id])
+    blocked   User   @relation("UserBlockedBy", fields: [blockedId], references: [id])
+    userId    String
+    blockedId String
+
+    @@map("blocks")
 }
 
 model Profile {
@@ -40,32 +67,39 @@ model Profile {
     color    String? @default("#59656F")
     user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId   String  @unique
-    liked    Post[]
     pronouns String?
 }
 
+model LikesByUser {
+    id     String @id @default(cuid())
+    userId String
+    post   Post   @relation(fields: [postId], references: [id])
+    postId String
+    User   User   @relation(fields: [userId], references: [id])
+
+    // @@id([userId, postId])
+}
+
 model Post {
-    id         String     @id @default(cuid())
-    slug       String     @unique
-    title      String?
-    subtitle   String?
-    json       Json?
-    html       String?
-    imageURL   String?
-    imageAlt   String?
-    imageTitle String?
-    tags       String[]
-    serifed    Boolean    @default(false)
-    published  Boolean    @default(false)
-    author     User?      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-    authorId   String?
-    authorName String?
-    categories Category[]
-    createdAt  DateTime   @default(now()) @map(name: "created_at")
-    updatedAt  DateTime   @updatedAt @map(name: "updated_at")
-    blocked    Boolean    @default(false)
-    Profile    Profile?   @relation(fields: [profileId], references: [id])
-    profileId  String?
+    id          String        @id @default(cuid())
+    content     String?
+    mediaURL    String[]
+    isRepost    Boolean       @default(false)
+    reposted    Post?         @relation("reposts", fields: [repostedId], references: [id])
+    reposts     Post[]        @relation("reposts")
+    repostedId  String?
+    author      User?         @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
+    authorId    String?
+    authorName  String?
+    createdAt   DateTime      @default(now()) @map(name: "created_at")
+    updatedAt   DateTime      @updatedAt @map(name: "updated_at")
+    blocked     Boolean       @default(false)
+    likesCount  Int           @default(0)
+    LikesByUser LikesByUser[]
+    userId      String?
+    comments    Post[]        @relation("comments")
+    responseId  String?
+    responseTo  Post?         @relation("comments", fields: [responseId], references: [id])
 }
 
 model Img {
@@ -75,6 +109,8 @@ model Img {
     subtitle  String?
     author    String?
     createdAt DateTime @default(now())
+    postId    String
+    // post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -109,11 +145,11 @@ model Session {
     @@map("sessions")
 }
 
-model Category {
-    id    Int    @id @default(autoincrement())
-    name  String
-    posts Post[]
-}
+// model Category {
+//     id    Int    @id @default(autoincrement())
+//     name  String
+//     posts Post[]
+// }
 
 model Image {
     id        Int      @id @default(autoincrement())

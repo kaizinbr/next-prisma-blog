@@ -4,9 +4,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TbTrash, TbSquareRoundedChevronRight } from "react-icons/tb";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import Context from "@/services/context";
 import Image from "next/image";
+
+import { GetAuthor } from "./GetAuthor";
+import { LikeBtn } from "../btns/LikeBtn";
+import { RepostBtn } from "../btns/RepostBtn";
 
 export function MyPostCard(data: any) {
     const router = useRouter();
@@ -356,11 +360,9 @@ export function MyPostCardDown(data: any, setLoading: Function) {
 
 export function DefPostCard(data: any) {
     const router = useRouter();
-    // const post = data.post;
-    // console.log(data.post);
-    const serifed = data.post.serifed ? "serifed" : "";
+    console.log(data);
 
-    const img = data.post.imageURL ? true : false;
+    const img = data.post.mediaURL ? true : false;
 
     const imagePreview = (
         <div
@@ -382,81 +384,87 @@ export function DefPostCard(data: any) {
     )
 
     return (
-        <Link
-            href={`/post/${data.post.slug}`}
-            className={`
-                col-span-1
-                
-            `}
-        >
-            <div
+        <>
+            <Link
+                href={`/post/${data.post.id}`}
                 className={`
-                    flex flex-col justify-between
-                    bg-gray-50 border-2 border-transparent hover:border-gray-300/80
-                    transition transition-300 delay-100 ease-in-out
-                    overflow-hidden
-                    rounded-xl col-span-2
-                    min-[1144px]:col-span-1
-                    px-4 sm:px-6 py-6 gap-4
-                    postcard
+                    col-span-1
+                    
                 `}
             >
-                <div className=
-                {` head
-                    flex flex-row gap-3 items-center
-                
-                `}>
-                    <img 
-                        src={data.post.author.Profile.image}
-                        alt={data.post.imageAlt}
-                        className={`
-                            h-11 w-11 rounded-full md:h-10 md:w-10
-                        `}
-                    />
-                    <div className="flex flex-col">
-                        <h3 className="md:text-sm text-base displayBold text-gray-900">
-                            {data.post.author.name}
-                        </h3>
-                        <span className="md:text-xs text-md text-gray-900">
-                            @{data.post.author.username}
-                        </span>
-                    </div>
-                    
-                </div>
-                <div className="">
-                    <h3 className="md:text-lg text-xl mb-3 leading-6 displayBold text-gray-900">
-                        {data.post.title}
-                    </h3>
-                    <div
-                        className={
-                            serifed +
-                            `
-                            md:text-sm text-base text-gray-800
-                        `
-                        }
-                        dangerouslySetInnerHTML={{
-                            __html: data.post.subtitle!.slice(0, 200) + "...",
-                        }}
-                    ></div>
-                </div>
                 <div
                     className={`
-                        flex flex-row gap-3
-                        text-xs text-gray-700
+                        flex flex-col justify-between
+                        bg-gray-50 border-2 border-transparent hover:border-gray-300/80
+                        transition transition-300 delay-100 ease-in-out
+                        overflow-hidden
+                        rounded-xl col-span-2
+                        min-[1144px]:col-span-1
+                        px-4 sm:px-6 py-6 gap-4
+                        postcard
                     `}
                 >
-                    <div className="">
-                        Criado em{" "}
-                        {new Date(data.post.createdAt).toLocaleDateString()}
+                    <div className=
+                    {` head
+                        flex flex-row gap-3 items-center
+                    
+                    `}>
+                        <img 
+                            src={data.post.author.Profile.image}
+                            alt='aaa'
+                            className={`
+                                h-11 w-11 rounded-full md:h-10 md:w-10
+                            `}
+                        />
+                        <div className="flex flex-col">
+                            <h3 className="md:text-sm text-base displayBold text-gray-900">
+                                {data.post.authorName}
+                            </h3>
+                            <span className="md:text-xs text-md text-gray-900">
+                                @{data.post.author.username}
+                            </span>
+                        </div>
+                        
                     </div>
-                    <span className="">|</span>
                     <div className="">
-                        Editado em{" "}
-                        {new Date(data.post.updatedAt).toLocaleDateString()}
+                        <span  className="md:text-lg text-lg mb-3 leading-6 displayBold text-gray-900 whitespace-pre-wrap">
+                            {data.post.content}
+                        </span>
+                        <br />
+                        <span>{data.post.likesCount}</span>
+                        {/* <p
+                            className={
+                                `
+                                md:text-sm text-base text-gray-800
+                            `
+                            }
+                            dangerouslySetInnerHTML={{
+                                __html: data.post.content!,
+                            }}
+                        ></p> */}
                     </div>
+                    <div
+                        className={`
+                            flex flex-row gap-3
+                            text-xs text-gray-700
+                        `}
+                    >
+                        <div className="">
+                            Criado em{" "}
+                            {new Date(data.post.createdAt).toLocaleDateString()}
+                        </div>
+                        <span className="">|</span>
+                        <div className="">
+                            Editado em{" "}
+                            {new Date(data.post.updatedAt).toLocaleDateString()}
+                        </div>
+                    </div>
+                    {img ? imagePreview : ""}
                 </div>
-                {img ? imagePreview : ""}
-            </div>
-        </Link>
+            </Link>
+            
+            <LikeBtn postId={data.post.id} />
+            <RepostBtn postId={data.post.id} />
+        </>
     );
 }

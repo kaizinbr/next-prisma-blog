@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { PrismaClient } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from "next";
 import encryptPass from "@/services/encryptPass";
 import containsSpecialChars from "@/services/containsSpecialChars";
@@ -6,6 +7,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     const { name, username, password } = await req.json();
+    console.log(name, username, password);
     const specialChars = containsSpecialChars(username);
     if (specialChars) {
         return NextResponse.json(

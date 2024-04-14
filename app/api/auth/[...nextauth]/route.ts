@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import { compare } from "bcrypt";
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
@@ -25,6 +25,8 @@ const authOptions: NextAuthOptions = {
                     },
                 });
 
+                console.log('pass', password, 'e word', user?.password)
+
                 if (!user || !(await compare(password, user.password))) {
                     throw new Error("Invalid username or password");
                 }
@@ -35,8 +37,6 @@ const authOptions: NextAuthOptions = {
                     },
                 });
 
-                console.log("User", user);
-                console.log("Profile", profile);
 
                 return {
                     id: user.id,
@@ -94,6 +94,5 @@ const authOptions: NextAuthOptions = {
     },
 };
 
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+const handler = NextAuth(authOptions)
+export { handler as GET, handler as POST}

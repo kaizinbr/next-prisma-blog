@@ -8,58 +8,70 @@ import { getServerSession } from "next-auth/next";
 import slugify from "@/services/slugify";
 import replaceHtml from "@/services/replaceHtml";
 import getImage from "@/services/formatImg";
+import { connect } from "http2";
 
 export async function POST(req: Request) {
-    const { content, responseTo } = await req.json();
-    console.log(content);
+    const { postId } = await req.json();
+    console.log(postId);
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
+    const username = session?.user?.username!;
+    const name = session?.user?.name;
 
     try {
         console.log("Salvando post no banco de dados...");
-        if (responseTo) {
-            console.log("Respondendo a um post...", responseTo[0]);
-            const post = await prisma.post.create({
-                data: {
-                    content,
-                    author: {
-                        connect: {
-                            id: userId,
-                        },
-                    },
-                    authorName: session?.user?.name,
-                    responseTo: {
-                        connect: {
-                            id: responseTo[0],
-                        },
-                    },
+        if (userId && postId) {
+            const exists = await prisma.post.findFirst({
+                where: {
+                    isRepost: true,
+                    repostedId: postId,
+                    authorId: userId,
                 },
             });
-            return NextResponse.json({
-                message: "Salvo com sucesso",
-                success: true,
-                post,
-            });
-        } else {
-            console.log("Criando um novo post...");
-            const post = await prisma.post.create({
-                data: {
-                    content,
-                    author: {
-                        connect: {
-                            id: userId,
-                        },
-                    },
-                    authorName: session?.user?.name,
-                },
-            });
-            return NextResponse.json({
-                message: "Salvo com sucesso",
-                success: true,
-                post,
-            });
-        }
+            console.log('passou do exists', exists)
 
+            if (exists) {
+                console.log('entrou no delete')
+                await prisma.post.delete({
+                    where: {
+                        id: exists.id,
+                    },
+                });
+
+
+                return NextResponse.json({
+                    message: "Salvo com sucesso",
+                    success: true,
+                    post: exists,
+                });
+            } else {
+                console.log("entrou no create")
+                const post = await prisma.post.create({
+                    data: {
+                        author: {
+                            connect: {
+                                id: userId,
+                            },
+                        },
+                        reposted: {
+                            connect:{
+                                id: postId
+                            }
+                        },
+                        isRepost: true,
+                        
+                    },
+                });
+                console.log(post);
+                console.log('criou repost')
+
+                return NextResponse.json({
+                    message: "Salvo com sucesso",
+                    success: true,
+                    post,
+                });
+            }
+        }
         // }
     } catch (err) {
         return NextResponse.json({ message: err, success: false });
