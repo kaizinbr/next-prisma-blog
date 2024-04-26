@@ -9,9 +9,10 @@ import slugify from "@/services/slugify";
 import replaceHtml from "@/services/replaceHtml";
 
 export async function POST(req: Request) {
-    const { url, authorId, alt, subtitle } = await req.json();
-    // const session = await getServerSession(authOptions);
-    // const userId = session?.user?.id;
+    const { url, alt, subtitle } = await req.json();
+    console.log(url, alt, subtitle, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
 
     try {
         
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
                     url,
                     alt,
                     subtitle,
-                    author: authorId,
+                    author: userId,
                 },
             });
 

@@ -18,11 +18,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
             email: true,
             createdAt: true,
             updatedAt: true,
-            posts: {
-                where: {
-                    published: true,
-                },
-            },
+            posts: true,
             Profile: true,
         },
     });
@@ -38,17 +34,17 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     const searchParams = req.nextUrl.searchParams;
     const session = await getServerSession(authOptions);
 
-    const formParams = await req.json();
-    const formId = formParams.myId;
+    const {formValues, imgURL, myId} = await req.json();
+    // const myId = myId;
     const sessionId = session?.user?.id;
     const paramsId = searchParams.get("id");
     // console.log(formParams)
     // console.log(formId, sessionId, paramsId);
     
-    if (formId !== sessionId) {
+    if (myId !== sessionId) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
-    else if (formId !== paramsId) {
+    else if (myId !== paramsId) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
     else if (sessionId !== paramsId) {
@@ -60,13 +56,14 @@ export async function PUT(req: NextRequest, res: NextResponse) {
                 id: sessionId,
             },
             data: {
-                name: formParams.formValues.name,
-                username: formParams.formValues.username,
+                name: formValues.name,
+                username: formValues.username,
                 Profile: {
                     update: {
-                        name: formParams.formValues.name,
-                        bio: formParams.formValues.bio,
-                        pronouns: formParams.formValues.pronouns,
+                        name: formValues.name,
+                        bio: formValues.bio,
+                        pronouns: formValues.pronouns,
+                        image: imgURL,
                     },
                 },
             },

@@ -9,7 +9,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoginButton, LogoutButton, SignupButton } from "@/components/auth";
 import Loading from "@/components/Loading";
-import {ProfilePicGen} from "../profile/general/ProfilePic";
+import { ProfilePicGen } from "../profile/general/ProfilePic";
 import {
     BiHomeCircle,
     BiNotification,
@@ -29,6 +29,14 @@ import {
     TbExclamationMark,
     TbUserEdit,
 } from "react-icons/tb";
+import {
+    GoHome,
+    GoHomeFill,
+    GoSearch,
+    GoBell,
+    GoCircle,
+    GoPerson,
+} from "react-icons/go";
 import CreatePostBtn from "@/components/buttons/CreatePostBtn";
 import { useAnimate, stagger, motion, AnimatePresence } from "framer-motion";
 
@@ -36,7 +44,7 @@ type Props = {
     children?: React.ReactNode;
 };
 
-const AsideNavbar = ({ children }: Props) => {
+const Navbar = () => {
     const router = useRouter();
 
     const { data: session, status } = useSession();
@@ -428,21 +436,19 @@ const AsideNavbar = ({ children }: Props) => {
         // console.log(profilePicProps)
 
         mainDiv = (
-            <div
-                className={`flex flex-col items-center justify-between w-full z-10`}
-            >
+            <div className={`flex flex-col items-center justify-between z-10`}>
                 <Link href={`/${session.user.username}`}>
                     <div
                         className={`
                             flex items-center justify-center flex-shrink-0 bg-gray-200 rounded-full
-                            transition-all duration-300 ease-in-out scale-100
-                            ${open ? "w-36 h-36" : "w-11 h-11 mt-11"}
+                            transition-all duration-300 ease-in-out scale-100  p-[2px] border-[3px] border-violet-400
                         `}
                     >
                         <Image
                             className={`
-                                     rounded-full
-                                     transition duration-300 ease-in-out
+                                    rounded-full
+                                    transition duration-300 ease-in-out
+                                    w-11 h-11
                                 `}
                             src={session?.user?.image!}
                             height={144}
@@ -451,23 +457,6 @@ const AsideNavbar = ({ children }: Props) => {
                         />
                     </div>
                 </Link>
-                {/* <ProfilePic {...profilePicProps} /> */}
-                <div
-                    className={`flex flex-col justify-center items-center text-center duration-300 ${
-                        open ? "mt-4" : "scale-0 h-0 mt-2"
-                    }`}
-                >
-                    <h1
-                        className={`text-xl displayExtBold leading-7 text-gray-900 sm:text-2xl`}
-                    >
-                        {session?.user?.name}
-                    </h1>
-                    <h3
-                        className={`text-lg displayMedium leading-7 text-gray-500 sm:text-sm`}
-                    >
-                        @{session?.user?.username}
-                    </h3>
-                </div>
             </div>
         );
 
@@ -479,18 +468,17 @@ const AsideNavbar = ({ children }: Props) => {
             <aside
                 id="default-sidebar"
                 className={`
-                    fixed top-0 left-0 z-40  h-screen transition-transform -translate-x-full md:translate-x-0
-                    bg-gray-200 border-r border-gray-400/70
+                    fixed top-0 right-0 z-40  h-auto p-2 transition-transform -translate-x-full md:translate-x-0
+                    
                 `}
                 aria-label="Sidebar"
             >
                 <div
                     className={`
-                        flex flex-col items-start
-                        h-full px-3 py-4 overflow-y-auto bg-gray-200 text-neutral-800
+                        flex flex-row items-center justify-between
+                        h-full px-3 py-2 
                         gap-3
-                        transition-all duration-300 ease-in-out
-                        ${open ? "w-64" : "w-16"}
+                        
                     `}
                 >
                     {/* <Loading /> */}
@@ -498,15 +486,31 @@ const AsideNavbar = ({ children }: Props) => {
                         <Loading />
                     ) : (
                         <>
-                            <button
-                                data-drawer-close="default-sidebar"
-                                aria-controls="default-sidebar"
-                                type="button"
+                            <Link
+                                href="/"
                                 className={`
-                                    w-10 h-10
-                                    absolute right-3 top-3
-                                    bg-gray-200
-                                    inline-flex items-center justify-center p-2 rounded-full hover:bg-violet-400 hover:border-violet-500
+                                    flex items-center justify-center
+                                    hover:bg-violet-400  transition duration-300 group 
+                                    w-[52.8px] h-[52.8px]
+                                    right-3 top-3
+                                    bg-white/80 backdrop-blur-xl
+                                     p-[3px] rounded-full
+                                    hover:border-violet-500 
+                                `}
+                            >
+                                <BiHomeCircle
+                                    className={`
+                                        w-7 h-7
+                                    `}
+                                />
+                            </Link>
+                            <button
+                                className={`
+                                    w-[52.8px] h-[52.8px]
+                                    right-3 top-3
+                                    bg-white/80 backdrop-blur-xl
+                                    inline-flex items-center justify-center p-[3px] rounded-full
+                                    hover:bg-violet-400 hover:border-violet-500
                                     hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200
                                     transition duration-300 delay-100 ease-in-out 
                                     z-20
@@ -526,13 +530,13 @@ const AsideNavbar = ({ children }: Props) => {
                                 {open ? (
                                     <TbX className="h-5 w-5" />
                                 ) : (
-                                    <TbAlignCenter className="h-5 w-5" />
+                                    <TbAlignCenter className="w-6 h-6" />
                                 )}
                                 {/* <IoIosArrowBack className={`h-6 w-6 duration {open ? "" : "rotate-180" }`} /> */}
                             </button>
                             {mainDiv}
-                            {options}
-                            {CreatePostBtn(open, router)}
+                            {/* {options} */}
+                            {/* {CreatePostBtn(open, router)} */}
                         </>
                     )}
                 </div>
@@ -549,9 +553,7 @@ const AsideNavbar = ({ children }: Props) => {
                     px-4 py-8 min-h-screen z-10
                     
                 `}
-            >
-                {children}
-            </div>
+            ></div>
         </div>
     );
 };
@@ -609,140 +611,93 @@ const MobileMenu = () => {
 
     let options = (
         <>
-            <li>
-                <button
-                    className={`
-                                    h-16 w-16 justify-center items-center flex
-                                    hover:bg-violet-300 p-4
-                                    rounded-xl
-                                `}
-                    onClick={() => {
-                        setMoreOptions(!moreOptions);
-                        setIsOpen(!isOpen);
-                    }}
-                >
-                    <TbX className="h-8 w-8" />
-                </button>
-            </li>
-            <li>
-                <Link
-                    href="/profile"
-                    className={`
-                                    h-16 w-16 justify-center items-center flex
-                                    hover:bg-violet-300 p-4
-                                    rounded-xl
-                                `}
-                >
-                    <BiUser className="h-8 w-8" />
-                </Link>
-            </li>
-
-            <li>
-                <Link
-                    href="/blogs"
-                    className={`
-                            h-16 w-16 justify-center items-center flex
-                            rounded-lg
-                            hover:bg-violet-300
-                        `}
-                >
-                    <BiFile className="h-8 w-8" />
-                </Link>
-            </li>
+            <Link
+                href="/"
+                className="flex flex-col justify-center items-center basis-1/4"
+            >
+                <picture>
+                    <GoHomeFill className="h-6 w-6" />
+                </picture>
+                {/* <span className="text-[10px]">Home</span> */}
+            </Link>
+            <Link
+                href="/"
+                className="flex flex-col justify-center items-center basis-1/4"
+            >
+                <picture>
+                    <GoSearch className="h-6 w-6" />
+                </picture>
+                {/* <span className="text-[10px]">Pesquisa</span> */}
+            </Link>
+            <Link
+                href="/"
+                className="flex flex-col justify-center items-center basis-1/4"
+            >
+                <picture>
+                    <GoBell className="h-6 w-6" />
+                </picture>
+                {/* <span className="text-[10px]">Notificações</span> */}
+            </Link>
+            <Link
+                href="/"
+                className="flex flex-col justify-center items-center basis-1/4"
+            >
+                <picture>
+                    <GoPerson className="h-6 w-6" />
+                </picture>
+                {/* <span className="text-[10px]">Conta</span> */}
+            </Link>
         </>
     );
 
     if (session) {
         options = (
             <>
-                <li>
-                    <button
-                        className={`
-                            h-16 w-16 justify-center items-center flex
-                            hover:bg-violet-300 p-4
-                            rounded-xl
-                        `}
-                        onClick={() => {
-                            setMoreOptions(!moreOptions);
-                            setIsOpen(!isOpen);
-                        }}
-                    >
-                        <TbX className="h-8 w-8" />
-                    </button>
-                </li>
-                <li>
-                    <Link href={`/${session.user.username}`}>
-                        <div
-                            className={`
-                            flex items-center justify-center flex-shrink-0 bg-gray-200 rounded-full
-                            transition-all duration-300 ease-in-out scale-100 w-11 h-11 
-                        `}
-                        >
-                            <Image
+                <Link
+                    href="/"
+                    className="flex flex-col justify-center items-center basis-1/4"
+                >
+                    <picture>
+                        <GoHomeFill className="h-6 w-6" />
+                    </picture>
+                    {/* <span className="text-[10px]">Home</span> */}
+                </Link>
+                <Link
+                    href="/"
+                    className="flex flex-col justify-center items-center basis-1/4"
+                >
+                    <picture>
+                        <GoSearch className="h-6 w-6" />
+                    </picture>
+                    {/* <span className="text-[10px]">Pesquisa</span> */}
+                </Link>
+                <Link
+                    href="/"
+                    className="flex flex-col justify-center items-center basis-1/4"
+                >
+                    <picture>
+                        <GoBell className="h-6 w-6" />
+                    </picture>
+                    {/* <span className="text-[10px]">Notificações</span> */}
+                </Link>
+                <Link
+                    href={`/${session.user.username}`}
+                    className="flex flex-col justify-center items-center basis-1/4"
+                >
+                    <picture>
+                        <Image
                                 className={`
-                                     rounded-full
+                                     rounded-full h-7 w-7
                                      transition duration-300 ease-in-out
                                 `}
                                 src={session?.user?.image!}
-                                height={144}
-                                width={144}
+                                height={34}
+                                width={34}
                                 alt="avatar"
                             />
-                        </div>
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href="/profile"
-                        className={`
-                            h-16 w-16 justify-center items-center flex
-                            hover:bg-violet-300 p-4
-                            rounded-xl
-                        `}
-                    >
-                        <TbUserEdit className="h-8 w-8" />
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href="/blogs"
-                        className={`
-                            h-16 w-16 justify-center items-center flex
-                            rounded-lg
-                            hover:bg-violet-300
-                        `}
-                    >
-                        <BiFile className="h-8 w-8" />
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        href="#"
-                        className={`
-                            h-16 w-16 justify-center items-center flex
-                            rounded-lg
-                            hover:bg-violet-300
-                        `}
-                    >
-                        <BiCog className="h-8 w-8" />
-                    </Link>
-                </li>
-                <li
-                    onClick={() => {
-                        signOut();
-                    }}
-                >
-                    <Link
-                        href="#"
-                        className={`
-                            h-16 w-16 justify-center items-center flex
-                            rounded-lg
-                            hover:bg-violet-300
-                        `}
-                    >
-                        <BiLogOut className="h-8 w-8" />
-                    </Link>
-                </li>
+                    </picture>
+                    {/* <span className="text-[10px]">Conta</span> */}
+                </Link>
             </>
         );
     }
@@ -751,16 +706,16 @@ const MobileMenu = () => {
     const [scrollDirection, setScrollDirection] = useState("up");
     const [moreOptions, setMoreOptions] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const scope = useMenuAnimation(isOpen);
+    // const scope = useMenuAnimation(isOpen);
 
     const handleScroll = () => {
         const currentScrollY = window.scrollY;
         if (currentScrollY > scrollY) {
             setScrollDirection("down");
-            console.log("down");
+            // console.log("down");
         } else {
             setScrollDirection("up");
-            console.log("up");
+            // console.log("up");
         }
         setScrollY(currentScrollY);
     };
@@ -773,16 +728,17 @@ const MobileMenu = () => {
 
     return (
         <div className="fixed">
-            <AnimatePresence>
+            {/* <AnimatePresence> */}
                 <div
                     className={`
-                    fixed bottom-0 left-0 z-40  h-16 w-screen transition-transform md:translate-y-full translate-y-0
-                    bg-gray-100/80 backdrop-blur-lg border-t border-gray-400/30
-                    rounded-t-2xl
+                        fixed bottom-3 left-3 right-3 z-40  h-16 w- rounded-xl 
+                        transition-transform duration-300 md:translate-y-full translate-y-0
+                        bg-neutral-800/80 backdrop-blur-lg border border-neutral-700/40
+                    
                     ${
                         scrollDirection === "up"
                             ? "translate-y-0"
-                            : "translate-y-16"
+                            : "translate-y-20"
                     }
                 `}
                 >
@@ -790,66 +746,16 @@ const MobileMenu = () => {
                     <div
                         className={`
                             flex justify-between items-center h-full
-                            px-8 py-4 overflow-y-auto
-                            text-gray-600 gap-3
-                        `}
-                    >
-                        <Link href="/">
-                            <BiHomeCircle className="h-7 w-7" />
-                        </Link>
-                        <Link href="/search">
-                            <BiSearch className="h-7 w-7" />
-                        </Link>
-                        <Link href="/post/create">
-                            <BiPlus className="h-7 w-7" />
-                        </Link>
-                        <Link href="/post/my">
-                            <BiEdit className="h-7 w-7" />
-                        </Link>
-                        <div
-                            className={`
-                            flex justify-center items-center
-                            relative
-                        `}
-                        >
-                            <button
-                                onClick={() => {
-                                    setMoreOptions(!moreOptions);
-                                    setIsOpen(!isOpen);
-                                }}
-                            >
-                                <TbAlignCenter className="h-7 w-7" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <motion.div
-                    className={`
-                        fixed top-0 h-full w-fit z-50 
-                        transition-all duration-300 ease-in-out
-                        transitio
-                        ${isOpen ? "right-0" : "-right-full"}
-                    `}
-                    ref={scope}
-                >
-                    <ul
-                        className={`
-                            flex flex-col-reverse gap-3 p-2
-                            justify-center items-center
-                            transition-all duration-300 ease-in-out
-                            ${isOpen ? "z-40" : "-z-10"}
-                            w-24 bg-gray-50/70 backdrop-blur-xl saturate-50
-                            h-full float-right
-                            border border-gray-400/30
-                            rounded-l-2xl
+                            px-2  overflow-y-auto
+                            text-gray-100 gap-
                         `}
                     >
                         {options}
-                    </ul>
-                </motion.div>
-            </AnimatePresence>
+                    </div>
+                </div>
+            {/* </AnimatePresence> */}
         </div>
     );
 };
 
-export { AsideNavbar, MobileMenu };
+export { Navbar, MobileMenu };

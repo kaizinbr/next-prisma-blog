@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MyBio from "./MyBio";
 import Posts from "../general/Posts";
-import ProfilePic from "../general/ProfilePic";
+import {ProfilePic} from "../general/ProfilePic";
 import { signIn, useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { BiShow, BiHide } from "react-icons/bi";
@@ -42,19 +42,20 @@ type userProps = {
 };
 
 type usernameProps = {
-    username: string;
+    username: string[];
 };
 
-export default function Profile(
-    { data }: userProps | any
+export default function EditProfile(
+    { ME, allUsernames }: { ME: userProps | any; allUsernames: any[] }
 ) {
-    console.log(data);
-    const myData = data.ME;
+    console.log(ME);
+    const myData = ME;
     const ProfilePicProps = {
         src: myData.Profile?.image!,
         size: 220,
         alt: `Foto de perfil de ${myData.name}`,
     };
+    const [imgURL, setImgURL] = useState(myData.Profile?.image!);
 
     // FORM
 
@@ -109,7 +110,7 @@ export default function Profile(
             const myId = myData.id;
             const res = await fetch(`/api/user/me?id=${myData.id}`, {
                 method: "PUT",
-                body: JSON.stringify({ formValues, myId }),
+                body: JSON.stringify({ formValues, imgURL, myId }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -142,7 +143,7 @@ export default function Profile(
     const resetForm = () => {
         setFormValues(defaultValues);
     };
-    const allUsernames = data.usersArr.filter((user: any) => user !== myData.username);
+    const allUsernames2 = allUsernames.filter((user: any) => user !== myData.username);
 
     const testUsername = (username: string) => {
         if (username.length < 3) {
@@ -159,7 +160,7 @@ export default function Profile(
     }
 
     const userAlreadyExists = (username: string) => {
-        return allUsernames.includes(username);
+        return allUsernames2.includes(username);
     };
 
     return (
@@ -187,26 +188,17 @@ export default function Profile(
                     `,
                     }}
                 ></div>
-                {/* <Posts data={myData.posts}/> */}
-                {/* <div
-                    className={`
-                        flex items-center justify-center
-                        col-span-4 col-start-8
-                        relative
-                    
-                    `}
-                > */}
                     <div
                         className={`
                             flex flex-col justify-center items-center
-                            border-2 border-gray-300/80
+                            border border-gray-300/80
                             bg-gray-100/60
                             rounded-2xl  
                             md:w-[352px] w-full
                             py-4 px-6 gap-6
                         `}
                     >
-                        <ProfilePic props={ProfilePicProps} />
+                        <ProfilePic props={ProfilePicProps} imgURL={imgURL} setImgURL={setImgURL} />
                         <form
                             onSubmit={onSubmit}
                             autoComplete="off"
@@ -230,7 +222,7 @@ export default function Profile(
                                     bg-gray-200 w-full
                                     focus:bg-gray-300
                                     transition duration-200 ease-in-out
-                                    text-lg md:text-lg md:text-base displayMedium text-gray-600
+                                    text-lg md:text-base displayMedium text-gray-600
                                 `}
                             ></input>
                             <label
@@ -290,35 +282,6 @@ export default function Profile(
                                     text-lg md:text-base displayMedium text-gray-600
                                 `}
                             ></input>
-                            <div
-                                className={`
-                                    flex flex-row gap-6 justify-center items-center mt-2
-                                    text-gray-800 text-sm mb-6
-                                `}
-                            >
-                                {myData.createdAt ? (
-                                    <Link
-                                        // href={`/profile/${session?.user?.username}/following`}
-                                        href={`#`}
-                                        id="pronous"
-                                    >
-                                        Entrou em{" "}
-                                        {new Date(
-                                            myData.createdAt
-                                        ).getUTCFullYear()}
-                                    </Link>
-                                ) : null}
-                                {myData.posts ? (
-                                    <Link
-                                        // href={`/profile/${session?.user?.username}/following`}
-                                        href={`#`}
-                                        id="pronous"
-                                        className="flex flex-row items-center hover:text-violet-500 transition-all"
-                                    >
-                                        {myData.posts?.length} Posts
-                                    </Link>
-                                ) : null}
-                            </div>
                             <div
                                 className={`
                     

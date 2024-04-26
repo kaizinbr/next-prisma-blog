@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-import Profile from "@/components/profile/me/Profile";
+import EditProfile from "@/components/profile/me/MyProfile";
 
 export default async function Page() {
     const session = await getServerSession(authOptions);
@@ -13,20 +13,18 @@ export default async function Page() {
 
     const ME = await prisma.user.findUnique({
         where: {
-            username: session?.user.username,
+            id: userId,
         },
 
         select: {
-            id: true,
             username: true,
+            id: true,
+            
             name: true,
             email: true,
             createdAt: true,
             updatedAt: true,
             posts: {
-                where: {
-                    published: true,
-                },
                 include: {
                     author: {
                         select: {
@@ -39,9 +37,17 @@ export default async function Page() {
                             },
                         },
                     },
-                },
-                orderBy: {
-                    createdAt: "desc",
+                    images: true,
+                    LikesByUser: {
+                        select: {
+                            userId: true,
+                        },
+                    },
+                    reposts: {
+                        select: {
+                            userId: true,
+                        },
+                    },
                 },
             },
             Profile: true,
@@ -53,13 +59,13 @@ export default async function Page() {
             username: true,
         },
     });
-    // console.log(USERSLIST);
+    console.log(ME);
     const usersArr = USERSLIST.map((user) => user.username);
     console.log(usersArr);
     return (
         <div>
             {/* <div>Perfil de: {params.username}</div> */}
-            <Profile data={{ME, usersArr}} allUsernames={usersArr} />
+            <EditProfile ME={ME} allUsernames={usersArr} />
         </div>
     );
 }

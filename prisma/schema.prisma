@@ -83,7 +83,7 @@ model LikesByUser {
 model Post {
     id          String        @id @default(cuid())
     content     String?
-    mediaURL    String[]
+    images      Img[]         @relation("PostImages")
     isRepost    Boolean       @default(false)
     reposted    Post?         @relation("reposts", fields: [repostedId], references: [id])
     reposts     Post[]        @relation("reposts")
@@ -103,14 +103,14 @@ model Post {
 }
 
 model Img {
-    id        Int      @id @default(autoincrement())
+    id        String      @id @default(cuid())
     url       String
     alt       String
     subtitle  String?
     author    String?
+    postId    String?
+    Post      Post?     @relation("PostImages", fields: [postId], references: [id])
     createdAt DateTime @default(now())
-    postId    String
-    // post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -144,12 +144,6 @@ model Session {
 
     @@map("sessions")
 }
-
-// model Category {
-//     id    Int    @id @default(autoincrement())
-//     name  String
-//     posts Post[]
-// }
 
 model Image {
     id        Int      @id @default(autoincrement())

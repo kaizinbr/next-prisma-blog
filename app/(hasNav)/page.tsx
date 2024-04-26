@@ -7,7 +7,7 @@ import UserCreate from "@/components/UserCreate";
 import { LoginButton, LogoutButton } from "@/components/auth";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { ClientUser } from "./clientUser";
+import { ClientUser } from "../clientUser";
 import Link from "next/link";
 import { PageWrapper } from "@/components/config/pageWrapper";
 
@@ -47,6 +47,38 @@ export default async function Home() {
                     },
                 },
             },
+            images: true,
+            LikesByUser: {
+                select: {
+                    userId: true,
+                },
+            },
+            reposts: {
+                select: {
+                    userId: true,
+                },
+            },
+            comments: {
+                include: {
+                    images: true,
+                    reposts: true,
+                    author: {
+                        include: {
+                            Profile: true,
+                        },
+                    },
+                }
+            },
+            responseTo: {
+                include: {
+                    images: true,
+                    author: {
+                        include: {
+                            Profile: true,
+                        },
+                    },
+                }
+            }
         },
         orderBy: {
             createdAt: "desc",
@@ -105,9 +137,20 @@ export default async function Home() {
     // console.log('aaaaa',FOLLOWLIST);
 
     return (
-        <div className="bg-gray-200">
-            <div className="p-4 max-md:p-0 ">
+        <div className="">
+            {/* essa é a principal 👇 */}
+            <div className={`
+                p-4 max-md:p-0
+                max-w-screen-lg m-auto
+            `}>
                 <div className="grid grid-cols-12 gap-8 overflow-hidden">
+                    <div className="left col-span-12">
+                        <h1 className="displayBold text-lg">
+                            Post recentes
+                        </h1>
+                        <Posts data={POSTS}/>
+                        
+                    </div>
                     <div className="db-test col-span-12">
                         <NewPost />
                         {/* <div className="bg-gray-100/50 py-4 px-6 rounded-xl w-fit border-2 border-gray-300/80">
@@ -132,7 +175,7 @@ export default async function Home() {
                         {/* <ClientUser /> */}
                     </div>
 
-                    <div className="col-span-12 flex flex-row">
+                    {/* <div className="col-span-12 flex flex-row">
                         <div className="flex flex-col gap-4 w-1/3">
                             {/* <Image 
                                 src={me?.Profile?.image}
@@ -140,7 +183,7 @@ export default async function Home() {
                                 width={200}
                                 height={200}
                                 className="rounded-full"
-                            /> */}
+                            /> 
                         </div>
                         <div className="flex flex-col gap-4 w-1/3">
                             <h1>Eu sigo</h1>
@@ -154,28 +197,7 @@ export default async function Home() {
                                 {me?.followers.length}
                             </div>
                         </div>
-                    </div>
-                    
-                    {/* <div className="col-span-12 flex flex-row">
-                        <div className="flex flex-col gap-4 w-full">
-                            <h1 className="text-2xl font-bold">Usuários</h1>
-                            <div className="flex flex-row flex-wrap max-w-full gap-4">
-                                {USERS.map(async (user) =>  (
-                                        <User key={user.id} user={user} />
-                                    ))
-                                }
-                            </div>
-                        </div>
-
-                        
                     </div> */}
-                    <div className="left col-span-12">
-                        <h1 className="displayBold text-lg">
-                            Post recentes
-                        </h1>
-                        <Posts data={POSTS}/>
-                        
-                    </div>
                 </div>
             </div>
         </div>

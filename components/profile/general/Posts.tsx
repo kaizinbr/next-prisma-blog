@@ -28,7 +28,7 @@ type userProps = {
     }[];
 };
 
-export default function Posts({ data }: [any] | any) {
+export default function Posts({ data }: any) {
     // const data = userData.userData;
 
     // console.log('aaaaaa', data);
@@ -40,9 +40,9 @@ export default function Posts({ data }: [any] | any) {
         <div className="flex justify-center items-start col-span-6 lg:col-span-7 order-2 lg:order-none">
             <div
                 className={`
-                grid grid-cols-1 gap-6
-                py-4 px-6 max-md:px-0
-                max-w-3xl m-auto
+                grid grid-cols-1 gap-4 md:gap-6
+                 px-4 max-md:px-0
+                w-[768px] m-auto
 
             `}
             >

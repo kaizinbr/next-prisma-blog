@@ -51,6 +51,7 @@ export async function POST(req: Request) {
                     message: "Salvo com sucesso",
                     success: true,
                     post: exists,
+                    like: false
                 });
             } else {
                 console.log('entrou no create')
@@ -79,6 +80,7 @@ export async function POST(req: Request) {
                     message: "Salvo com sucesso",
                     success: true,
                     post,
+                    like: true
                 });
             }
         }

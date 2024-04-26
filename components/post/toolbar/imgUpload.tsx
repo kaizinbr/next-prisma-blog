@@ -6,32 +6,55 @@ import Loading from "@/components/Loading";
 import { TbX } from "react-icons/tb";
 import React, { useCallback } from "react";
 
-const savingImg = (progress: number, savingInBD: any) => {
-    return (
-        <div
-            className={`
-                fixed top-0 left-0 w-full h-full
-                bg-gray-900 bg-opacity-50
-                flex justify-center items-center z-[60]
+export async function saveImgInDB(
+    url: string,
+    alt: string,
+    subtitle: string,
+) {
+    console.log("Salvando imagem no banco de dados...");
+    let img;
+    try {
+        const res = await fetch("/api/posts/image", {
+            method: "POST",
+            body: JSON.stringify({ url, alt, subtitle }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log("salvou a foto no bd");
+                        console.log(data.img.id);
+                        img = data.img.id;
+                } else {
+                    // handleMessage(data.message);
+                }
+                // setShowMessage(true);
+            });
 
-            `}
-        >
-            <div className="bg-gray-100 rounded-xl p-4">
-                <p className="text-center">Salvando...</p>
-                <label htmlFor="file">Downloading progress:</label>
-                <progress id="file" value={progress} max="100">
-                    {progress}
-                </progress>
-            </div>
-        </div>
-    );
-};
+        // if (!res.ok) {
+        //     if (res.status === 403) {
+        //         // setLoading(false);
+        //     }
+        //     return;
+        // }
+        // console.log(res.status);
+
+        // setLoading(false);
+    } catch (error: any) {
+        // setLoading(false);
+        console.error(error);
+        // alert(error.message);
+    }
+
+    return img;
+}
 
 export function ImgUpload(
-    editor: any,
-    authorId: string,
     setImgUpload: Function,
     setImgURL: Function,
+    setImgId: Function,
     imgURL: string,
     setProgressPorcent: Function,
     progressPorcent: number,
@@ -44,21 +67,13 @@ export function ImgUpload(
     saving: boolean,
     setSaving: Function
 ) {
-    if (!editor) {
-        return null;
-    }
-
-    const saveImgURL = async (
-        url: string,
-        authorId: any,
-        alt: string,
-        subtitle: string
-    ) => {
+    const saveImgURL = async (url: string, alt: string, subtitle: string) => {
         console.log("Salvando post no banco de dados...");
+        let img;
         try {
             const res = await fetch("/api/posts/image", {
                 method: "POST",
-                body: JSON.stringify({ url, authorId, alt, subtitle }),
+                body: JSON.stringify({ url, alt, subtitle }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -66,7 +81,9 @@ export function ImgUpload(
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.success) {
-                        console.log("salvou");
+                        console.log("salvou a foto no bd");
+                        console.log(data.img.id);
+                        img = data.img.id;
                     } else {
                         // handleMessage(data.message);
                     }
@@ -87,6 +104,8 @@ export function ImgUpload(
             console.error(error);
             // alert(error.message);
         }
+
+        return img;
     };
 
     const end = () => {
@@ -98,20 +117,13 @@ export function ImgUpload(
         setSaving(false);
     };
 
-    // const addImage = useCallback((url: string) => {
-
-    //     if (url) {
-    //         editor.chain().focus().setImage({ src: url }).run();
-    //     }
-    // }, [editor]);
-
     const handleSubmit = (event: any) => {
         event.preventDefault();
         const file = event.target[0]?.files[0];
         if (!file) return;
         if (alt === "") return alert("Adicione uma descrição da imagem");
 
-        const storageRef = ref(storage, `images/${authorId}/${file.name}`);
+        const storageRef = ref(storage, `images/lixinholindo/${file.name}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
         uploadTask.on(
@@ -130,14 +142,13 @@ export function ImgUpload(
                     .then((downloadURL) => {
                         setImgURL(downloadURL);
                         (async () => {
-                            await saveImgURL(imgURL, authorId, alt, title);
+                            const imgId = await saveImgInDB(downloadURL, alt, title);
+                            if (imgId) {
+                                setImgId(imgId);
+                            }
 
-                            console.log(imgURL);
-                            editor
-                                .chain()
-                                .focus()
-                                .setImage({ src: downloadURL, alt: alt, title: title })
-                                .run();
+                            console.log(imgURL, downloadURL);
+                            console.log("id da imagem", imgId);
                         })();
                     })
                     .then(() => {
@@ -147,8 +158,6 @@ export function ImgUpload(
         );
 
         setSaving(true);
-
-        console.log(imgURL);
 
         // end();
     };

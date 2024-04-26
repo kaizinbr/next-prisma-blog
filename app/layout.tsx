@@ -9,96 +9,14 @@ import { Inter, Open_Sans } from "next/font/google";
 
 const OpenSans = Open_Sans({
     subsets: ["latin"],
-    display: "swap"
+    display: "swap",
 });
 import localFont from "next/font/local";
-import { AsideNavbar, MobileMenu } from "@/components/navbar/Navbar";
+
+import { Navbar, MobileMenu } from "@/components/navbar/Nav";
 import BasicBody from "@/components/Provider copy";
 
-// const HelveticaNowText = localFont({
-//     src: [
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-Thin.woff2",
-//             weight: "100",
-//             style: "normal",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-ThinItalic.woff2",
-//             weight: "100",
-//             style: "italic",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-ExtraLight.woff2",
-//             weight: "200",
-//             style: "normal",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-ExtLtIta.woff2",
-//             weight: "200",
-//             style: "italic",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-Light.woff2",
-//             weight: "300",
-//             style: "normal",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-LightItalic.woff2",
-//             weight: "300",
-//             style: "italic",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-Regular.woff2",
-//             weight: "400",
-//             style: "normal",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-RegIta.woff2",
-//             weight: "400",
-//             style: "italic",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-Medium.woff2",
-//             weight: "500",
-//             style: "normal",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-MediumItalic.woff2",
-//             weight: "500",
-//             style: "italic",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-Bold.woff2",
-//             weight: "700",
-//             style: "normal",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-BoldItalic.woff2",
-//             weight: "700",
-//             style: "italic",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-ExtraBold.woff2",
-//             weight: "800",
-//             style: "normal",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-ExtBdIta.woff2",
-//             weight: "800",
-//             style: "italic",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-Black.woff2",
-//             weight: "900",
-//             style: "normal",
-//         },
-//         {
-//             path: "../fonts/HelveticaNowText/HelveticaNowText-BlackItalic.woff2",
-//             weight: "900",
-//             style: "italic",
-//         },
-//     ],
-// });
+import CreatePostBtn from "@/components/navbar/CreatePostBtn";
 
 export const metadata = {
     title: "dots",
@@ -121,7 +39,7 @@ export default async function RootLayout({
                 className={
                     // OpenSans.className +
                     ` 
-                        bg-gray-200 h-screen text-neutral-800
+                        h-screen text-neutral-200
                         relative
                         flex flex-col 
                         group
@@ -129,13 +47,15 @@ export default async function RootLayout({
                 }
             >
                 <Provider>
-                    <main className="">
-                        <AsideNavbar>
-                            <Suspense fallback={<LoadingFullPage />}>
-                                {children}
-                            </Suspense>
-                        </AsideNavbar>
-                        <MobileMenu/>
+                    <main
+                        className={`
+                            p-4 max-md:p-0
+                            max-w-screen-lg lg:w-[1024px] lg:m-auto
+                        `}
+                    >
+                        <Suspense fallback={<LoadingFullPage />}>
+                            {children}
+                        </Suspense>
                     </main>
                 </Provider>
             </body>

@@ -88,7 +88,7 @@ export const authOptions: NextAuthOptions = {
                 token.image = session.image;
                 token.username = session.username;
             }
-            console.log(token)
+            // console.log(token)
             return token;
         },
     },

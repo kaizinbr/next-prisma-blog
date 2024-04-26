@@ -5,59 +5,157 @@ import { NextResponse } from "next/server";
 
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
-import slugify from "@/services/slugify";
-import replaceHtml from "@/services/replaceHtml";
-import getImage from "@/services/formatImg";
 
 export async function POST(req: Request) {
-    const { content, responseTo } = await req.json();
-    console.log(content);
+    const { content, responseTo, imgId } = await req.json();
+    console.log(
+        content,
+        responseTo,
+        imgId,
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasfd caralho"
+    );
     const session = await getServerSession(authOptions);
     const userId = session?.user?.id;
 
     try {
         console.log("Salvando post no banco de dados...");
-        if (responseTo) {
-            console.log("Respondendo a um post...", responseTo[0]);
-            const post = await prisma.post.create({
-                data: {
-                    content,
-                    author: {
-                        connect: {
-                            id: userId,
+        if (imgId) {
+            console.log("tem imagem", imgId);
+            // olha se é resposta ou nao, sempre com imagem
+            if (responseTo != undefined) {
+                console.log("respondendo um post com foto...");
+                const post = await prisma.post.create({
+                    data: {
+                        content: content,
+                        author: {
+                            connect: {
+                                id: userId,
+                            },
+                        },
+                        authorName: session?.user?.name,
+                        responseTo: {
+                            connect: {
+                                id: responseTo[0],
+                            },
+                        },
+                        images: {
+                            connect: {
+                                id: imgId,
+                            },
                         },
                     },
-                    authorName: session?.user?.name,
-                    responseTo: {
-                        connect: {
-                            id: responseTo[0],
+                    include: {
+                        images: true,
+                        reposts: true,
+                        author: {
+                            include: {
+                                Profile: true,
+                            },
                         },
                     },
-                },
-            });
-            return NextResponse.json({
-                message: "Salvo com sucesso",
-                success: true,
-                post,
-            });
+                });
+                return NextResponse.json({
+                    message: "Salvo com sucesso",
+                    success: true,
+                    post,
+                });
+            } else {
+                console.log("criando com imagem");
+                const post = await prisma.post.create({
+                    data: {
+                        content: content,
+                        author: {
+                            connect: {
+                                id: userId,
+                            },
+                        },
+                        images: {
+                            connect: {
+                                id: imgId,
+                            },
+                        },
+                    },
+                    include: {
+                        images: true,
+                        reposts: true,
+                        author: {
+                            include: {
+                                Profile: true,
+                            },
+                        },
+                    },
+                });
+                return NextResponse.json({
+                    message: "Salvo com sucesso",
+                    success: true,
+                    post,
+                });
+            }
         } else {
-            console.log("Criando um novo post...");
-            const post = await prisma.post.create({
-                data: {
-                    content,
-                    author: {
-                        connect: {
-                            id: userId,
+            console.log("não tem imagem");
+            if (responseTo) {
+                console.log("respondendo um post sem foto...");
+                const post = await prisma.post.create({
+                    data: {
+                        content: content,
+                        author: {
+                            connect: {
+                                id: userId,
+                            },
+                        },
+                        authorName: session?.user?.name,
+                        responseTo: {
+                            connect: {
+                                id: responseTo[0],
+                            },
                         },
                     },
-                    authorName: session?.user?.name,
-                },
-            });
-            return NextResponse.json({
-                message: "Salvo com sucesso",
-                success: true,
-                post,
-            });
+                    include: {
+                        images: true,
+                        reposts: true,
+                        author: {
+                            include: {
+                                Profile: true,
+                            },
+                        },
+                    },
+                });
+                return NextResponse.json({
+                    message: "Salvo com sucesso",
+                    success: true,
+                    post,
+                });
+            } else {
+                console.log("criando sem imagem");
+                const post = await prisma.post.create({
+                    data: {
+                        content: content,
+                        author: {
+                            connect: {
+                                id: userId,
+                            },
+                        },
+                        authorName: session?.user?.name,
+                        images: {
+                            
+                        },
+                    },
+                    include: {
+                        images: true,
+                        reposts: true,
+                        author: {
+                            include: {
+                                Profile: true,
+                            },
+                        },
+                    },
+                });
+                return NextResponse.json({
+                    message: "Salvo com sucesso",
+                    success: true,
+                    post,
+                });
+            }
         }
 
         // }

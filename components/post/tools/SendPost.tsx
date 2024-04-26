@@ -2,6 +2,12 @@
 
 import React, { useState } from "react";
 
+// eu percebi depois que se eu to salvando as fotos no firebase n tem nem pq salvar uma tabela so de foto se eu salvo a url no post kkkkk
+// talvez depois isso seja util pra tornar isso relacional com o post pegando as fotos direto da tabela, mas agora to com preguiça de mudar
+import { saveImgInDB } from "@/components/post/toolbar/imgUpload";
+
+import { GoArrowUp } from "react-icons/go";
+
 function convertContent(content: string) {
     const text = content; // conteúdo da textarea
     const sentences = text.split("\n"); // divide o texto em frases
@@ -26,17 +32,25 @@ const Message = (msg: string, success: boolean) => {
     );
 };
 
-export function SendPost({ content, responseTo }: string | any) {
-    const savePost = async (content: string) => {
+export function SendPost({
+    contentBase,
+    responseToBase,
+    mediaDataBase,
+    imgIdBase
+}: {
+    contentBase: string;
+    responseToBase?: string;
+    mediaDataBase?: { imgURL: string; alt: string; title: string };
+    imgIdBase: string;
+}) {
+    const savePost = async (content: string, responseTo: string | any, imgId: string) => {
         console.log("Salvando post no banco de dados...");
         try {
-            console.log("Calmaí, precisamos converter rapidinho...");
-            const html = convertContent(content);
-            console.log("Convertido! Enviando para o servidor...", html);
+            console.log(content, responseTo, imgId);
 
             const res = await fetch("/api/posts/new", {
                 method: "POST",
-                body: JSON.stringify({ content, responseTo }),
+                body: JSON.stringify({ content, responseTo, imgId }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -45,15 +59,9 @@ export function SendPost({ content, responseTo }: string | any) {
                 .then((data) => {
                     if (data.success) {
                         console.log("salvou");
-                        // setExists(true);
-                        // setPostId(data.post.id);
-                        // setAuthorId(data.post.authorId);
-                        handleMessage(data.message);
                     } else {
-                        handleMessage(data.message);
+                        console.log("deu ruim");
                     }
-                    // setLoading(false);
-                    // setShowMessage(true);
                 });
 
             // if (!res.ok) {
@@ -73,24 +81,10 @@ export function SendPost({ content, responseTo }: string | any) {
     };
 
     const handleSave = async () => {
-        // setLoading(true);
-
-        // exists
-        await savePost(content);
-        // : await savePost(json, html, title, serifed);
+        await savePost(contentBase, responseToBase, imgIdBase);
     };
 
-    const [showMessage, setShowMessage] = useState(false);
-    const [message, setMessage] = useState("");
-    const [confirm, setConfirm] = useState(false);
 
-    const handleMessage = (msg: string) => {
-        setMessage(msg);
-        setShowMessage(true);
-        setTimeout(() => {
-            setShowMessage(false);
-        }, 3000);
-    };
 
     return (
         <div>
@@ -110,6 +104,76 @@ export function SendPost({ content, responseTo }: string | any) {
                 }}
             >
                 Salvar
+            </button>
+        </div>
+    );
+}
+
+
+export function SendResponse({
+    contentBase,
+    responseToBase,
+    mediaDataBase,
+    imgIdBase,
+    hasResponse,
+    setHasResponse,
+    setResponseSaved
+}: {
+    contentBase: string;
+    responseToBase?: string;
+    mediaDataBase?: { imgURL: string; alt: string; titleImg: string };
+    imgIdBase: string;
+    hasResponse: any;
+    setHasResponse: Function;
+    setResponseSaved: Function;
+}) {
+    const savePost = async (content: string, responseTo: string | any, imgId: string) => {
+        console.log("Salvando post no banco de dados...");
+        try {
+            console.log(content, responseTo, imgId);
+
+            const res = await fetch("/api/posts/new", {
+                method: "POST",
+                body: JSON.stringify({ content, responseTo, imgId }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success) {
+                        console.log("salvou");
+                        setHasResponse([...hasResponse, data.post]);
+                        console.log(hasResponse)
+                        setResponseSaved(true);
+                    } else {
+                        console.log("deu ruim");
+                    }
+                });
+
+        } catch (error: any) {
+            console.error(error);
+        }
+    };
+
+    const handleSave = async () => {
+        await savePost(contentBase, responseToBase, imgIdBase);
+    };
+
+
+
+    return (
+        <div>
+            <button
+                className={`
+                    bg-neutral-300 rounded-full size-9 text-neutral-900 flex justify-center items-center
+                    `}
+                onClick={() => {
+                    handleSave();
+                    console.log("salvando...");
+                }}
+            >
+                <GoArrowUp className="size-5" />
             </button>
         </div>
     );

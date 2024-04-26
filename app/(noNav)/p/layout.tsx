@@ -18,7 +18,9 @@ export default async function RootLayout({
 }) {
     return (
         <div
-            // className={OpenSans.className}
+            className={`
+                flex flex-col mt-16
+            `}
         >
             {children}
         </div>

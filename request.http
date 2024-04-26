@@ -1,1 +1,10 @@
-GET http://localhost:3000/kai
+# GET http://localhost:3000/kai
+
+
+POST http://localhost:3000/api/posts/new 
+  
+Content-Type: application/json
+{
+    "content": "teste mil quinhetos e quansiemilhoes",
+    "imgId": "cluzti1w90001eftul4q7bqhh"
+}

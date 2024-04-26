@@ -2,7 +2,21 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-    serverComponentsExternalPackages: ["@prisma/client", "bcrypt"],
+    /* config options here */
+    // serverComponentsExternalPackages: ["@prisma/client", "bcrypt"],
 };
 
-module.exports = nextConfig;
+module.exports = {
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "firebasestorage.googleapis.com",
+                port: "",
+                pathname: "**",
+            },
+        ],
+        domains: ['firebasestorage.googleapis.com'],
+    },
+};
+// module.exports = nextConfig;
