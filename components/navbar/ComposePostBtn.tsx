@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 
 
-export default function CreatePostBtn() {
+export default function ComposePostBtn() {
 
     const [scrollY, setScrollY] = useState(0);
     const [scrollDirection, setScrollDirection] = useState("up");
@@ -29,7 +29,7 @@ export default function CreatePostBtn() {
     }, [scrollY]);
 
     return (
-        <Link href="#"
+        <Link href="/compose"
             className={`
                 transition-transform duration-300 ease-in-out fixed bottom-24 right-3
             ${
@@ -40,11 +40,11 @@ export default function CreatePostBtn() {
             `}
         >
             <span className={`
-                bg-neutral-300 hover:bg-blue-700 text-neutral-800 font-bold py-2 px-4 rounded-full h-14 w-14
+                bg-neutral-300  text-neutral-800 font-bold py-2 px-4 rounded-full h-14 w-14
                 flex items-center justify-center
                 shadow-md border border-neutral-200/60
             `}>
-                <GoPlus className="h-7 w-7"/>
+                <GoPlus className="h-8 w-8"/>
             </span>
         </Link>
     );

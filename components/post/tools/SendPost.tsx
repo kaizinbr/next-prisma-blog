@@ -96,14 +96,13 @@ export function SendPost({
                         rounded-lg
                         text-gray-900
                         font-bold
-                        mr-4
                     `}
                 onClick={() => {
                     handleSave();
                     console.log("salvando...");
                 }}
             >
-                Salvar
+                Postar
             </button>
         </div>
     );

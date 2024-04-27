@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import SeeBlogs from "@/components/blogs/blogs";
 import Image from "next/image"
 import { Navbar, MobileMenu } from "@/components/navbar/Nav";
-import CreatePostBtn from "@/components/navbar/CreatePostBtn";
+import ComposePostBtn from "@/components/navbar/ComposePostBtn";
 
 export default async function Blogs() {
 

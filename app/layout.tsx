@@ -16,7 +16,7 @@ import localFont from "next/font/local";
 import { Navbar, MobileMenu } from "@/components/navbar/Nav";
 import BasicBody from "@/components/Provider copy";
 
-import CreatePostBtn from "@/components/navbar/CreatePostBtn";
+import ComposePostBtn from "@/components/navbar/ComposePostBtn";
 
 export const metadata = {
     title: "dots",

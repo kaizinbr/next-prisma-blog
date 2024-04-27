@@ -1,16 +1,10 @@
-import Link from "next/link";
 
 import { Inter, Open_Sans } from "next/font/google";
 
 const OpenSans = Open_Sans({
     subsets: ["latin"],
-    display: "swap",
+    display: "swap"
 });
-
-import { Navbar, MobileMenu } from "@/components/navbar/Nav";
-import BasicBody from "@/components/Provider copy";
-
-import ComposePostBtn from "@/components/navbar/ComposePostBtn";
 
 export const metadata = {
     title: "dots",
@@ -25,14 +19,10 @@ export default async function RootLayout({
     return (
         <div
             className={`
-                p-4 max-md:p-0
-                max-w-screen-lg lg:w-[1024px] lg:m-auto
-                
+                flex flex-col h-max 
             `}
         >
             {children}
-            <MobileMenu />
-            <ComposePostBtn />
         </div>
     );
 }
